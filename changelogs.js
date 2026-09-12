@@ -3,7 +3,7 @@
 // ============================================================================
 const allLogbooks = {
   master: [
-    { version: "v1.9.1", date: "13.09.2026, 00:05", text: "Mobiler Scroll-Fix für Logbuch-Modals und Einbindung in den Service Worker.", border: "border-indigo-500" },
+    { version: "v1.9.11", date: "13.09.2026, 00:05", text: "Mobiler Scroll-Fix für Logbuch-Modals und Einbindung in den Service Worker.", border: "border-indigo-500" },
     { version: "v1.9.0", date: "12.09.2026, 23:59", text: "Auslagerung der Logbücher in changelogs.js, Umbenennung in Zangenschlosser-App, automatisches Ausblenden des Installationsbuttons nach Installation.", border: "border-slate-400" },
     { version: "v1.8.0", date: "12.09.2026, 23:50", text: "Vollständige Wiederherstellung sämtlicher Einzel-Logbücher für alle Module inklusive v1.7.0 Optimierungen.", border: "border-slate-400" },
     { version: "v1.7.0", date: "12.09.2026, 23:40", text: "Header-Höhe halbiert, Verdrehwinkel-Bilder kompakt (120px) skaliert, PWA-Installations-Button oben im Menü integriert.", border: "border-slate-400" },
