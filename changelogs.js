@@ -3,7 +3,8 @@
 // ============================================================================
 window.allLogbooks = {
   master: [
-    { version: "v1.9.7", date: "13.09.2026, 01:55", text: "Tägliches Willkommens-Splash-Screen mit dem 'Dr. Zange' Artwork integriert (wird genau einmal pro Tag beim ersten Start angezeigt).", border: "border-indigo-500" },
+    { version: "v1.9.8", date: "13.09.2026, 02:15", text: "Startbild-Splash-Screen für Testzwecke auf jeden Start eingestellt; großzügiger unsichtbarer Klick-Button über das Smartphone im Bild und X-Button rechts unten integriert.", border: "border-indigo-500" },
+    { version: "v1.9.7", date: "13.09.2026, 01:55", text: "Tägliches Willkommens-Splash-Screen mit dem 'Dr. Zange' Artwork integriert.", border: "border-slate-400" },
     { version: "v1.9.6", date: "13.09.2026, 01:45", text: "Testlauf mit dem 214x214 Pixel App-Icon für 'Dr. Zange' im Manifest und Service Worker integriert.", border: "border-slate-400" },
     { version: "v1.9.5", date: "13.09.2026, 01:35", text: "Offizielles Branding angepasst: Kurzform 'Dr. Zange' für den Homescreen, Langform 'Zangenschlosser App'.", border: "border-slate-400" },
     { version: "v1.9.4", date: "13.09.2026, 01:10", text: "Erzwungenes Laden der externen changelogs.js via Cache-Buster und robustes Global-Scope-Fallback.", border: "border-slate-400" },
