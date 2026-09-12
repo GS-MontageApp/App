@@ -1,9 +1,10 @@
 // ============================================================================
 // ZANGENSCHLOSSER-APP: PROJEKT-LOGBÜCHER & HISTORIE
 // ============================================================================
-const allLogbooks = {
+window.allLogbooks = {
   master: [
-    { version: "v1.9.3", date: "13.09.2026, 00:45", text: "Saubere Wiederherstellung der externen changelogs.js Architektur mit robustem Cache-Busting.", border: "border-indigo-500" },
+    { version: "v1.9.4", date: "13.09.2026, 01:10", text: "Erzwungenes Laden der externen changelogs.js via Cache-Buster und robustes Global-Scope-Fallback.", border: "border-indigo-500" },
+    { version: "v1.9.3", date: "13.09.2026, 00:45", text: "Saubere Wiederherstellung der externen changelogs.js Architektur mit robustem Cache-Busting.", border: "border-slate-400" },
     { version: "v1.9.0", date: "12.09.2026, 23:59", text: "Auslagerung der Logbücher in changelogs.js, Umbenennung in Zangenschlosser-App, automatisches Ausblenden des Installationsbuttons nach Installation.", border: "border-slate-400" },
     { version: "v1.8.0", date: "12.09.2026, 23:50", text: "Vollständige Wiederherstellung sämtlicher Einzel-Logbücher für alle Module inklusive v1.7.0 Optimierungen.", border: "border-slate-400" },
     { version: "v1.7.0", date: "12.09.2026, 23:40", text: "Header-Höhe halbiert, Verdrehwinkel-Bilder kompakt (120px) skaliert, PWA-Installations-Button oben im Menü integriert.", border: "border-slate-400" },
