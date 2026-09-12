@@ -1,7 +1,7 @@
-const CACHE_NAME = 'zangenschlosser-app-v1.9.1';
+const CACHE_NAME = 'zangenschlosser-app-v1.9.3';
 const urlsToCache = [
   './index.html',
-  './changelogs.js', // WICHTIG: Damit das S24 die Logbücher im Cache findet
+  './changelogs.js',
   './manifest.json',
   'https://cdn.tailwindcss.com',
   './img/a-0.png',
@@ -23,17 +23,13 @@ const urlsToCache = [
   './img/b-315.png'
 ];
 
-// Installation: Dateien cachen
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
-      })
+      .then((cache) => cache.addAll(urlsToCache))
   );
 });
 
-// Aktivierung: Alte Caches aufräumen
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -48,12 +44,9 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: Anfragen abfangen und aus dem Cache bedienen
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
-      .then((response) => {
-        return response || fetch(event.request);
-      })
+      .then((response) => response || fetch(event.request))
   );
 });
