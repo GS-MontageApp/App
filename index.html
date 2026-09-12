@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER-APP v1.9.1 (Vollständige Logbuch-Integration)
+    ZANGENSCHLOSSER-APP v1.9.3 (Modulare Architektur mit externer changelogs.js)
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,7 +12,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <!-- Externe Logbücher -->
+  <!-- Externe Logbuch-Anbindung -->
   <script src="changelogs.js"></script>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-24 md:pb-16 flex flex-col justify-between">
@@ -366,7 +366,7 @@
           </button>
         </div>
 
-        <!-- Logbücher (Greifen direkt auf changelogs.js zu) -->
+        <!-- Logbücher (Greifen auf window.allLogbooks in changelogs.js zu) -->
         <div class="pt-3 pb-2 space-y-2">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
           <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
@@ -398,7 +398,7 @@
         <h3 id="sub_modal_title" class="font-bold text-lg text-indigo-600">Details</h3>
         <button onclick="closeSubModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
-      <!-- Scrollbarer Inhaltsbereich mit voller Höhe -->
+      <!-- Scrollbarer Inhaltsbereich -->
       <div id="sub_modal_content" class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 min-h-0"></div>
       <button onclick="closeSubModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors shrink-0">
         Zurück zum Menü
@@ -406,7 +406,7 @@
     </div>
   </div>
 
-  <!-- MASTER LOGIC & LOGBOOK RENDERING -->
+  <!-- MASTER LOGIC & EXTERN LOGBOOK READING -->
   <script>
     function checkInstallState() {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -467,7 +467,7 @@
         const titles = { master: 'Zangenschlosser-App', etagen: 'Etagenrechner', zuschnitt: 'Zuschnittsrechner', drehwinkel: 'Verdrehwinkel' };
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
-        // Direkter Zugriff auf window.allLogbooks aus changelogs.js
+        // Auslesen aus der externen changelogs.js via window.allLogbooks
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -481,7 +481,7 @@
         } else {
           html += `<div class="p-3 bg-amber-50 rounded-xl border-l-4 border-amber-500 text-xs">
             <p class="font-bold text-amber-800">Hinweis</p>
-            <p class="mt-1 text-amber-700">Keine Logbucheinträge in changelogs.js gefunden.</p>
+            <p class="mt-1 text-amber-700">Logbuch konnte nicht aus changelogs.js geladen werden (Cache prüfen).</p>
           </div>`;
         }
         html += '</div>';
@@ -499,7 +499,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.9.1</p>
+            <p class="text-xs text-slate-500">Version: v1.9.3</p>
           </div>
         `;
       }
