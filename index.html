@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER-APP v1.9.1 (Mobile Fix für externe Logbücher)
+    ZANGENSCHLOSSER-APP v1.9.1 (Vollständige Logbuch-Integration)
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -366,7 +366,7 @@
           </button>
         </div>
 
-        <!-- Logbücher (Mit robustem Fallback) -->
+        <!-- Logbücher (Greifen direkt auf changelogs.js zu) -->
         <div class="pt-3 pb-2 space-y-2">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
           <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
@@ -398,14 +398,15 @@
         <h3 id="sub_modal_title" class="font-bold text-lg text-indigo-600">Details</h3>
         <button onclick="closeSubModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
-      <div id="sub_modal_content" class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1"></div>
-      <button onclick="closeSubModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors">
+      <!-- Scrollbarer Inhaltsbereich mit voller Höhe -->
+      <div id="sub_modal_content" class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 min-h-0"></div>
+      <button onclick="closeSubModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors shrink-0">
         Zurück zum Menü
       </button>
     </div>
   </div>
 
-  <!-- MASTER LOGIC & ROBUSTE LOGBUCH-ANBINDUNG -->
+  <!-- MASTER LOGIC & LOGBOOK RENDERING -->
   <script>
     function checkInstallState() {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -466,18 +467,23 @@
         const titles = { master: 'Zangenschlosser-App', etagen: 'Etagenrechner', zuschnitt: 'Zuschnittsrechner', drehwinkel: 'Verdrehwinkel' };
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
-        // Robustes Laden mit Fallback, falls changelogs.js im Cache fehlt
-        const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.9.1", date: "Heute", text: "Logbücher erfolgreich aus externer Quelle geladen.", border: "border-indigo-500" }
-        ];
+        // Direkter Zugriff auf window.allLogbooks aus changelogs.js
+        const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [];
 
-        let html = '<div class="space-y-3">';
-        logs.forEach(item => {
-          html += `<div class="p-3 bg-slate-50 rounded-xl border-l-4 ${item.border} text-xs">
-            <div class="flex justify-between font-bold text-slate-700"><span>Version ${item.version}</span><span>${item.date}</span></div>
-            <p class="mt-1">${item.text}</p>
+        let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
+        if (logs.length > 0) {
+          logs.forEach(item => {
+            html += `<div class="p-3 bg-slate-50 rounded-xl border-l-4 ${item.border} text-xs shrink-0 shadow-sm">
+              <div class="flex justify-between font-bold text-slate-700"><span>Version ${item.version}</span><span>${item.date}</span></div>
+              <p class="mt-1 text-slate-600 leading-relaxed">${item.text}</p>
+            </div>`;
+          });
+        } else {
+          html += `<div class="p-3 bg-amber-50 rounded-xl border-l-4 border-amber-500 text-xs">
+            <p class="font-bold text-amber-800">Hinweis</p>
+            <p class="mt-1 text-amber-700">Keine Logbucheinträge in changelogs.js gefunden.</p>
           </div>`;
-        });
+        }
         html += '</div>';
         contentEl.innerHTML = html;
 
