@@ -3,7 +3,7 @@
 // ============================================================================
 const allLogbooks = {
   master: [
-    { version: "v1.9.2", date: "13.09.2026, 00:05", text: "Mobiler Scroll-Fix für Logbuch-Modals und Einbindung in den Service Worker.", border: "border-indigo-500" },
+    { version: "v1.9.3", date: "13.09.2026, 00:45", text: "Saubere Wiederherstellung der externen changelogs.js Architektur mit robustem Cache-Busting.", border: "border-indigo-500" },
     { version: "v1.9.0", date: "12.09.2026, 23:59", text: "Auslagerung der Logbücher in changelogs.js, Umbenennung in Zangenschlosser-App, automatisches Ausblenden des Installationsbuttons nach Installation.", border: "border-slate-400" },
     { version: "v1.8.0", date: "12.09.2026, 23:50", text: "Vollständige Wiederherstellung sämtlicher Einzel-Logbücher für alle Module inklusive v1.7.0 Optimierungen.", border: "border-slate-400" },
     { version: "v1.7.0", date: "12.09.2026, 23:40", text: "Header-Höhe halbiert, Verdrehwinkel-Bilder kompakt (120px) skaliert, PWA-Installations-Button oben im Menü integriert.", border: "border-slate-400" },
@@ -45,7 +45,7 @@ const allLogbooks = {
     { version: "v0.4.0", date: "12.09.2026, 16:20", text: "Poka-Yoke Schutz: Globale Parameter (Rohr-Ø und Radius-Faktor) erfordern zwingend eine aktive Benutzerauswahl.", border: "border-slate-400" },
     { version: "v0.3.0", date: "12.09.2026, 15:50", text: "Farbcodierung implementiert: Schenkel-Felder in sanftem Blauton, Biegewinkel-Felder in sanftem Grünton.", border: "border-slate-400" },
     { version: "v0.2.0", date: "12.09.2026, 15:30", text: "Einheiten ' mm' und ' Grad' direkt in die Felder integriert; Kontext-Smart-Scroll für den S24 implementiert.", border: "border-slate-400" },
-    { version: "v0.1.0", date: "12.09.2026, 15:00", text: "Grundstruktur der Single-File App mit Tailwind CSS und mobiler Ausrichtung erstellt.", border: "border-slate-400" }
+    { version: "v0.1.0", date: "12.09.2026, 15:00", text: "Grundstruktur der Single-File App with Tailwind CSS und mobiler Ausrichtung erstellt.", border: "border-slate-400" }
   ],
   drehwinkel: [
     { version: "v0.4.61", date: "12.09.2026, 21:55", text: "Äußere Ring-Umrandung (stroke) der Drehräder auf Schwarz umgestellt.", border: "border-indigo-500" },
