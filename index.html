@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.9.5
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.9.6
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,8 +12,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <!-- Cache-Buster zwingt zum Neuladen der externen Logbücher -->
-  <script src="changelogs.js?v=1.9.5"></script>
+  <!-- Cache-Buster Parameter -->
+  <script src="changelogs.js?v=1.9.6"></script>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-24 md:pb-16 flex flex-col justify-between">
 
@@ -469,7 +469,7 @@
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.9.5", date: "13.09.2026, 01:35", text: "Branding aktualisiert: Dr. Zange.", border: "border-indigo-500" }
+          { version: "v1.9.6", date: "13.09.2026, 01:45", text: "Icon-Test v1.9.6 aktiv.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -494,7 +494,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.9.5</p>
+            <p class="text-xs text-slate-500">Version: v1.9.6</p>
           </div>
         `;
       }
