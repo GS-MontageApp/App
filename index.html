@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.9.6
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.9.7
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   <!-- Cache-Buster Parameter -->
-  <script src="changelogs.js?v=1.9.6"></script>
+  <script src="changelogs.js?v=1.9.7"></script>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-24 md:pb-16 flex flex-col justify-between">
 
@@ -333,6 +333,23 @@
     </div>
   </footer>
 
+  <!-- Tägliches Willkommens-Splash-Screen Modal -->
+  <div id="daily_splash_modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl flex flex-col animate-in fade-in zoom-in-95 duration-300">
+      <div class="relative bg-slate-900 flex items-center justify-center overflow-hidden max-h-[60vh]">
+        <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-auto object-cover max-h-[60vh]">
+        <button onclick="closeDailySplash()" class="absolute top-3 right-3 bg-black/60 hover:bg-black text-white font-bold rounded-full w-8 h-8 flex items-center justify-center transition-colors">&times;</button>
+      </div>
+      <div class="p-5 space-y-3 text-center bg-white">
+        <h3 class="text-lg font-bold text-slate-800">Guten Tag! Bereit für die Werkstatt? 🛠️</h3>
+        <p class="text-xs text-slate-500 leading-relaxed">Dr. Zange wünscht dir einen erfolgreichen Arbeitstag. Alle Berechnungen sind einsatzbereit.</p>
+        <button onclick="closeDailySplash()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl text-sm transition-colors shadow-sm">
+          Los geht's!
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Top-Menu Modal -->
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
@@ -407,6 +424,23 @@
 
   <!-- MASTER LOGIC -->
   <script>
+    // Tägliches Splash-Screen Management
+    function checkDailySplash() {
+      const todayStr = new Date().toISOString().slice(0, 10); // Format: "YYYY-MM-DD"
+      const lastShown = localStorage.getItem('dr_zange_last_splash');
+
+      if (lastShown !== todayStr) {
+        // Noch nicht gezeigt heute -> anzeigen
+        document.getElementById('daily_splash_modal').classList.remove('hidden');
+      }
+    }
+
+    function closeDailySplash() {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      localStorage.setItem('dr_zange_last_splash', todayStr);
+      document.getElementById('daily_splash_modal').classList.add('hidden');
+    }
+
     function checkInstallState() {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
       const installContainer = document.getElementById('install_container');
@@ -469,7 +503,7 @@
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.9.6", date: "13.09.2026, 01:45", text: "Icon-Test v1.9.6 aktiv.", border: "border-indigo-500" }
+          { version: "v1.9.7", date: "13.09.2026, 01:55", text: "Tägliches Splash-Screen integriert.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -487,6 +521,9 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p><strong>Zangenschlosser App (Dr. Zange)</strong> ist eine professionelle mobile Web-Applikation (PWA) für Techniker im Bereich Rohrleitung- und Hydraulikbau.</p>
+            <div class="pt-2">
+              <img src="./img/dr-zange.jpg" alt="Dr. Zange" class="rounded-xl shadow-md w-full object-cover">
+            </div>
           </div>
         `;
       } else if (type === 'contact') {
@@ -494,7 +531,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.9.6</p>
+            <p class="text-xs text-slate-500">Version: v1.9.7</p>
           </div>
         `;
       }
@@ -1058,6 +1095,7 @@
     // Initialisierung beim Laden der App
     window.addEventListener('DOMContentLoaded', () => {
       checkInstallState();
+      checkDailySplash(); // Tägliche Prüfung für Dr. Zange Artwork
       EtagenApp.init();
       ZuschnittApp.init();
       DrehwinkelApp.init();
