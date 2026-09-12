@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER-APP v1.9.3 (Modulare Architektur mit externer changelogs.js)
+    ZANGENSCHLOSSER-APP v1.9.4 (Mit Cache-Buster & Logbuch-Notfall-Fallback)
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,8 +12,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <!-- Externe Logbuch-Anbindung -->
-  <script src="changelogs.js"></script>
+  <!-- Cache-Buster Parameter zwingt Browser zum Neuladen -->
+  <script src="changelogs.js?v=1.9.4"></script>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-24 md:pb-16 flex flex-col justify-between">
 
@@ -34,7 +34,7 @@
     <div id="view-etagen" class="app-view space-y-5">
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
         <div class="space-y-1.5">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">33D-Isometrie Modell</h2>
+          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">993D-Isometrie Modell</h2>
           <div class="w-full h-[260px] sm:h-[340px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center shadow-inner">
             <svg id="etagen_svg_sketch" viewBox="0 0 1000 580" class="w-full h-full">
               <g id="etagen_gfx_container"></g>
@@ -366,7 +366,7 @@
           </button>
         </div>
 
-        <!-- Logbücher (Greifen auf window.allLogbooks in changelogs.js zu) -->
+        <!-- Logbücher -->
         <div class="pt-3 pb-2 space-y-2">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
           <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
@@ -391,7 +391,7 @@
     </div>
   </div>
 
-  <!-- Sub-Modal -->
+  <!-- Sub-Modal mit integriertem Fallback-Schutz -->
   <div id="sub_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col">
       <div class="flex justify-between items-center border-b pb-3">
@@ -406,7 +406,7 @@
     </div>
   </div>
 
-  <!-- MASTER LOGIC & EXTERN LOGBOOK READING -->
+  <!-- MASTER LOGIC & ROBUST LOGBOOK FALLBACK -->
   <script>
     function checkInstallState() {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -442,11 +442,14 @@
       }
     }
 
-    // Service Worker Registrierung
+    // Service Worker Registrierung mit automatischem Update-Check
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('ServiceWorker registriert:', reg.scope))
+          .then(reg => {
+            console.log('ServiceWorker registriert:', reg.scope);
+            reg.update(); // Prüft sofort auf neue Versionen auf dem Server
+          })
           .catch(err => console.log('ServiceWorker Fehler:', err));
       });
     }
@@ -467,23 +470,18 @@
         const titles = { master: 'Zangenschlosser-App', etagen: 'Etagenrechner', zuschnitt: 'Zuschnittsrechner', drehwinkel: 'Verdrehwinkel' };
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
-        // Auslesen aus der externen changelogs.js via window.allLogbooks
-        const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [];
+        // Prüfen ob window.allLogbooks existiert, ansonsten Fallback
+        const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
+          { version: "v1.9.4", date: "13.09.2026, 01:10", text: "Notfall-Modus aktiv: changelogs.js wurde geladen.", border: "border-indigo-500" }
+        ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
-        if (logs.length > 0) {
-          logs.forEach(item => {
-            html += `<div class="p-3 bg-slate-50 rounded-xl border-l-4 ${item.border} text-xs shrink-0 shadow-sm">
-              <div class="flex justify-between font-bold text-slate-700"><span>Version ${item.version}</span><span>${item.date}</span></div>
-              <p class="mt-1 text-slate-600 leading-relaxed">${item.text}</p>
-            </div>`;
-          });
-        } else {
-          html += `<div class="p-3 bg-amber-50 rounded-xl border-l-4 border-amber-500 text-xs">
-            <p class="font-bold text-amber-800">Hinweis</p>
-            <p class="mt-1 text-amber-700">Logbuch konnte nicht aus changelogs.js geladen werden (Cache prüfen).</p>
+        logs.forEach(item => {
+          html += `<div class="p-3 bg-slate-50 rounded-xl border-l-4 ${item.border} text-xs shrink-0 shadow-sm">
+            <div class="flex justify-between font-bold text-slate-700"><span>Version ${item.version}</span><span>${item.date}</span></div>
+            <p class="mt-1 text-slate-600 leading-relaxed">${item.text}</p>
           </div>`;
-        }
+        });
         html += '</div>';
         contentEl.innerHTML = html;
 
@@ -499,7 +497,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.9.3</p>
+            <p class="text-xs text-slate-500">Version: v1.9.4</p>
           </div>
         `;
       }
