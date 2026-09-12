@@ -3,17 +3,17 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER-APP v1.9.4 (Mit Cache-Buster & Logbuch-Notfall-Fallback)
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.9.5
     ================================================================================
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">Zangenschlosser-App</title>
+  <title id="page-title">Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <!-- Cache-Buster Parameter zwingt Browser zum Neuladen -->
-  <script src="changelogs.js?v=1.9.4"></script>
+  <!-- Cache-Buster zwingt zum Neuladen der externen Logbücher -->
+  <script src="changelogs.js?v=1.9.5"></script>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-24 md:pb-16 flex flex-col justify-between">
 
@@ -34,7 +34,7 @@
     <div id="view-etagen" class="app-view space-y-5">
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
         <div class="space-y-1.5">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">993D-Isometrie Modell</h2>
+          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">3D-Isometrie Modell</h2>
           <div class="w-full h-[260px] sm:h-[340px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center shadow-inner">
             <svg id="etagen_svg_sketch" viewBox="0 0 1000 580" class="w-full h-full">
               <g id="etagen_gfx_container"></g>
@@ -337,7 +337,7 @@
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-lg text-indigo-600">⚙️ Zangenschlosser-App</h3>
+        <h3 class="font-bold text-lg text-indigo-600">⚙️ Zangenschlosser App</h3>
         <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
 
@@ -370,7 +370,7 @@
         <div class="pt-3 pb-2 space-y-2">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
           <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Zangenschlosser-App</span><span class="text-slate-400">&rsaquo;</span>
+            <span>📜 Logbuch: Zangenschlosser App</span><span class="text-slate-400">&rsaquo;</span>
           </button>
           <button onclick="openSubModal('logbook-etagen')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>📜 Logbuch: Etagenrechner</span><span class="text-slate-400">&rsaquo;</span>
@@ -391,14 +391,13 @@
     </div>
   </div>
 
-  <!-- Sub-Modal mit integriertem Fallback-Schutz -->
+  <!-- Sub-Modal -->
   <div id="sub_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col">
       <div class="flex justify-between items-center border-b pb-3">
         <h3 id="sub_modal_title" class="font-bold text-lg text-indigo-600">Details</h3>
         <button onclick="closeSubModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
-      <!-- Scrollbarer Inhaltsbereich -->
       <div id="sub_modal_content" class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 min-h-0"></div>
       <button onclick="closeSubModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors shrink-0">
         Zurück zum Menü
@@ -406,7 +405,7 @@
     </div>
   </div>
 
-  <!-- MASTER LOGIC & ROBUST LOGBOOK FALLBACK -->
+  <!-- MASTER LOGIC -->
   <script>
     function checkInstallState() {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -442,13 +441,12 @@
       }
     }
 
-    // Service Worker Registrierung mit automatischem Update-Check
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
           .then(reg => {
             console.log('ServiceWorker registriert:', reg.scope);
-            reg.update(); // Prüft sofort auf neue Versionen auf dem Server
+            reg.update();
           })
           .catch(err => console.log('ServiceWorker Fehler:', err));
       });
@@ -467,12 +465,11 @@
 
       if (type.startsWith('logbook-')) {
         const key = type.replace('logbook-', '');
-        const titles = { master: 'Zangenschlosser-App', etagen: 'Etagenrechner', zuschnitt: 'Zuschnittsrechner', drehwinkel: 'Verdrehwinkel' };
+        const titles = { master: 'Zangenschlosser App', etagen: 'Etagenrechner', zuschnitt: 'Zuschnittsrechner', drehwinkel: 'Verdrehwinkel' };
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
-        // Prüfen ob window.allLogbooks existiert, ansonsten Fallback
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.9.4", date: "13.09.2026, 01:10", text: "Notfall-Modus aktiv: changelogs.js wurde geladen.", border: "border-indigo-500" }
+          { version: "v1.9.5", date: "13.09.2026, 01:35", text: "Branding aktualisiert: Dr. Zange.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -489,7 +486,7 @@
         titleEl.textContent = '📖 Erklärung über die App';
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
-            <p><strong>Zangenschlosser-App</strong> ist eine professionelle mobile Web-Applikation (PWA) für Techniker im Bereich Rohrleitung- und Hydraulikbau.</p>
+            <p><strong>Zangenschlosser App (Dr. Zange)</strong> ist eine professionelle mobile Web-Applikation (PWA) für Techniker im Bereich Rohrleitung- und Hydraulikbau.</p>
           </div>
         `;
       } else if (type === 'contact') {
@@ -497,7 +494,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.9.4</p>
+            <p class="text-xs text-slate-500">Version: v1.9.5</p>
           </div>
         `;
       }
