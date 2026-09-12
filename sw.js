@@ -1,6 +1,7 @@
-const CACHE_NAME = 'master-suite-v1.6.0';
+const CACHE_NAME = 'zangenschlosser-app-v1.9.1';
 const urlsToCache = [
   './index.html',
+  './changelogs.js', // WICHTIG: Damit das S24 die Logbücher im Cache findet
   './manifest.json',
   'https://cdn.tailwindcss.com',
   './img/a-0.png',
