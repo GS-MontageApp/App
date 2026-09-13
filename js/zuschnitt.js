@@ -7,6 +7,7 @@ window.ZuschnittApp = (() => {
     const clearBaseBtn = document.getElementById('zuschnitt_clear_base');
     if (clearBaseBtn) clearBaseBtn.addEventListener('click', clearBaseGroup);
     
+    // Array korrigiert ergänzt
    .forEach(n => {
       const btn = document.getElementById('zuschnitt_clear_' + n);
       if (btn) btn.addEventListener('click', () => clearPair(n));
@@ -98,8 +99,8 @@ window.ZuschnittApp = (() => {
     }
     if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
     let sumSchenkel = 0, schenkelVals = [];
-    document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]').forEach(inp => {
-      const v = parseFloat(getCleanVal(inp.value)) || 0;
+    document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]').forEach(tau => {
+      const v = parseFloat(getCleanVal(tau.value)) || 0;
       schenkelVals.push(v);
       sumSchenkel += v;
     });
