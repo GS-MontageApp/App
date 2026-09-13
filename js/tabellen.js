@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / PERSISTENT SELECTION) v1.10.43
+// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / PERSISTENT SELECTION) v1.10.44
 // ============================================================================
 window.TabellenApp = (() => {
   const STORAGE_KEY = 'zangenschlosser_table_selections_v1';
@@ -228,6 +228,7 @@ window.TabellenApp = (() => {
       let subName = 'Einstecktiefe';
       if (subKey === 'l') subName = 'EO-FORM L';
       if (subKey === 's') subName = 'EO-FORM S';
+      if (subKey === 'drehmoment') subName = 'Drehmoment';
       headerTitle.textContent = `Tabellen | ${subName}`;
     }
   }
