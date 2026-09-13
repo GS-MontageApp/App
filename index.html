@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="h-full">
 <head>
   <!--
     ================================================================================
@@ -15,7 +15,6 @@
   
   <!-- Single Source of Truth Version Config -->
   <script src="js/version.js"></script>
-  <!-- <script src="changelogs.js"></script> -->
   <script src="js/zuschnitt.js"></script>
   <script src="js/etagen.js"></script>
   <script src="js/drehwinkel.js"></script>
@@ -37,7 +36,7 @@
     }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col m-0 p-0">
+<body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
   <!-- Header oben -->
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0">
@@ -53,7 +52,7 @@
   </header>
 
   <!-- Hauptcontainer -->
-  <main class="flex-1 max-w-3xl mx-auto space-y-4 w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 md:min-h-[calc(100vh-180px)] flex flex-col justify-start">
+  <main class="flex-1 max-w-3xl mx-auto w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 flex flex-col justify-start">
     
     <!-- MODUL 1: ETAGENRECHNER -->
     <div id="view-etagen" class="app-view space-y-5 flex-1 block">
@@ -316,20 +315,19 @@
     </div>
 
     <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand) -->
-    <div id="view-eoform" class="app-view hidden space-y-4 flex-1 relative">
-      <div class="space-y-4 pb-28">
+    <div id="view-eoform" class="app-view hidden flex-col w-full h-full flex-1 relative min-h-0">
+      <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-24 min-h-0">
         <!-- Subview 1: Einstecktiefe Standard -->
-        <section id="eo_sub_din" class="eo-sub-section bg-white p-5 rounded-2xl shadow-sm space-y-4">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Grundmaße & Einstecktiefe (DIN 2353 / ISO 8434-1)</h2>
-          <div class="overflow-x-auto max-h-[55vh]">
+        <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
+          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
-                  <th class="py-2.5 px-2 bg-white">Baureihe</th>
-                  <th class="py-2.5 px-2 bg-white">Rohr-Ø</th>
-                  <th class="py-2.5 px-2 bg-white">Einstecktiefe (l₁)</th>
-                  <th class="py-2.5 px-2 bg-white">Überwurfmutter</th>
-                  <th class="py-2.5 px-2 bg-white">PN (Stahl max.)</th>
+                  <th class="py-2.5 px-3 bg-white">Baureihe</th>
+                  <th class="py-2.5 px-3 bg-white">Rohr-Ø</th>
+                  <th class="py-2.5 px-3 bg-white">Einstecktiefe (l₁)</th>
+                  <th class="py-2.5 px-3 bg-white">Überwurfmutter</th>
+                  <th class="py-2.5 px-3 bg-white">PN (Stahl max.)</th>
                 </tr>
               </thead>
               <tbody id="eo_tbody_din" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
@@ -338,9 +336,8 @@
         </section>
 
         <!-- Subview 2: EO-FORM L -->
-        <section id="eo_sub_l" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form L Umformwerte</h2>
-          <div class="overflow-x-auto max-h-[55vh]">
+        <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
+          <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full">
             <table class="w-full text-left text-xs border-collapse">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -360,9 +357,8 @@
         </section>
 
         <!-- Subview 3: EO-Form-S -->
-        <section id="eo_sub_s" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form-S Umformwerte</h2>
-          <div class="overflow-x-auto max-h-[55vh]">
+        <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
+          <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 w-full">
             <table class="w-full text-left text-xs border-collapse">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -386,8 +382,8 @@
       <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
         <div class="bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto">
           <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
-          <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form L</button>
-          <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form-S</button>
+          <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM L</button>
+          <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM S</button>
         </div>
       </section>
     </div>
