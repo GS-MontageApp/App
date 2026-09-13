@@ -3,7 +3,8 @@
 // ============================================================================
 window.allLogbooks = {
   master: [
-    { version: "v1.10.4", date: "13.09.2026, 10:00", text: "Startbildschirm-X-Button oben rechts, Versions-Badge unten rechts platziert; Layout-Parität aller Views auf p-5 Card-Anker harmonisiert; Foobar 1 auf DIN 2353 Referenztabelle umgestellt.", border: "border-indigo-500" },
+    { version: "v1.10.5", date: "13.09.2026, 10:15", text: "App-Shell von justify-between auf flex-1 Flow umgestellt gegen Desktop-Vertical-Drift; Startbild-Badge randlos 100% bündig bottom-right platziert.", border: "border-indigo-500" },
+    { version: "v1.10.4", date: "13.09.2026, 10:00", text: "Startbildschirm-X-Button oben rechts, Versions-Badge unten rechts platziert; Layout-Parität aller Views auf p-5 Card-Anker harmonisiert; Foobar 1 auf DIN 2353 Referenztabelle umgestellt.", border: "border-slate-400" },
     { version: "v1.10.3", date: "13.09.2026, 09:45", text: "Visueller Paritäts-Anker oben für alle Cards/Views umgesetzt; Foobar 1 mit Einstecktiefe-Rechner gefüllt.", border: "border-slate-400" },
     { version: "v1.10.2", date: "13.09.2026, 09:35", text: "Seitenversatz-Beschriftung im Formular und isometrisches SVG-Label von h auf Großbuchstaben (H) geändert.", border: "border-slate-400" },
     { version: "v1.10.1", date: "13.09.2026, 09:25", text: "Versions- und Datums-Badge am unteren Rand des Startbild-Overlays integriert; Startbild bleibt permanent aktiv.", border: "border-slate-400" },
