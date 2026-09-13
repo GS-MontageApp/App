@@ -50,7 +50,7 @@ window.ZuschnittApp = (() => {
     const p2 = document.getElementById('zuschnitt_pair_2');
     const p3 = document.getElementById('zuschnitt_pair_3');
 
-    // Values of base block
+    // Values of base block (Winkel 1 oder Schenkel 2 triggern Paar 1)
     const baseW1 = parseVal(document.querySelector('#zuschnitt_base_group [data-type="winkel"][data-index="0"]'));
     const baseS2 = parseVal(document.querySelector('#zuschnitt_base_group [data-type="schenkel"][data-index="1"]'));
     const baseReady = isParamReady && (baseW1 > 0 || baseS2 > 0);
@@ -64,6 +64,7 @@ window.ZuschnittApp = (() => {
       }
     }
 
+    // Values of pair 1 (Winkel 2 oder Schenkel 3 triggern Paar 2)
     const p1W2 = p1 ? parseVal(p1.querySelector('[data-type="winkel"][data-index="1"]')) : 0;
     const p1S3 = p1 ? parseVal(p1.querySelector('[data-type="schenkel"][data-index="2"]')) : 0;
     const p1Ready = baseReady && (p1W2 > 0 || p1S3 > 0);
@@ -77,6 +78,7 @@ window.ZuschnittApp = (() => {
       }
     }
 
+    // Values of pair 2 (Winkel 3 oder Schenkel 4 triggern Paar 3)
     const p2W3 = p2 ? parseVal(p2.querySelector('[data-type="winkel"][data-index="2"]')) : 0;
     const p2S4 = p2 ? parseVal(p2.querySelector('[data-type="schenkel"][data-index="3"]')) : 0;
     const p2Ready = p1Ready && (p2W3 > 0 || p2S4 > 0);
@@ -94,7 +96,7 @@ window.ZuschnittApp = (() => {
   }
 
   function calculate() {
-    const isReady = updateGatesAndVisibility();
+    updateGatesAndVisibility();
 
     const dSelect = document.getElementById('zuschnitt_durchmesser');
     const rSelect = document.getElementById('zuschnitt_rfaktor');
@@ -219,9 +221,8 @@ window.ZuschnittApp = (() => {
     const c3 = document.getElementById('zuschnitt_clear_3');
     if (cBase) cBase.addEventListener('click', () => clearGroupInputs('zuschnitt_base_group'));
     if (c1) c1.addEventListener('click', () => clearGroupInputs('zuschnitt_pair_1'));
-    if (c2) c2.addEventListener('click5', () => clearGroupInputs('zuschnitt_pair_2')); // fixed typo below in clean version
+    if (c2) c2.addEventListener('click', () => clearGroupInputs('zuschnitt_pair_2'));
     if (c3) c3.addEventListener('click', () => clearGroupInputs('zuschnitt_pair_3'));
-    if (c2) c2.onclick = () => clearGroupInputs('zuschnitt_pair_2');
 
     const btnWa = document.getElementById('zuschnitt_btn_whatsapp');
     const btnCopy = document.getElementById('zuschnitt_btn_copy');
