@@ -1,8 +1,8 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / DREHMOMENT) v1.10.44
+// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / DREHMOMENT) v1.10.53
 // ============================================================================
 window.TabellenApp = (() => {
-  const STORAGE_KEY = 'zangenschlosser_table_selections_v2';
+  const STORAGE_KEY = 'zangenschlosser_table_selections_v4';
 
   const dinData = [
     { type: 'Leicht (L)', od: '6L', l1: '7,0 mm', nut: 'M12x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
@@ -238,7 +238,6 @@ window.TabellenApp = (() => {
   function switchEoSub(subKey) {
     document.querySelectorAll('.eo-sub-section').forEach(el => el.classList.add('hidden'));
     
-    // reset tab style for all 4 buttons
     const btnIds = ['din', 'l', 's', 'drehmoment'];
     btnIds.forEach(k => {
       const btn = document.getElementById('eo_tab_' + k);
@@ -260,9 +259,9 @@ window.TabellenApp = (() => {
     const badge = document.getElementById('header-badge');
     if (badge) {
       badge.classList.remove('hidden');
-      if (subKey === 'din') badge.textContent = 'Einstecktiefe';
+      if (subKey === 'din') badge.textContent = 'ISO 8434-1';
       if (subKey === 'l') badge.textContent = 'EO-Form L';
-      if (subKey === 's') badge.textContent = 'EO-Form-S';
+      if (subKey === 's') badge.textContent = 'EO-Form S';
       if (subKey === 'drehmoment') badge.textContent = 'Nm-Werte';
     }
   }
