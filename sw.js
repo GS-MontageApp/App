@@ -1,10 +1,11 @@
-const CACHE_NAME = 'zangenschlosser-app-v1.10.35';
+const CACHE_NAME = 'zangenschlosser-app-v1.10.36';
 const urlsToCache = [
   './index.html',
   './changelogs.js',
   './js/zuschnitt.js',
   './js/etagen.js',
   './js/drehwinkel.js',
+  './js/tabellen.js',
   './manifest.json',
   'https://cdn.tailwindcss.com',
   './img/icon-512.png',
