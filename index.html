@@ -118,11 +118,24 @@
       color: #ffe600 !important;
       border-bottom-color: #1e3a8a !important;
     }
-    /* Tabellen-Inhalt (Datenzellen td) wechselt auf hellen Hintergrund mit schwarzer Schrift für perfekte Lesbarkeit */
+    /* Tabellen-Inhalt (Datenzellen td) wechselt auf hellen Hintergrund mit schwarzer Schrift */
     body.theme-gs table td {
       background-color: #f8fafc !important;
       color: #0f172a !important;
       border-color: #cbd5e1 !important;
+    }
+    /* Etagenrechner Ergebnis-Boxen im GS-Modus auf hellen Hintergrund mit schwarzer Schrift umstellen */
+    body.theme-gs #view-etagen section:nth-of-type(2) .rounded-xl {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    body.theme-gs #view-etagen section:nth-of-type(2) .rounded-xl div {
+      color: #0f172a !important;
+    }
+    body.theme-gs #view-etagen section:nth-of-type(2) .rounded-xl div[class*="text-xs"],
+    body.theme-gs #view-etagen section:nth-of-type(2) .rounded-xl div[class*="text-[10px]"] {
+      color: #334155 !important;
+      font-weight: 700 !important;
     }
   </style>
 </head>
@@ -593,7 +606,7 @@
         </div>
         <div class="pt-3 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Dokumentation</h4>
-          <button onclick="openSubModal('explanation')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+          <button onclick="openSubModal('explanation')" class="w-full text-left p-3 bg-slate-50 hover:bg-indigo-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>📖 Erklärung über die App</span><span class="text-slate-400">&rsaquo;</span>
           </button>
         </div>
