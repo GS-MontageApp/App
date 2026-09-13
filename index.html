@@ -317,7 +317,7 @@
     <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand) -->
     <div id="view-eoform" class="app-view hidden flex-col w-full h-full flex-1 relative min-h-0">
       <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-24 min-h-0">
-        <!-- Subview 1: Einstecktiefe Standard (mit whitespace-nowrap gegen Zeilenumbrüche) -->
+        <!-- Subview 1: Einstecktiefe Standard -->
         <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -335,7 +335,7 @@
           </div>
         </section>
 
-        <!-- Subview 2: EO-FORM L (mit whitespace-nowrap gegen Zeilenumbrüche) -->
+        <!-- Subview 2: EO-FORM L -->
         <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -356,7 +356,7 @@
           </div>
         </section>
 
-        <!-- Subview 3: EO-Form-S (mit whitespace-nowrap gegen Zeilenumbrüche) -->
+        <!-- Subview 3: EO-Form-S -->
         <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -377,7 +377,7 @@
           </div>
         </section>
 
-        <!-- Subview 4: Drehmomente (mit whitespace-nowrap gegen Zeilenumbrüche) -->
+        <!-- Subview 4: Drehmomente -->
         <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -479,7 +479,10 @@
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-lg text-indigo-600">⚙️ Zangenschlosser App</h3>
+        <div>
+          <h3 class="font-bold text-lg text-indigo-600 leading-tight">⚙️ Zangenschlosser App</h3>
+          <p id="menu_version_subtitle" class="text-xs font-mono text-slate-400 mt-0.5">Lade Version...</p>
+        </div>
         <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
       <div class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 divide-y divide-slate-100">
@@ -513,7 +516,7 @@
           <button onclick="openSubModal('logbook-zuschnitt')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>📜 Logbuch: Zuschnittsrechner</span><span class="text-slate-400">&rsaquo;</span>
           </button>
-          <button onclick="openSubModal('logbook-drehwinkel')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors fiend items-center justify-between">
+          <button onclick="openSubModal('logbook-drehwinkel')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>📜 Logbuch: Verdrehwinkel</span><span class="text-slate-400">&rsaquo;</span>
           </button>
         </div>
@@ -543,6 +546,11 @@
       const splashVer = document.getElementById('splash_version_text');
       if (splashVer && window.APP_CONFIG) {
         splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
+      }
+
+      const menuSub = document.getElementById('menu_version_subtitle');
+      if (menuSub && window.APP_CONFIG) {
+        menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
       }
       
       AppShell.init();
