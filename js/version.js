@@ -2,8 +2,8 @@
 // SINGLE SOURCE OF TRUTH: VERSION & BUILD (Dr. Zange)
 // ============================================================================
 window.APP_CONFIG = {
-  version: 'v1.10.61',
-  date: '13.09.2026, 18:45'
+  version: 'v1.10.63',
+  date: '13.09.2026, 19:00'
 };
 
 console.log('✅ SSoT LOADED:', window.APP_CONFIG.version);
