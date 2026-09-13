@@ -19,6 +19,7 @@
   <script src="js/etagen.js"></script>
   <script src="js/drehwinkel.js"></script>
   <script src="js/tabellen.js"></script>
+  <script src="js/drehmoment.js"></script>
   <script src="js/shell.js"></script>
   
   <style>
@@ -375,14 +376,32 @@
             </table>
           </div>
         </section>
+
+        <!-- Subview 4: Drehmomente -->
+        <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
+          <div class="flex-1 min-h-0 overflow-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="sticky top-0 bg-white z-10 shadow-xs">
+                <tr class="border-b border-slate-200 text-slate-500 uppercase">
+                  <th class="py-2.5 px-3 bg-white">Gewinde</th>
+                  <th class="py-2.5 px-3 bg-white">8.8 (Nm)</th>
+                  <th class="py-2.5 px-3 bg-white">10.9 (Nm)</th>
+                  <th class="py-2.5 px-3 bg-white">12.9 (Nm)</th>
+                </tr>
+              </thead>
+              <tbody id="eo_tbody_drehmoment" class="divide-y divide-amber-100 font-medium text-slate-700 bg-amber-50/35"></tbody>
+            </table>
+          </div>
+        </section>
       </div>
 
       <!-- FIXIERTES DAUMEN-DOCK ÜBER DER TAB-BAR -->
       <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
-        <div class="bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto">
-          <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
-          <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM L</button>
-          <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM S</button>
+        <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto">
+          <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
+          <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM L</button>
+          <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM S</button>
+          <button onclick="switchEoSub('drehmoment')" id="eo_tab_drehmoment" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">Drehmoment</button>
         </div>
       </section>
     </div>
@@ -531,6 +550,7 @@
       if (window.ZuschnittApp) ZuschnittApp.init();
       if (window.DrehwinkelApp) DrehwinkelApp.init();
       if (window.TabellenApp) TabellenApp.init();
+      if (window.DrehmomentApp) DrehmomentApp.init();
       AppShell.switchApp('etagen', 'Etagenrechner');
     });
   </script>
