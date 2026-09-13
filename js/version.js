@@ -2,7 +2,7 @@
 // SINGLE SOURCE OF TRUTH: VERSION & BUILD
 // ============================================================================
 const APP_CONFIG = {
-  version: 'v1.10.46',
+  version: 'v1.10.45',
   date: '13.09.2026, 19:40 (MEZ)'
 };
 
