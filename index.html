@@ -42,7 +42,7 @@
       color: #f8fafc !important;
     }
     body.theme-gs header {
-      background-color: rgba(11, 29, 58, 0.9) !important;
+      background-color: rgba(11, 29, 58, 0.95) !important;
       border-bottom-color: #1e3a8a !important;
     }
     body.theme-gs header h1, body.theme-gs header span {
@@ -608,7 +608,7 @@
         menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
       }
       
-      // Theme initialisieren
+      // Theme sofort beim Start laden
       if (window.AppShell && window.AppShell.initTheme) {
         window.AppShell.initTheme();
       }
