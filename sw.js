@@ -1,8 +1,7 @@
-const CACHE_NAME = 'zangenschlosser-app-v1.10.33';
+const CACHE_NAME = 'zangenschlosser-app-v1.10.32';
 const urlsToCache = [
   './index.html',
   './changelogs.js',
-  './js/eo-data.js',
   './manifest.json',
   'https://cdn.tailwindcss.com',
   './img/icon-512.png',
@@ -26,4 +25,32 @@ const urlsToCache = [
   './img/b-315.png'
 ];
 
-// ... restlicher Service-Worker-Code bleibt unverändert ...
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(urlsToCache))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => response || fetch(event.request))
+  );
+});
