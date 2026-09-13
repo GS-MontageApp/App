@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="de" class="h-full">
 <head>
-  <!--
-    ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.48 (SSoT Version Binding + Max-Viewport Tables)
-    ================================================================================
-  -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Zangenschlosser App (Dr. Zange)</title>
@@ -13,13 +8,13 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Single Source of Truth Version Config FIRST -->
-  <script src="js/version.js?v=1.10.48"></script>
-  <script src="js/zuschnitt.js?v=1.10.48"></script>
-  <script src="js/etagen.js?v=1.10.48"></script>
-  <script src="js/drehwinkel.js?v=1.10.48"></script>
-  <script src="js/tabellen.js?v=1.10.48"></script>
-  <script src="js/shell.js?v=1.10.48"></script>
+  <!-- Single Source of Truth & Modules (Cache-Busted) -->
+  <script src="js/versions.js?v=1.10.51"></script>
+  <script src="js/zuschnitt.js?v=1.10.51"></script>
+  <script src="js/etagen.js?v=1.10.51"></script>
+  <script src="js/drehwinkel.js?v=1.10.51"></script>
+  <script src="js/tabellen.js?v=1.10.51"></script>
+  <script src="js/shell.js?v=1.10.51"></script>
   
   <style>
     .row-selected {
@@ -96,13 +91,13 @@
     <div id="view-drehwinkel" class="app-view hidden space-y-4 w-full"></div>
 
     <!-- MODUL 4: TABELLEN (Maximierte Full-Height/Width Box via flex-1 min-h-0) -->
-    <div id="view-eoform" class="app-view hidden flex-col w-full relative min-h-[calc(100vh-160px)] pb-24">
+    <div id="view-eoform" class="app-view hidden flex-col w-full relative min-h-[calc(100vh-140px)] pb-24">
       <div class="flex-1 flex flex-col w-full h-full space-y-2">
         
         <!-- Subview 1: DIN/ISO -->
-        <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px]">
+        <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px] w-full">
           <h2 class="text-xs font-semibold text-slate-500 uppercase shrink-0 mb-2">Grundmaße & Einstecktiefe (DIN 2353 / ISO 8434-1)</h2>
-          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl">
+          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase"><th class="py-2.5 px-3">Baureihe</th><th class="py-2.5 px-3">Rohr-Ø</th><th class="py-2.5 px-3">Einstecktiefe (l₁)</th><th class="py-2.5 px-3">Überwurfmutter</th><th class="py-2.5 px-3">PN max</th></tr>
@@ -113,9 +108,9 @@
         </section>
 
         <!-- Subview 2: EO-L -->
-        <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px]">
+        <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px] w-full">
           <h2 class="text-xs font-semibold text-slate-500 uppercase shrink-0 mb-2">EO-Form L Umformwerte</h2>
-          <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20">
+          <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full">
             <table class="w-full text-left text-xs border-collapse">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase"><th class="py-2.5 px-2">AD</th><th class="py-2.5 px-2">S</th><th class="py-2.5 px-2">L Stahl</th><th class="py-2.5 px-2">L Edel</th><th class="py-2.5 px-2">L₁ St</th><th class="py-2.5 px-2">L₁ Ed</th><th class="py-2.5 px-2">L₂</th><th class="py-2.5 px-2">L₃</th></tr>
@@ -126,9 +121,9 @@
         </section>
 
         <!-- Subview 3: EO-S -->
-        <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px]">
+        <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px] w-full">
           <h2 class="text-xs font-semibold text-slate-500 uppercase shrink-0 mb-2">EO-Form S Umformwerte</h2>
-          <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20">
+          <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 w-full">
             <table class="w-full text-left text-xs border-collapse">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase"><th class="py-2.5 px-2">AD</th><th class="py-2.5 px-2">S</th><th class="py-2.5 px-2">L Stahl</th><th class="py-2.5 px-2">L Edel</th><th class="py-2.5 px-2">L₁ St</th><th class="py-2.5 px-2">L₁ Ed</th><th class="py-2.5 px-2">L₂</th><th class="py-2.5 px-2">L₃</th></tr>
@@ -139,9 +134,9 @@
         </section>
 
         <!-- Subview 4: Nm-Werte -->
-        <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px]">
+        <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px] w-full">
           <h2 class="text-xs font-semibold text-slate-500 uppercase shrink-0 mb-2">Anzugsdrehmomente (Nm)</h2>
-          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl">
+          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase"><th class="py-2.5 px-3">Gewinde</th><th class="py-2.5 px-3">8.8</th><th class="py-2.5 px-3">10.9</th><th class="py-2.5 px-3">12.9</th></tr>
@@ -152,9 +147,9 @@
         </section>
 
         <!-- Subview 5: Gewinde-Schnellbestimmung -->
-        <section id="eo_sub_gewinde" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px]">
+        <section id="eo_sub_gewinde" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm min-h-[300px] w-full">
           <h2 class="text-xs font-semibold text-slate-500 uppercase shrink-0 mb-2">Gewinde-Schnellbestimmung (Metrisch / BSP / JIC)</h2>
-          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl">
+          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase"><th class="py-2.5 px-3">Norm</th><th class="py-2.5 px-3">Größe</th><th class="py-2.5 px-3">d_max ca.</th><th class="py-2.5 px-3">Steigung/Gänge</th><th class="py-2.5 px-3">Dichtung / Info</th></tr>
@@ -189,14 +184,56 @@
     </div>
   </footer>
 
-  <!-- BOOTSTRAPPER mit zentralem Versions-Binding & dynamischem Splash-Text -->
+  <!-- Modals -->
+  <div id="mehr_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end justify-center p-0">
+    <div class="bg-white rounded-t-3xl p-5 max-w-lg w-full space-y-3 text-slate-800 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="font-bold text-base text-slate-700">Weitere Module</h3>
+        <button onclick="closeMehrModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div class="space-y-2">
+        <button onclick="selectMehrItem('foobar2', 'Foobar 2')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 flex items-center justify-between"><span>📌 Foobar 2</span><span class="text-slate-400">&rsaquo;</span></button>
+      </div>
+      <button onclick="closeMehrModal()" class="w-full bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl text-sm mt-2">Abbrechen</button>
+    </div>
+  </div>
+
+  <div id="daily_splash_modal" class="fixed inset-0 bg-black z-50 flex items-center justify-center p-0">
+    <div onclick="closeDailySplash()" class="relative w-full h-full max-w-lg max-h-screen bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer group">
+      <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
+      <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl z-45">&times;</button>
+      <div id="splash_version_text" class="bottom-0 right-0 bg-black/90 backdrop-blur-md text-white/95 text-[11px] font-mono px-3.5 py-1.5 rounded-tl-lg border-l border-t border-white/25 pointer-events-none z-30 shadow-xl fixed">v1.10.51</div>
+    </div>
+  </div>
+
+  <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-lg text-indigo-600">⚙️ Menü</h3>
+        <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <button onclick="closeTopMenu()" class="w-full bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl text-sm">Schließen</button>
+    </div>
+  </div>
+
+  <div id="sub_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 id="sub_modal_title" class="font-bold text-lg text-indigo-600">Details</h3>
+        <button onclick="closeSubModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div id="sub_modal_content" class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 min-h-0"></div>
+      <button onclick="closeSubModal()" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-xl text-sm shrink-0">Zurück</button>
+    </div>
+  </div>
+
+  <!-- BOOTSTRAPPER -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const splashVer = document.getElementById('splash_version_text');
       if (splashVer && window.APP_CONFIG) {
         splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
       }
-      
       if (window.AppShell) AppShell.init();
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
