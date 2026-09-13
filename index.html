@@ -317,7 +317,7 @@
     <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand) -->
     <div id="view-eoform" class="app-view hidden flex-col w-full h-full flex-1 relative min-h-0">
       <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-24 min-h-0">
-        <!-- Subview 1: Einstecktiefe Standard -->
+        <!-- Subview 1: Einstecktiefe Standard (mit whitespace-nowrap gegen Zeilenumbrüche) -->
         <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -335,10 +335,10 @@
           </div>
         </section>
 
-        <!-- Subview 2: EO-FORM L -->
+        <!-- Subview 2: EO-FORM L (mit whitespace-nowrap gegen Zeilenumbrüche) -->
         <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full">
-            <table class="w-full text-left text-xs border-collapse">
+            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
@@ -356,10 +356,10 @@
           </div>
         </section>
 
-        <!-- Subview 3: EO-Form-S -->
+        <!-- Subview 3: EO-Form-S (mit whitespace-nowrap gegen Zeilenumbrüche) -->
         <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 w-full">
-            <table class="w-full text-left text-xs border-collapse">
+            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
@@ -377,10 +377,10 @@
           </div>
         </section>
 
-        <!-- Subview 4: Drehmomente -->
+        <!-- Subview 4: Drehmomente (mit whitespace-nowrap gegen Zeilenumbrüche) -->
         <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full">
           <div class="flex-1 min-h-0 overflow-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full">
-            <table class="w-full text-left text-xs border-collapse">
+            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-3 bg-white">Gewinde</th>
