@@ -3,23 +3,26 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - v1.10.61 (Progressive Disclosure & Full-Viewport)
+    ZANGENSCHLOSSER APP (Dr. Zange) - v1.10.65 (Inkl. Verdrehwinkel-Modul)
     ================================================================================
   -->
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Single Source of Truth & Module Scripts (Cache-Busted v1.10.61) -->
-  <script src="js/versions.js?v=1.10.61"></script>
-  <script src="js/zuschnitt.js?v=1.10.61"></script>
-  <script src="js/etagen.js?v=1.10.61"></script>
-  <script src="js/drehwinkel.js?v=1.10.61"></script>
-  <script src="js/tabellen.js?v=1.10.61"></script>
-  <script src="js/shell.js?v=1.10.61"></script>
+  <!-- Single Source of Truth & Module Scripts (Cache-Busted v1.10.65) -->
+  <script src="js/versions.js?v=1.10.65"></script>
+  <script src="js/zuschnitt.js?v=1.10.65"></script>
+  <script src="js/etagen.js?v=1.10.65"></script>
+  <script src="js/drehwinkel.js?v=1.10.65"></script>
+  <script src="js/tabellen.js?v=1.10.65"></script>
+  <script src="js/shell.js?v=1.10.65"></script>
   
   <style>
     .row-selected {
@@ -81,7 +84,7 @@
       </section>
     </div>
 
-    <!-- MODUL 2: ZUSCHNITTSRECHNER (Inkl. progressive Disclosure & Lösch-Buttons) -->
+    <!-- MODUL 2: ZUSCHNITTSRECHNER -->
     <div id="view-zuschnitt" class="app-view hidden space-y-4 w-full pb-20">
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Globale Parameter (Pflichtfeld)</h2>
@@ -106,7 +109,6 @@
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Schenkel und Bogen-Folge</h2>
         <div id="zuschnitt_chain_container" class="space-y-3">
-          <!-- Basisgruppe (immer sichtbar) -->
           <div id="zuschnitt_base_group" class="flex items-stretch gap-2">
             <div class="flex-1 space-y-3">
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
@@ -119,12 +121,9 @@
                 <input type="text" placeholder="Schenkel 2" data-type="schenkel" data-index="1" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500">
               </div>
             </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_base" title="Basis-Block leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center">
-              <span class="text-xl">🗑️</span>
-            </button>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_base" title="Basis-Block leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center"><span class="text-xl">🗑️</span></button>
           </div>
 
-          <!-- Paar 1 (progressiv versteckt) -->
           <div id="zuschnitt_pair_1" class="hidden flex items-stretch gap-2">
             <div class="flex-1 space-y-3">
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
@@ -134,12 +133,9 @@
                 <input type="text" placeholder="Schenkel 3" data-type="schenkel" data-index="2" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500">
               </div>
             </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_1" title="Paar 1 leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center">
-              <span class="text-xl">🗑️</span>
-            </button>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_1" title="Paar 1 leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center"><span class="text-xl">🗑️</span></button>
           </div>
 
-          <!-- Paar 2 (progressiv versteckt) -->
           <div id="zuschnitt_pair_2" class="hidden flex items-stretch gap-2">
             <div class="flex-1 space-y-3">
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
@@ -149,12 +145,9 @@
                 <input type="text" placeholder="Schenkel 4" data-type="schenkel" data-index="3" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500">
               </div>
             </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_2" title="Paar 2 leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center">
-              <span class="text-xl">🗑️</span>
-            </button>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_2" title="Paar 2 leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center"><span class="text-xl">🗑️</span></button>
           </div>
 
-          <!-- Paar 3 (progressiv versteckt) -->
           <div id="zuschnitt_pair_3" class="hidden flex items-stretch gap-2">
             <div class="flex-1 space-y-3">
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
@@ -164,14 +157,11 @@
                 <input type="text" placeholder="Schenkel 5" data-type="schenkel" data-index="4" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500">
               </div>
             </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_3" title="Paar 3 leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center">
-              <span class="text-xl">🗑️</span>
-            </button>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_3" title="Paar 3 leeren" class="bg-red-500 hover:bg-red-600 text-white font-bold px-3.5 rounded-xl flex items-center justify-center"><span class="text-xl">🗑️</span></button>
           </div>
         </div>
       </section>
 
-      <!-- ERGEBNIS-CARD -->
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-2 border-2 border-red-500">
         <h2 id="zuschnitt_out_titel" class="text-xs font-semibold text-red-600 uppercase tracking-wider border-b border-red-200 pb-1.5">Ergebnis &ndash; <i>Parameter wählen</i></h2>
         <div class="p-3 bg-red-50 rounded-xl border-l-4 border-red-600 shadow-sm space-y-0.5">
@@ -179,33 +169,47 @@
           <div id="zuschnitt_out_gesamtlänge" class="text-2xl font-bold text-red-950">0 mm</div>
         </div>
         <div class="grid grid-cols-2 gap-2 text-xs text-slate-600">
-          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
-            <span class="text-[10px] font-semibold text-slate-400">Biegeradius (R):</span>
-            <span id="zuschnitt_out_biegeradius" class="font-bold text-slate-700 text-sm mt-0.5">-</span>
-          </div>
-          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
-            <span class="text-[10px] font-semibold text-slate-400">Summe Schenkel:</span>
-            <span id="zuschnitt_out_summeschenkel" class="font-bold text-slate-700 text-sm mt-0.5">0 mm</span>
-          </div>
+          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col"><span class="text-[10px] font-semibold text-slate-400">Biegeradius (R):</span><span id="zuschnitt_out_biegeradius" class="font-bold text-slate-700 text-sm mt-0.5">-</span></div>
+          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col"><span class="text-[10px] font-semibold text-slate-400">Summe Schenkel:</span><span id="zuschnitt_out_summeschenkel" class="font-bold text-slate-700 text-sm mt-0.5">0 mm</span></div>
         </div>
       </section>
 
-      <!-- BAUSTELLEN-EXPORT-CARD -->
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Baustellen-Export</h2>
         <div class="grid grid-cols-2 gap-2.5">
-          <button id="zuschnitt_btn_whatsapp" type="button" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors">
-            <span>💬</span> WhatsApp
-          </button>
-          <button id="zuschnitt_btn_copy" type="button" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors">
-            <span>📋</span> Kopieren
-          </button>
+          <button id="zuschnitt_btn_whatsapp" type="button" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors"><span>💬</span> WhatsApp</button>
+          <button id="zuschnitt_btn_copy" type="button" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors"><span>📋</span> Kopieren</button>
         </div>
       </section>
     </div>
 
-    <!-- MODUL 3: VERDREHWINKEL -->
-    <div id="view-drehwinkel" class="app-view hidden space-y-4 w-full"></div>
+    <!-- MODUL 3: VERDREHWINKEL (Re-integriert) -->
+    <div id="view-drehwinkel" class="app-view hidden space-y-4 w-full">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Raum-Ebenen Verdrehwinkel</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+            <h3 class="text-xs font-bold text-indigo-700 uppercase">Ebene 1</h3>
+            <div><label class="block text-[11px] font-semibold text-slate-600 mb-1">Höhenversatz V1 (mm)</label><input type="text" id="dw_v1" value="0" inputmode="decimal" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm"></div>
+            <div><label class="block text-[11px] font-semibold text-slate-600 mb-1">Seitenversatz H1 (mm)</label><input type="text" id="dw_h1" value="100" inputmode="decimal" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm"></div>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+            <h3 class="text-xs font-bold text-indigo-700 uppercase">Ebene 2</h3>
+            <div><label class="block text-[11px] font-semibold text-slate-600 mb-1">Höhenversatz V2 (mm)</label><input type="text" id="dw_v2" value="100" inputmode="decimal" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm"></div>
+            <div><label class="block text-[11px] font-semibold text-slate-600 mb-1">Seitenversatz H2 (mm)</label><input type="text" id="dw_h2" value="0" inputmode="decimal" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Berechneter Verdrehwinkel</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="p-4 bg-purple-50 rounded-xl border-l-4 border-purple-600"><div class="text-[10px] font-bold text-purple-800 uppercase">Verdrehwinkel (Δφ)</div><div id="dw_out_twist" class="text-2xl font-bold text-purple-950 mt-0.5">0,0 °</div></div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200"><div class="text-[10px] font-semibold text-slate-500 uppercase">Winkel Ebene 1</div><div id="dw_out_vec1" class="text-lg font-bold text-slate-800 mt-0.5">0,0 °</div></div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200"><div class="text-[10px] font-semibold text-slate-500 uppercase">Winkel Ebene 2</div><div id="dw_out_vec2" class="text-lg font-bold text-slate-800 mt-0.5">0,0 °</div></div>
+        </div>
+      </section>
+    </div>
 
     <!-- MODUL 4: TABELLEN -->
     <div id="view-eoform" class="app-view hidden flex-col w-full relative min-h-[calc(100vh-140px)] pb-24">
@@ -293,7 +297,7 @@
     <div onclick="closeDailySplash()" class="relative w-full h-full max-w-lg max-h-screen bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer group">
       <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
       <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl z-45">&times;</button>
-      <div id="splash_version_text" class="fixed bottom-3 right-3 bg-black/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/25 pointer-events-none z-30 shadow-xl whitespace-nowrap text-white font-mono text-[10px] sm:text-[11px]">v1.10.61 | 13.09.2026, 18:45</div>
+      <div id="splash_version_text" class="fixed bottom-3 right-3 bg-black/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/25 pointer-events-none z-30 shadow-xl whitespace-nowrap text-white font-mono text-[10px] sm:text-[11px]">v1.10.65 | 13.09.2026, 19:30</div>
     </div>
   </div>
 
@@ -327,7 +331,9 @@
       if (window.ZuschnittApp && typeof window.ZuschnittApp.init === 'function') {
         window.ZuschnittApp.init();
       }
-      if (window.DrehwinkelApp) DrehwinkelApp.init();
+      if (window.DrehwinkelApp && typeof window.DrehwinkelApp.init === 'function') {
+        window.DrehwinkelApp.init();
+      }
       if (window.TabellenApp) TabellenApp.init();
       if (window.AppShell) AppShell.switchApp('etagen', 'Etagenrechner');
     });
