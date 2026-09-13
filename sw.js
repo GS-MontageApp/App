@@ -1,9 +1,7 @@
 // ============================================================================
-// ZANGENSCHLOSSER APP SERVICE WORKER (Dynamic Version via APP_CONFIG)
+// ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.10.47)
 // ============================================================================
-importScripts('./js/version.js');
-
-const CACHE_NAME = `zangenschlosser-app-${self.APP_CONFIG ? self.APP_CONFIG.version : 'fallback'}`;
+const CACHE_NAME = 'zangenschlosser-cache-v1.10.47';
 const ASSETS = [
   './',
   './index.html',
@@ -12,27 +10,27 @@ const ASSETS = [
   './js/etagen.js',
   './js/zuschnitt.js',
   './js/drehwinkel.js',
-  './js/tabellen.js'
+  './js/tabellen.js',
+  './js/drehmoment.js',
+  './manifest.json',
+  './img/dr-zange.jpg'
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS).catch((err) => {
-        console.warn('Nicht alle Assets konnten vorgecached werden:', err);
-      });
-    })
+      return cache.addAll(ASSETS);
+    }).then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
           }
         })
       );
@@ -41,18 +39,22 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  
+  // Externe CDNs (wie Tailwind) direkt vom Netzwerk laden, nicht cachen/abfangen
+  if (url.origin !== location.origin) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request).then((networkResponse) => {
-        return caches.open(CACHE_NAME).then((cache) => {
-          if (event.request.url.startsWith(self.location.origin)) {
-            cache.put(event.request, networkResponse.clone());
-          }
-          return networkResponse;
-        });
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(event.request).then((response) => {
+        return response;
       }).catch(() => {
-        // Fallback für Navigation / Offline
+        // Fallback falls offline und Asset nicht im Cache
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
