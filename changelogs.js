@@ -3,7 +3,8 @@
 // ============================================================================
 window.allLogbooks = {
   master: [
-    { version: "v1.10.29", date: "13.09.2026, 12:05 (MEZ)", text: "Tabellen-Segment-Labels auf Einstecktiefe, EU Form L, EU Form S angepasst; Footer-Tab auf Tabellen umbenannt; LOS-Hinweis auf Splash ersatzlos entfernt.", border: "border-indigo-500" },
+    { version: "v1.10.31", date: "13.09.2026, 12:15 (MEZ)", text: "Tabellen-Segment-Buttons in EO-Form L / EO-Form-S benannt; Rohr-Ø-Gruppierungsblöcke mit Block-Divider ergänzt; Soft-Grün/Rot & Touch-Row-Outline aktiv.", border: "border-indigo-500" },
+    { version: "v1.10.29", date: "13.09.2026, 12:05 (MEZ)", text: "Tabellen-Segment-Labels auf Einstecktiefe, EU Form L, EU Form S angepasst; Footer-Tab auf Tabellen umbenannt; LOS-Hinweis auf Splash ersatzlos entfernt.", border: "border-slate-400" },
     { version: "v1.10.21", date: "13.09.2026, 13:15", text: "EO-Form Modul mit 3-in-1 Segmented Control (DIN 2353, EO-L, EO-S) und sticky Table-Headern ausgestattet.", border: "border-slate-400" },
     { version: "v1.10.19", date: "13.09.2026, 12:45", text: "Tab-Benennung und Header konsistent auf exakten Parker-Standard 'EO-Form' (EO2-FORM Umformtabelle) korrigiert.", border: "border-slate-400" },
     { version: "v1.10.18", date: "13.09.2026, 12:30", text: "Foobar 1 Tab durch EU-Form (Parker EO2-FORM Umform- & Längenzugabetabelle für Baureihe L) ersetzt.", border: "border-slate-400" },
