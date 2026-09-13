@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.0
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.3
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,7 +12,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <script src="changelogs.js?v=1.10.0"></script>
+  <script src="changelogs.js?v=1.10.3"></script>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-24 md:pb-16 flex flex-col justify-between">
 
@@ -52,7 +52,7 @@
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Seitenversatz (h)</label>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Seitenversatz (H)</label>
               <div class="relative">
                 <input type="text" id="etagen_h" value="100" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-sky-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-sky-500 focus:outline-none">
                 <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
@@ -86,7 +86,6 @@
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
         <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
         <div class="space-y-3">
-          <!-- Nachziehlänge harmonisiert auf text-xl -->
           <div class="p-4 bg-pink-50 rounded-xl border-l-4 border-pink-500 shadow-sm">
             <div class="text-xs font-bold text-pink-800 uppercase tracking-wider">Nachziehlänge (NZ)</div>
             <div id="etagen_out_t" class="text-xl font-bold text-pink-950 mt-0.5">0 mm</div>
@@ -220,8 +219,9 @@
       </section>
     </div>
 
-    <!-- MODUL 3: VERDREHWINKEL -->
+    <!-- MODUL 3: VERDREHWINKEL (Mit harmonisiertem Sektions-Anker oben) -->
     <div id="view-drehwinkel" class="app-view hidden space-y-3">
+      <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-1">Verdrehwinkel & Ausrichtung</h2>
       <section class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-200 flex flex-col items-center p-2 gap-2">
         <div class="inline-flex w-auto bg-slate-50 rounded-xl overflow-hidden">
           <div class="h-[120px] w-[120px] flex items-center justify-center overflow-hidden bg-white">
@@ -287,23 +287,52 @@
       </section>
     </div>
 
-    <!-- MODULE 4 & OVERFLOW (FOOBAR 1, 2, 3) -->
+    <!-- MODUL 4 / FOOBAR 1: EINSTECK- & VERSCHRAUBUNGSRECHNER (DIN 2353 / 12 S) -->
     <div id="view-foobar1" class="app-view hidden space-y-4">
-      <section class="bg-white p-8 rounded-2xl shadow-sm text-center space-y-3">
-        <div class="text-4xl">🚧</div>
-        <h2 class="text-xl font-bold text-slate-700">Foobar 1 (Haupttab 4)</h2>
+      <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-1">Hydraulik-Verschraubung (DIN 2353 / ISO 8434-1)</h2>
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-700 border-b pb-2">Einstecktiefe & Markierung (Schwere Reihe S)</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Baureihe & Rohr-Ø</label>
+            <select id="f1_series" onchange="calcEinsteck()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="6S">6 S (Einstecklänge Norm)</option>
+              <option value="8S">8 S (Einstecklänge Norm)</option>
+              <option value="10S">10 S (Einstecklänge Norm)</option>
+              <option value="12S" selected>12 S (Norm-Einstecklänge: 7,5 mm)</option>
+              <option value="16S">16 S (Einstecklänge Norm)</option>
+              <option value="20S">20 S (Einstecklänge Norm)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Gemessenes Rohrende-Überstandsmaß</label>
+            <div class="relative">
+              <input type="text" id="f1_ueberstand" value="25" inputmode="decimal" oninput="calcEinsteck()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 bg-indigo-50 rounded-xl border-l-4 border-indigo-600 shadow-sm space-y-2">
+          <div class="text-xs font-bold text-indigo-900 uppercase tracking-wider">Ergebnis / Anzeichnung</div>
+          <div id="f1_out_tiefe" class="text-xl font-extrabold text-indigo-950">Einstecktiefe (l): 7,5 mm</div>
+          <div id="f1_out_mark" class="text-xs font-medium text-indigo-800">Markierung ab Rohrende anbringen bei: <strong>32,5 mm</strong></div>
+        </div>
       </section>
     </div>
+
     <div id="view-foobar2" class="app-view hidden space-y-4">
+      <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-1">Foobar 2 (Mehr-Menü)</h2>
       <section class="bg-white p-8 rounded-2xl shadow-sm text-center space-y-3">
         <div class="text-4xl">🚧</div>
-        <h2 class="text-xl font-bold text-slate-700">Foobar 2 (Mehr-Menü)</h2>
+        <h2 class="text-xl font-bold text-slate-700">Platzhalter Foobar 2</h2>
       </section>
     </div>
     <div id="view-foobar3" class="app-view hidden space-y-4">
+      <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-1">Foobar 3 (Mehr-Menü)</h2>
       <section class="bg-white p-8 rounded-2xl shadow-sm text-center space-y-3">
         <div class="text-4xl">🚧</div>
-        <h2 class="text-xl font-bold text-slate-700">Foobar 3 (Mehr-Menü)</h2>
+        <h2 class="text-xl font-bold text-slate-700">Platzhalter Foobar 3</h2>
       </section>
     </div>
 
@@ -321,7 +350,7 @@
       <button onclick="switchApp('drehwinkel', 'Verdrehwinkel')" id="nav-drehwinkel" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">🔄</span><span class="text-[10px] font-semibold truncate w-full">Verdrehwinkel</span>
       </button>
-      <button onclick="switchApp('foobar1', 'Foobar 1')" id="nav-foobar1" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+      <button onclick="switchApp('foobar1', 'Einstecktiefe 12 S')" id="nav-foobar1" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">📌</span><span class="text-[10px] font-semibold truncate w-full">Foobar 1</span>
       </button>
       <button onclick="openMehrModal()" id="nav-mehr" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
@@ -351,11 +380,16 @@
     </div>
   </div>
 
-  <!-- Startbild / Splash-Screen Modal (Testmodus: bei jedem Start) -->
+  <!-- Startbild / Splash-Screen Modal (Testmodus: permanent aktiv mit Versions-Badge unten) -->
   <div id="daily_splash_modal" class="fixed inset-0 bg-black z-50 flex items-center justify-center p-0">
     <div class="relative w-full h-full max-w-lg max-h-screen bg-slate-950 flex items-center justify-center overflow-hidden">
       <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
       <button onclick="closeDailySplash()" title="App starten" class="absolute left-[5%] top-[15%] w-[42%] h-[40%] cursor-pointer opacity-0 bg-red-500 hover:opacity-25 transition-opacity z-20" aria-label="App starten"></button>
+      
+      <div class="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md text-white/90 text-xs font-mono px-3 py-1.5 rounded-xl border border-white/15 pointer-events-none z-30 shadow-lg">
+        v1.10.3 | 13.09.2026, 09:45
+      </div>
+
       <button onclick="closeDailySplash()" class="absolute bottom-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-30" aria-label="Schließen">&times;</button>
     </div>
   </div>
@@ -501,7 +535,7 @@
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.10.0", date: "13.09.2026, 09:20", text: "Footer-Refactoring aktiv.", border: "border-indigo-500" }
+          { version: "v1.10.3", date: "13.09.2026, 09:45", text: "Foobar1 aktiv.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -529,7 +563,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.10.0</p>
+            <p class="text-xs text-slate-500">Version: v1.10.3</p>
           </div>
         `;
       }
@@ -548,13 +582,11 @@
       const targetView = document.getElementById('view-' + appName);
       if (targetView) targetView.classList.remove('hidden');
 
-      // Highlight main nav buttons if they match
       const activeNav = document.getElementById('nav-' + appName);
       if (activeNav) {
         activeNav.classList.remove('text-slate-400');
         activeNav.classList.add('text-indigo-600');
       } else if (appName === 'foobar2' || appName === 'foobar3') {
-        // Highlight Mehr button if overflow item selected
         const mehrNav = document.getElementById('nav-mehr');
         if (mehrNav) {
           mehrNav.classList.remove('text-slate-400');
@@ -564,6 +596,19 @@
 
       document.getElementById('header-title').textContent = appTitle;
       window.scrollTo(0, 0);
+    }
+
+    // Foobar 1 - Logik für DIN 2353 Einstecktiefe (12 S = 7.5 mm)
+    function calcEinsteck() {
+      const series = document.getElementById('f1_series').value;
+      const ueberstand = parseFloat(document.getElementById('f1_ueberstand').value.replace(',', '.')) || 0;
+      
+      const tiefeMap = { '6S': 7.0, '8S': 7.0, '10S': 7.5, '12S': 7.5, '16S': 8.5, '20S': 10.0 };
+      const tiefe = tiefeMap[series] || 7.5;
+      
+      document.getElementById('f1_out_tiefe').textContent = `Einstecktiefe (l): ${tiefe.toFixed(1)} mm`;
+      const markPos = ueberstand + tiefe;
+      document.getElementById('f1_out_mark').innerHTML = `Markierung ab Rohrende anbringen bei: <strong>${markPos.toFixed(1)} mm</strong>`;
     }
 
     // 1. ETAGENRECHNER
@@ -784,7 +829,7 @@
         if (Math.abs(a - 90) >= 0.001 && pxT > 0) container.appendChild(createLine(A_back, A, '#ea580c', '6', null));
         if (t > 0 || a > 0) container.appendChild(createLine(pxT === 0 ? A : A_back, C_pt, '#ec4899', '6', null));
 
-        if (h > 0) container.appendChild(createTextLabel('h', { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 }, '#0284c7', 20, 28));
+        if (h > 0) container.appendChild(createTextLabel('H', { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 }, '#0284c7', 20, 28));
         if (v > 0) container.appendChild(createTextLabel('V', { x: (B.x + C_pt.x) / 2, y: (B.y + C_pt.y) / 2 }, '#16a34a', 28, 0));
         if (c > 0) container.appendChild(createTextLabel('C', { x: (A.x + C_pt.x) / 2, y: (A.y + C_pt.y) / 2 }, '#dc2626', -35, 10));
         if (Math.abs(a - 90) >= 0.001 && pxT > 0) container.appendChild(createTextLabel('R', { x: (A_back.x + A.x) / 2, y: (A_back.y + A.y) / 2 }, '#ea580c', -25, 28));
@@ -1086,7 +1131,7 @@
         const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
 
         const dx = clientX - (rect.left + rect.width / 2);
-        const dy = clientY - (rect.top + rect.height / 2);
+        dy = clientY - (rect.top + rect.height / 2);
 
         let userDeg = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
         if (userDeg < 0) userDeg += 360;
@@ -1108,6 +1153,7 @@
       EtagenApp.init();
       ZuschnittApp.init();
       DrehwinkelApp.init();
+      calcEinsteck();
     });
   </script>
 </body>
