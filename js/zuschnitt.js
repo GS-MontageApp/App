@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (Chain + Progressive Reveal v1.10.61)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (Gated + Progressive v1.10.62)
 // ============================================================================
 window.ZuschnittApp = (() => {
   let state = {
@@ -27,68 +27,74 @@ window.ZuschnittApp = (() => {
     return val.toFixed(1).replace('.', ',') + ' mm';
   }
 
-  function updateChainVisibility() {
-    const pairs = [
-      { id: 'zuschnitt_pair_1', prevIndex: 0 },
-      { id: 'zuschnitt_pair_2', prevIndex: 1 },
-      { id: 'zuschnitt_pair_3', prevIndex: 2 }
-    ];
-
-    // Check base group activity (Winkel 0 or Schenkel 1/2)
-    const baseW = parseVal(document.querySelector('#zuschnitt_base_group [data-type="winkel"]'));
-    const baseS2 = parseVal(document.querySelector('#zuschnitt_base_group [data-index="1"]'));
+  function updateGatesAndVisibility() {
+    const dSelect = document.getElementById('zuschnitt_durchmesser');
+    const rSelect = document.getElementById('zuschnitt_rfaktor');
     
-    let activeFlags = [baseW > 0 || baseS2 > 0];
+    const dVal = dSelect && dSelect.value ? parseVal(dSelect) : 0;
+    const rVal = rSelect && rSelect.value ? parseVal(rSelect) : 0;
+    const isParamReady = dVal > 0 && rVal > 0;
 
-    // Evaluate pair activation chain
+    // Gating base group inputs
+    const baseGroupInputs = document.querySelectorAll('#zuschnitt_base_group input');
+    baseGroupInputs.forEach(inp => {
+      inp.disabled = !isParamReady;
+      if (!isParamReady) {
+        inp.classList.add('opacity-50', 'bg-slate-200', 'cursor-not-allowed');
+      } else {
+        inp.classList.remove('opacity-50', 'bg-slate-200', 'cursor-not-allowed');
+      }
+    });
+
     const p1 = document.getElementById('zuschnitt_pair_1');
     const p2 = document.getElementById('zuschnitt_pair_2');
     const p3 = document.getElementById('zuschnitt_pair_3');
 
-    const pairEls = [p1, p2, p3];
+    // Values of base block
+    const baseW1 = parseVal(document.querySelector('#zuschnitt_base_group [data-type="winkel"][data-index="0"]'));
+    const baseS2 = parseVal(document.querySelector('#zuschnitt_base_group [data-type="schenkel"][data-index="1"]'));
+    const baseReady = isParamReady && (baseW1 > 0 || baseS2 > 0);
 
-    for (let i = 0; i < pairEls.length; i++) {
-      const el = pairEls[i];
-      if (!el) continue;
-      
-      const prevActive = i === 0 ? (baseW > 0 || baseS2 > 0) : (() => {
-        const prevInputs = pairEls[i-1].querySelectorAll('input');
-        return Array.from(prevInputs).some(inp => parseVal(inp) > 0);
-      }()).catch?.() || false;
-
-      // Simple sequential revelation: show pair i if previous block has data or is already visible with data
-      const currentHasData = Array.from(el.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
-      const shouldBeVisible = prevActive || currentHasData || i === 0;
-
-      // Better UX rule: Base group always visible. Pair 1 visible if base has input OR pair 1 has input. Pair 2 visible if pair 1 has input OR pair 2 has input, etc.
-    }
-
-    // Clean progressive visibility rule:
-    // Pair 1 visible if Base group has any value > 0 inwinkel/schenkel2 OR pair 1 has value
-    const hasBaseInput = baseW > 0 || baseS2 > 0;
     if (p1) {
-      const p1HasVal = Array.from(p1.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
-      if (hasBaseInput || p1HasVal) p1.classList.remove('hidden');
-      else p1.classList.add('hidden');
+      if (baseReady) {
+        p1.classList.remove('hidden');
+        p1.querySelectorAll('input').forEach(inp => { inp.disabled = false; inp.classList.remove('opacity-50', 'bg-slate-200', 'cursor-not-allowed'); });
+      } else {
+        p1.classList.add('hidden');
+      }
     }
+
+    const p1W2 = p1 ? parseVal(p1.querySelector('[data-type="winkel"][data-index="1"]')) : 0;
+    const p1S3 = p1 ? parseVal(p1.querySelector('[data-type="schenkel"][data-index="2"]')) : 0;
+    const p1Ready = baseReady && (p1W2 > 0 || p1S3 > 0);
 
     if (p2) {
-      const p1HasVal = p1 ? Array.from(p1.querySelectorAll('input')).some(inp => parseVal(inp) > 0) : false;
-      const p2HasVal = Array.from(p2.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
-      if (p1HasVal || p2HasVal) p2.classList.remove('hidden');
-      else p2.classList.add('hidden');
+      if (p1Ready) {
+        p2.classList.remove('hidden');
+        p2.querySelectorAll('input').forEach(inp => { inp.disabled = false; inp.classList.remove('opacity-50', 'bg-slate-200', 'cursor-not-allowed'); });
+      } else {
+        p2.classList.add('hidden');
+      }
     }
 
+    const p2W3 = p2 ? parseVal(p2.querySelector('[data-type="winkel"][data-index="2"]')) : 0;
+    const p2S4 = p2 ? parseVal(p2.querySelector('[data-type="schenkel"][data-index="3"]')) : 0;
+    const p2Ready = p1Ready && (p2W3 > 0 || p2S4 > 0);
+
     if (p3) {
-      const p2HasVal = p2 ? Array.from(p2.querySelectorAll('input')).some(inp => parseVal(inp) > 0) : false;
-      const p3HasVal = Array.from(p3.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
-      if (p2HasVal || p3HasVal) p3.classList.remove('hidden');
-      else p3.classList.add('hidden');
+      if (p2Ready) {
+        p3.classList.remove('hidden');
+        p3.querySelectorAll('input').forEach(inp => { inp.disabled = false; inp.classList.remove('opacity-50', 'bg-slate-200', 'cursor-not-allowed'); });
+      } else {
+        p3.classList.add('hidden');
+      }
     }
+
+    return isParamReady;
   }
 
   function calculate() {
-    updateChainVisibility();
+    const isReady = updateGatesAndVisibility();
 
     const dSelect = document.getElementById('zuschnitt_durchmesser');
     const rSelect = document.getElementById('zuschnitt_rfaktor');
@@ -213,8 +219,9 @@ window.ZuschnittApp = (() => {
     const c3 = document.getElementById('zuschnitt_clear_3');
     if (cBase) cBase.addEventListener('click', () => clearGroupInputs('zuschnitt_base_group'));
     if (c1) c1.addEventListener('click', () => clearGroupInputs('zuschnitt_pair_1'));
-    if (c2) c2.addEventListener('click', () => clearGroupInputs('zuschnitt_pair_2'));
+    if (c2) c2.addEventListener('click5', () => clearGroupInputs('zuschnitt_pair_2')); // fixed typo below in clean version
     if (c3) c3.addEventListener('click', () => clearGroupInputs('zuschnitt_pair_3'));
+    if (c2) c2.onclick = () => clearGroupInputs('zuschnitt_pair_2');
 
     const btnWa = document.getElementById('zuschnitt_btn_whatsapp');
     const btnCopy = document.getElementById('zuschnitt_btn_copy');
