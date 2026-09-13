@@ -2,52 +2,76 @@ window.ZuschnittApp = (() => {
   function init() {
     ['zuschnitt_durchmesser', 'zuschnitt_rfaktor'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.addEventListener('change', checkParameters);
+      if (el) {
+        el.addEventListener('change', checkParameters);
+        el.addEventListener('input', checkParameters);
+      }
     });
+
     const clearBaseBtn = document.getElementById('zuschnitt_clear_base');
     if (clearBaseBtn) clearBaseBtn.addEventListener('click', clearBaseGroup);
-    
-    // Array ergänzt!
-   .forEach(n => {
+
+    [1, 2, 3].forEach(n => {
       const btn = document.getElementById('zuschnitt_clear_' + n);
       if (btn) btn.addEventListener('click', () => clearPair(n));
     });
 
     document.querySelectorAll('#view-zuschnitt input[type="text"]').forEach(input => {
       input.addEventListener('focus', function() {
-        if (!this.hasAttribute('disabled')) this.value = this.value.replace(' mm', '').replace(' Grad', '');
+        if (!this.hasAttribute('disabled')) {
+          this.value = this.value.replace(' mm', '').replace(' Grad', '');
+        }
       });
       input.addEventListener('blur', function() {
         if (this.hasAttribute('disabled')) return;
         let val = (this.value || '').replace(',', '.').trim();
         if (val !== '') {
           if (this.getAttribute('data-type') === 'schenkel') this.value = val + ' mm';
-          if (this.getAttribute('data-type') === 'winkel') this.value = Math.min(Math.max(parseFloat(val) || 0, 1), 180) + ' Grad';
+          if (this.getAttribute('data-type') === 'winkel') {
+            const num = Math.min(Math.max(parseFloat(val) || 0, 1), 180);
+            this.value = num + ' Grad';
+          }
         }
       });
-      input.addEventListener('input', () => { updateVisibility(); calculateZuschnitt(); });
+      input.addEventListener('input', () => {
+        updateVisibility();
+        calculateZuschnitt();
+      });
     });
+
     checkParameters();
   }
 
   function checkParameters() {
-    const dVal = document.getElementById('zuschnitt_durchmesser')?.value, rVal = document.getElementById('zuschnitt_rfaktor')?.value;
+    const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
+    const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
+    const isReady = (dVal !== '' && dVal !== undefined && dVal !== null) && 
+                    (rVal !== '' && rVal !== undefined && rVal !== null);
+
     document.querySelectorAll('#zuschnitt_base_group input[type="text"]').forEach(inp => {
-      if (dVal && rVal) {
+      const type = inp.getAttribute('data-type');
+      if (isReady) {
         inp.removeAttribute('disabled');
-        inp.className = 'w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-base text-slate-800';
+        inp.classList.remove('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
+        if (type === 'schenkel') {
+          inp.className = 'w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#005691]';
+        } else if (type === 'winkel') {
+          inp.className = 'w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#005691]';
+        }
       } else {
         inp.setAttribute('disabled', 'true');
-        inp.className = 'w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed';
+        inp.className = 'w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none';
         inp.value = '';
       }
     });
+
     updateVisibility();
     calculateZuschnitt();
   }
 
   function updateVisibility() {
-    const dVal = document.getElementById('zuschnitt_durchmesser')?.value, rVal = document.getElementById('zuschnitt_rfaktor')?.value;
+    const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
+    const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
     if (!dVal || !rVal) {
       ['zuschnitt_pair_1', 'zuschnitt_pair_2', 'zuschnitt_pair_3'].forEach(id => {
         const el = document.getElementById(id);
@@ -55,6 +79,7 @@ window.ZuschnittApp = (() => {
       });
       return;
     }
+
     const s2 = document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="1"]')?.value;
     const w1 = document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="0"]')?.value;
     document.getElementById('zuschnitt_pair_1')?.classList.toggle('hidden', !s2 || !w1);
@@ -69,15 +94,23 @@ window.ZuschnittApp = (() => {
   }
 
   function clearBaseGroup() {
-    document.querySelectorAll('#zuschnitt_base_group input').forEach(i => i.value = '');
+    document.querySelectorAll('#zuschnitt_base_group input').forEach(i => {
+      i.value = '';
+    });
     clearPair(1);
+    checkParameters();
   }
 
   function clearPair(n) {
     const startIndex = n === 1 ? 1 : (n === 2 ? 2 : 3);
     const schenkelIdx = n === 1 ? 2 : (n === 2 ? 3 : 4);
-    document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]').forEach((inp, idx) => { if (idx >= startIndex) inp.value = ''; });
-    document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]').forEach((inp, idx) => { if (idx >= schenkelIdx) inp.value = ''; });
+    
+    document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]').forEach((inp, idx) => {
+      if (idx >= startIndex) inp.value = '';
+    });
+    document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]').forEach((inp, idx) => {
+      if (idx >= schenkelIdx) inp.value = '';
+    });
     updateVisibility();
     calculateZuschnitt();
   }
@@ -90,24 +123,29 @@ window.ZuschnittApp = (() => {
     const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
     const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
     const titelEl = document.getElementById('zuschnitt_out_titel');
+    
     if (!dVal || !rVal) {
-      document.getElementById('zuschnitt_out_gesamtlänge').textContent = "0 mm";
+      if (document.getElementById('zuschnitt_out_gesamtlänge')) document.getElementById('zuschnitt_out_gesamtlänge').textContent = "0 mm";
       if (titelEl) titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
-      document.getElementById('zuschnitt_out_biegeradius').textContent = "-";
-      document.getElementById('zuschnitt_out_summeschenkel').textContent = "0 mm";
+      if (document.getElementById('zuschnitt_out_biegeradius')) document.getElementById('zuschnitt_out_biegeradius').textContent = "-";
+      if (document.getElementById('zuschnitt_out_summeschenkel')) document.getElementById('zuschnitt_out_summeschenkel').textContent = "0 mm";
       return;
     }
+
     if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
     let sumSchenkel = 0, schenkelVals = [];
+    
     document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]').forEach(inp => {
       const v = parseFloat(getCleanVal(inp.value)) || 0;
       schenkelVals.push(v);
       sumSchenkel += v;
     });
+
     let totalCutback = 0, totalBogenMaß = 0;
     const rBiege = parseFloat(dVal) * parseFloat(rVal);
+    
     document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]').forEach((inp, idx) => {
-      if (!schenkelVals[idx + 1]) return;
+      if (schenkelVals.length <= idx + 1) return;
       let alpha = Math.min(Math.max(parseFloat(getCleanVal(inp.value)) || 0, 1), 180);
       if (alpha > 0) {
         const rad = (alpha * Math.PI) / 180;
@@ -115,10 +153,18 @@ window.ZuschnittApp = (() => {
         totalBogenMaß += rad * rBiege;
       }
     });
-    document.getElementById('zuschnitt_out_gesamtlänge').textContent = Math.round(sumSchenkel - totalCutback + totalBogenMaß).toLocaleString('de-DE') + ' mm';
-    document.getElementById('zuschnitt_out_biegeradius').textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
-    document.getElementById('zuschnitt_out_summeschenkel').textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
+
+    const gesamt = Math.round(sumSchenkel - totalCutback + totalBogenMaß);
+    if (document.getElementById('zuschnitt_out_gesamtlänge')) {
+      document.getElementById('zuschnitt_out_gesamtlänge').textContent = gesamt.toLocaleString('de-DE') + ' mm';
+    }
+    if (document.getElementById('zuschnitt_out_biegeradius')) {
+      document.getElementById('zuschnitt_out_biegeradius').textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
+    }
+    if (document.getElementById('zuschnitt_out_summeschenkel')) {
+      document.getElementById('zuschnitt_out_summeschenkel').textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
+    }
   }
 
-  return { init };
+  return { init, checkParameters, calculateZuschnitt };
 })();
