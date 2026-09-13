@@ -3,7 +3,10 @@
 // ============================================================================
 window.allLogbooks = {
   master: [
-    { version: "v1.10.0", date: "13.09.2026, 09:20", text: "Footer auf 4 Haupttabs + Mehr-Overflow-Modal umgebaut; Header-Gear auf reines Icon reduziert; globales Spacing oben halbiert; NZ an text-xl angepasst.", border: "border-indigo-500" },
+    { version: "v1.10.3", date: "13.09.2026, 09:45", text: "Visueller Paritäts-Anker oben für alle Cards/Views umgesetzt; Foobar 1 mit Einstecktiefe-Rechner (DIN 2353 / ISO 8434-1, 12 S auf 7,5 mm) gefüllt.", border: "border-indigo-500" },
+    { version: "v1.10.2", date: "13.09.2026, 09:35", text: "Seitenversatz-Beschriftung im Formular und isometrisches SVG-Label von h auf Großbuchstaben (H) geändert.", border: "border-slate-400" },
+    { version: "v1.10.1", date: "13.09.2026, 09:25", text: "Versions- und Datums-Badge am unteren Rand des Startbild-Overlays integriert; Startbild bleibt permanent aktiv.", border: "border-slate-400" },
+    { version: "v1.10.0", date: "13.09.2026, 09:20", text: "Footer auf 4 Haupttabs + Mehr-Overflow-Modal umgebaut; Header-Gear auf reines Icon reduziert; globales Spacing oben halbiert; NZ an text-xl angepasst.", border: "border-slate-400" },
     { version: "v1.9.8", date: "13.09.2026, 02:15", text: "Startbild-Splash-Screen für Testzwecke auf jeden Start eingestellt; großzügiger unsichtbarer Klick-Button über das Smartphone im Bild und X-Button rechts unten integriert.", border: "border-slate-400" },
     { version: "v1.9.7", date: "13.09.2026, 01:55", text: "Tägliches Willkommens-Splash-Screen mit dem 'Dr. Zange' Artwork integriert.", border: "border-slate-400" },
     { version: "v1.9.6", date: "13.09.2026, 01:45", text: "Testlauf mit dem 214x214 Pixel App-Icon für 'Dr. Zange' im Manifest und Service Worker integriert.", border: "border-slate-400" },
