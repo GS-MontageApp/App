@@ -3,7 +3,7 @@
 // ============================================================================
 window.APP_CONFIG = {
   version: 'v1.10.53',
-  date: '13.09.2026, 17:15'
+  date: '13.09.2026, 17:30'
 };
 
 console.log('✅ SSoT LOADED:', window.APP_CONFIG.version);
