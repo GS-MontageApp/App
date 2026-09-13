@@ -1,4 +1,5 @@
-const CACHE_NAME = 'zangenschlosser-app-v1.10.40
+const CACHE_NAME = 'zangenschlosser-app-v1.10.41
+
   ';
 const urlsToCache = [
   './index.html',
