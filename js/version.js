@@ -1,16 +1,11 @@
 // ============================================================================
-// SINGLE SOURCE OF TRUTH: VERSION & BUILD (Dr. Zange)
+// SINGLE SOURCE OF TRUTH: VERSION & BUILD
 // ============================================================================
-window.APP_CONFIG = {
-  version: 'v1.10.54',
-  date: '13.09.2026, 17:35'
+const APP_CONFIG = {
+  version: 'v1.10.41',
+  date: '13.09.2026, 16:20 (MEZ)'
 };
 
-console.log('✅ SSoT LOADED:', window.APP_CONFIG.version);
-
-document.addEventListener('DOMContentLoaded', () => {
-  const splashVer = document.getElementById('splash_version_text');
-  if (splashVer && window.APP_CONFIG) {
-    splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
-  }
-});
+// Global export for Window (Browser) and ServiceWorker (self)
+if (typeof window !== 'undefined') window.APP_CONFIG = APP_CONFIG;
+if (typeof self !== 'undefined') self.APP_CONFIG = APP_CONFIG;
