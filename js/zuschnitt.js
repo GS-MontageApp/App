@@ -7,7 +7,6 @@ window.ZuschnittApp = (() => {
     const clearBaseBtn = document.getElementById('zuschnitt_clear_base');
     if (clearBaseBtn) clearBaseBtn.addEventListener('click', clearBaseGroup);
     
-    // Korrigierter Loop statt nacktem .forEach
    .forEach(n => {
       const btn = document.getElementById('zuschnitt_clear_' + n);
       if (btn) btn.addEventListener('click', () => clearPair(n));
