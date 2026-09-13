@@ -1,4 +1,321 @@
-<!-- MODUL 4: TABELLEN (Fixiertes 4er Daumen-Dock am unteren Rand) -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <!--
+    ================================================================================
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.44 (Complete Architecture Rollout)
+    ================================================================================
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Zangenschlosser App (Dr. Zange)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  
+  <!-- Single Source of Truth Version Config -->
+  <script src="js/version.js?v=1.10.44"></script>
+  <script src="changelogs.js?v=1.10.44"></script>
+  <script src="js/zuschnitt.js?v=1.10.44"></script>
+  <script src="js/etagen.js?v=1.10.44"></script>
+  <script src="js/drehwinkel.js?v=1.10.44"></script>
+  <script src="js/tabellen.js?v=1.10.44"></script>
+  <script src="js/shell.js?v=1.10.44"></script>
+  
+  <style>
+    .row-selected {
+      outline: 2.5px solid #005691 !important;
+      background-color: rgba(0, 86, 145, 0.16) !important;
+      position: relative;
+      z-index: 10;
+    }
+    .group-start-l td {
+      border-top: 2px solid #34d399 !important;
+    }
+    .group-start-s td {
+      border-top: 2px solid #f87171 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col m-0 p-0">
+
+  <!-- Header oben -->
+  <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0">
+    <div class="max-w-3xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner</h1>
+        <span id="header-badge" class="hidden text-[10px] font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">ISO 8434-1</span>
+      </div>
+      <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
+        ⚙️
+      </button>
+    </div>
+  </header>
+
+  <!-- Hauptcontainer -->
+  <main class="flex-1 max-w-3xl mx-auto space-y-4 w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 md:min-h-[calc(100vh-180px)] flex flex-col justify-start">
+    
+    <!-- MODUL 1: ETAGENRECHNER -->
+    <div id="view-etagen" class="app-view space-y-5 flex-1 block">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0">
+        <div class="space-y-1.5">
+          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">3D-Isometrie Modell</h2>
+          <div class="w-full h-[260px] sm:h-[340px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center shadow-inner">
+            <svg id="etagen_svg_sketch" viewBox="0 0 1000 580" class="w-full h-full">
+              <g id="etagen_gfx_container"></g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="space-y-4 pt-2">
+          <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Eingabewerte</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Höhenversatz (V)</label>
+              <div class="relative">
+                <input type="text" id="etagen_v" value="100" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-emerald-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Seitenversatz (H)</label>
+              <div class="relative">
+                <input type="text" id="etagen_h" value="100" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-sky-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Biegewinkel (a)</label>
+              <div class="relative">
+                <input type="text" id="etagen_a" value="30" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-amber-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">°</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Außendurchmesser Rohr (d)</label>
+              <div class="relative">
+                <input type="text" id="etagen_d" value="30" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-slate-400 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-slate-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 text-slate-400 text-sm">mm</span>
+              </div>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Radius Faktor</label>
+              <select id="etagen_r" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
+        <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
+        <div class="space-y-3">
+          <div class="p-4 bg-pink-50 rounded-xl border-l-4 border-pink-500 shadow-sm">
+            <div class="text-xs font-bold text-pink-800 uppercase tracking-wider">Nachziehlänge (NZ)</div>
+            <div id="etagen_out_t" class="text-xl font-bold text-pink-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-red-50/50 rounded-xl border-l-4 border-red-500">
+            <div class="text-xs font-semibold text-red-800 uppercase tracking-wider">Kombinierter Raumversatz (C)</div>
+            <div id="etagen_out_c" class="text-xl font-bold text-red-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-orange-50 rounded-xl border-l-4 border-orange-500 shadow-sm">
+            <div class="text-xs font-bold text-orange-800 uppercase tracking-wider">Schräglänge (T)</div>
+            <div id="etagen_out_travel" class="text-xl font-bold text-orange-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-sky-50 rounded-xl border-l-4 border-sky-500 shadow-sm">
+            <div class="text-xs font-bold text-sky-800 uppercase tracking-wider">Axialer Versatz (R)</div>
+            <div id="etagen_out_run" class="text-xl font-bold text-sky-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-purple-50/50 rounded-xl border-l-4 border-purple-500">
+            <div class="text-xs font-semibold text-purple-800 uppercase tracking-wider">Verdrehwinkel für die Biegung</div>
+            <div id="etagen_out_f" class="text-xl font-bold text-purple-950 mt-0.5">0 °</div>
+          </div>
+          <div class="p-4 bg-emerald-50/50 rounded-xl border-l-4 border-emerald-500">
+            <div class="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Anreisumfangmaß</div>
+            <div id="etagen_out_anreisumfang" class="text-xl font-bold text-emerald-950 mt-0.5">0 mm</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- MODUL 2: ZUSCHNITTSRECHNER -->
+    <div id="view-zuschnitt" class="app-view hidden space-y-4 flex-1">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3 first:mt-0">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Globale Parameter (Pflichtfeld)</h2>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Rohr-Ø (d)</label>
+            <select id="zuschnitt_durchmesser" class="w-full bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              <option value="" disabled selected>Rohr-Ø wählen...</option>
+              <option value="6">6 mm</option><option value="8">8 mm</option><option value="10">10 mm</option><option value="12">12 mm</option><option value="15">15 mm</option><option value="16">16 mm</option><option value="18">18 mm</option><option value="20">20 mm</option><option value="22">22 mm</option><option value="25">25 mm</option><option value="28">28 mm</option><option value="30">30 mm</option><option value="35">35 mm</option><option value="38">38 mm</option><option value="42">42 mm</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Radius-Faktor</label>
+            <select id="zuschnitt_rfaktor" class="w-full bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              <option value="" disabled selected>Faktor wählen...</option>
+              <option value="2">2</option><option value="3">3</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Schenkel und Bogen-Folge</h2>
+        <div id="zuschnitt_chain_container" class="space-y-3">
+          <div id="zuschnitt_base_group" class="flex items-stretch gap-2">
+            <div class="flex-1 space-y-3">
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Schenkel 1" data-type="schenkel" data-index="0" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
+              </div>
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Biegewinkel 1" data-type="winkel" data-index="0" inputmode="decimal" min="1" max="180" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
+              </div>
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Schenkel 2" data-type="schenkel" data-index="1" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
+              </div>
+            </div>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_base" title="Basis-Kette löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
+              <span class="text-xl">🗑️</span>
+            </button>
+          </div>
+
+          <div id="zuschnitt_pair_1" class="hidden flex items-stretch gap-2">
+            <div class="flex-1 space-y-3">
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Biegewinkel 2" data-type="winkel" data-index="1" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
+              </div>
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Schenkel 3" data-type="schenkel" data-index="2" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+              </div>
+            </div>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_1" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
+              <span class="text-xl">🗑️</span>
+            </button>
+          </div>
+
+          <div id="zuschnitt_pair_2" class="hidden flex items-stretch gap-2">
+            <div class="flex-1 space-y-3">
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Biegewinkel 3" data-type="winkel" data-index="2" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
+              </div>
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Schenkel 4" data-type="schenkel" data-index="3" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+              </div>
+            </div>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_2" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
+              <span class="text-xl">🗑️</span>
+            </button>
+          </div>
+
+          <div id="zuschnitt_pair_3" class="hidden flex items-stretch gap-2">
+            <div class="flex-1 space-y-3">
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Biegewinkel 4" data-type="winkel" data-index="3" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
+              </div>
+              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <input type="text" placeholder="Schenkel 5" data-type="schenkel" data-index="4" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+              </div>
+            </div>
+            <button type="button" tabindex="-1" id="zuschnitt_clear_3" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
+              <span class="text-xl">🗑️</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-2 border-2 border-red-500">
+        <h2 id="zuschnitt_out_titel" class="text-xs font-semibold text-red-600 uppercase tracking-wider border-b border-red-200 pb-1.5">Ergebnis &ndash; <i>Parameter wählen</i></h2>
+        <div class="p-3 bg-red-50 rounded-xl border-l-4 border-red-600 shadow-sm space-y-0.5">
+          <div class="text-[10px] font-bold text-red-800 uppercase tracking-wider">Gesamtzuschnittlänge</div>
+          <div id="zuschnitt_out_gesamtlänge" class="text-2xl font-bold text-red-950">0 mm</div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs text-slate-600">
+          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
+            <span class="text-[10px] font-semibold text-slate-400">Biegeradius (R):</span>
+            <span id="zuschnitt_out_biegeradius" class="font-bold text-slate-700 text-sm mt-0.5">-</span>
+          </div>
+          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
+            <span class="text-[10px] font-semibold text-slate-400">Summe Schenkel:</span>
+            <span id="zuschnitt_out_summeschenkel" class="font-bold text-slate-700 text-sm mt-0.5">0 mm</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- MODUL 3: VERDREHWINKEL -->
+    <div id="view-drehwinkel" class="app-view hidden space-y-4 flex-1">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Skizze & Ausrichtung</h2>
+        <div class="flex flex-col items-center gap-2">
+          <div class="inline-flex w-auto bg-slate-50 rounded-xl overflow-hidden">
+            <div class="h-[120px] w-[120px] flex items-center justify-center overflow-hidden bg-white">
+              <img id="dw_img_a" src="" alt="Anschluss A" class="h-full object-contain select-none block m-0 p-0">
+            </div>
+            <div class="h-[120px] w-[120px] flex items-center justify-center overflow-hidden bg-white">
+              <img id="dw_img_b" src="" alt="Anschluss B" class="h-full object-contain select-none block m-0 p-0">
+            </div>
+          </div>
+          <div class="w-full flex items-center justify-around border-t border-slate-100 pt-1.5 px-2">
+            <div class="flex flex-col items-center">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Anschluss A</span>
+              <span id="dw_out_a" class="text-base font-extrabold text-slate-400 font-mono w-16 text-center">0°</span>
+            </div>
+            <div class="h-6 w-px bg-slate-200"></div>
+            <div class="flex flex-col items-center">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Anschluss B</span>
+              <span id="dw_out_b" class="text-base font-extrabold text-orange-600 font-mono w-16 text-center">0°</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-3 flex flex-col">
+        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-[#005691] inline-flex items-center gap-2 mr-auto w-max">
+          <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative transition-opacity duration-200" id="dw_dial_a" data-anschluss="a">
+            <svg viewBox="0 0 200 200" class="w-full h-full select-none">
+              <circle cx="100" cy="100" r="85" fill="#f8fafc" stroke="#000000" stroke-width="4"/>
+              <circle cx="100" cy="185" r="4" fill="#000000"/><text x="100" y="172" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">0</text>
+              <circle cx="160" cy="160" r="4" fill="#000000"/><text x="138" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">45</text>
+              <circle cx="185" cy="100" r="4" fill="#000000"/><text x="155" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">90</text>
+              <circle cx="160" cy="40" r="4" fill="#000000"/><text x="138" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">135</text>
+              <circle cx="100" cy="15" r="4" fill="#000000"/><text x="100" y="48" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">180</text>
+              <circle cx="40" cy="40" r="4" fill="#000000"/><text x="62" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">225</text>
+              <circle cx="15" cy="100" r="4" fill="#000000"/><text x="45" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">270</text>
+              <circle cx="40" cy="160" r="4" fill="#000000"/><text x="62" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">315</text>
+              <line id="dw_pointer_a" x1="100" y1="100" x2="100" y2="185" stroke="#005691" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="100" cy="100" r="7" fill="#1e293b"/>
+            </svg>
+          </div>
+          <div class="flex flex-col bg-slate-100 p-1 rounded-xl w-24 text-xs font-semibold gap-1 justify-center h-[120px]">
+            <button id="dw_btn_gerade" class="flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center">gerade</button>
+            <button id="dw_btn_90" class="flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center">45° | 90°</button>
+          </div>
+        </div>
+
+        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-orange-500 inline-flex flex-col items-center ml-auto w-max">
+          <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative" id="dw_dial_b" data-anschluss="b">
+            <svg viewBox="0 0 200 200" class="w-full h-full select-none">
+              <circle cx="100" cy="100" r="85" fill="#f8fafc" stroke="#000000" stroke-width="4"/>
+              <circle cx="100" cy="185" r="4" fill="#000000"/><text x="100" y="172" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">0</text>
+              <circle cx="160" cy="160" r="4" fill="#000000"/><text x="138" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">45</text>
+              <circle cx="185" cy="100" r="4" fill="#000000"/><text x="155" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">90</text>
+              <circle cx="160" cy="40" r="4" fill="#000000"/><text x="138" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">135</text>
+              <circle cx="100" cy="15" r="4" fill="#000000"/><text x="100" y="48" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">180</text>
+              <circle cx="40" cy="40" r="4" fill="#000000"/><text x="62" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">225</text>
+              <circle cx="15" cy="100" r="4" fill="#000000"/><text x="45" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">270</text>
+              <circle cx="40" cy="160" r="4" fill="#000000"/><text x="62" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">315</text>
+              <line id="dw_pointer_b" x1="100" y1="100" x2="100" y2="185" stroke="#f47321" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="100" cy="100" r="7" fill="#1e293b"/>
+            </svg>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- MODUL 4: TABELLEN (Fixiertes 4er Daumen-Dock am unteren Rand) -->
     <div id="view-eoform" class="app-view hidden space-y-4 flex-1 relative">
       <div class="space-y-4 pb-28">
         <!-- Subview 1: Einstecktiefe Standard -->
@@ -64,7 +381,7 @@
           </div>
         </section>
 
-        <!-- Subview 4: Anzugsdrehmomente M3-M24 -->
+        <!-- Subview 4: Anzugsdrehmomente M3-M24 (Slim 4-Column) -->
         <section id="eo_sub_drehmoment" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
           <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Anzugsdrehmomente (Nm) – Regelgewinde (μ ≈ 0,14)</h2>
           <div class="overflow-x-auto max-h-[55vh]">
@@ -86,11 +403,160 @@
       <!-- FIXIERTES 4ER DAUMEN-DOCK ÜBER DER TAB-BAR -->
       <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
         <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-lg border border-slate-200 grid grid-cols-4 gap-1 pointer-events-auto">
-          <button onclick="switchEoSub('din')" id="eo_tab_din" class="py-2.5 px-1 rounded-xl text-[11px] font-bold bg-[#005691] text-white transition-all shadow-sm truncate">DIN/ISO</button>
-          <button onclick="switchEoSub('l')" id="eo_tab_l" class="py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-600 hover:text-slate-900 transition-all truncate">EO-L</button>
-          <button onclick="switchEoSub('s')" id="eo_tab_s" class="py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-600 hover:text-slate-900 transition-all truncate">EO-S</button>
+          <button onclick="switchEoSub('din')" id="eo_tab_din" class="py-2.5 px-1 rounded-xl text-[11px] font-bold bg-[#005691] text-white transition-all shadow-sm truncate">Einstecktiefe</button>
+          <button onclick="switchEoSub('l')" id="eo_tab_l" class="py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-600 hover:text-slate-900 transition-all truncate">EO-Form L</button>
+          <button onclick="switchEoSub('s')" id="eo_tab_s" class="py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-600 hover:text-slate-900 transition-all truncate">EO-Form-S</button>
           <button onclick="switchEoSub('drehmoment')" id="eo_tab_drehmoment" class="py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-600 hover:text-slate-900 transition-all truncate">Nm-Werte</button>
         </div>
       </section>
     </div>
-    
+
+    <!-- Platzhalter Mehr-Module -->
+    <div id="view-foobar2" class="app-view hidden space-y-4 flex-1">
+      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 2 (Mehr-Menü)</h2>
+        <div class="py-4 text-4xl">🚧</div>
+        <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 2</h3>
+      </section>
+    </div>
+    <div id="view-foobar3" class="app-view hidden space-y-4 flex-1">
+      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 3 (Mehr-Menü)</h2>
+        <div class="py-4 text-4xl">🚧</div>
+        <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 3</h3>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Bottom Tab Bar (Global) -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1 shrink-0">
+    <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 text-center">
+      <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 transition-colors">
+        <span class="text-lg">📐</span><span class="text-[10px] font-semibold truncate w-full">Etage</span>
+      </button>
+      <button onclick="switchApp('zuschnitt', 'Zuschnittsrechner')" id="nav-zuschnitt" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">✂️</span><span class="text-[10px] font-semibold truncate w-full">Zuschnitt</span>
+      </button>
+      <button onclick="switchApp('drehwinkel', 'Verdrehwinkel')" id="nav-drehwinkel" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">🔄</span><span class="text-[10px] font-semibold truncate w-full">Verdrehwinkel</span>
+      </button>
+      <button onclick="switchApp('eoform', 'Tabellen')" id="nav-eoform" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">📋</span><span class="text-[10px] font-semibold truncate w-full">Tabellen</span>
+      </button>
+      <button onclick="openMehrModal()" id="nav-mehr" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">⋯</span><span class="text-[10px] font-semibold truncate w-full">Mehr</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Modals -->
+  <div id="mehr_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end justify-center p-0">
+    <div class="bg-white rounded-t-3xl p-5 max-w-lg w-full space-y-3 text-slate-800 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="font-bold text-base text-slate-700">Weitere Module (Mehr)</h3>
+        <button onclick="closeMehrModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div class="space-y-2">
+        <button onclick="selectMehrItem('foobar2', 'Foobar 2')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+          <span>📌 Foobar 2</span><span class="text-slate-400">&rsaquo;</span>
+        </button>
+        <button onclick="selectMehrItem('foobar3', 'Foobar 3')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+          <span>📌 Foobar 3</span><span class="text-slate-400">&rsaquo;</span>
+        </button>
+      </div>
+      <button onclick="closeMehrModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors mt-2">
+        Abbrechen
+      </button>
+    </div>
+  </div>
+
+  <div id="daily_splash_modal" class="fixed inset-0 bg-black z-50 flex items-center justify-center p-0">
+    <div onclick="closeDailySplash()" class="relative w-full h-full max-w-lg max-h-screen bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer group">
+      <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
+      <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-40" aria-label="Schließen">&times;</button>
+      <div id="splash_version_text" class="absolute bottom-0 right-0 bg-black/90 backdrop-blur-md text-white/95 text-[11px] font-mono px-3.5 py-1.5 rounded-tl-lg border-l border-t border-white/25 pointer-events-none z-30 shadow-xl">
+        v1.10.44 | 13.09.2026, 16:28
+      </div>
+    </div>
+  </div>
+
+  <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-lg text-indigo-600">⚙️ Zangenschlosser App</h3>
+        <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 divide-y divide-slate-100">
+        <div id="install_container" class="pt-1 pb-3">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Installation</h4>
+          <button onclick="installPWA()" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-xl font-semibold text-indigo-700 transition-colors flex items-center justify-between shadow-sm">
+            <span>📱 Web-App installieren</span>
+            <span class="text-indigo-400">&rsaquo;</span>
+          </button>
+        </div>
+        <div class="pt-3 pb-3">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Dokumentation</h4>
+          <button onclick="openSubModal('explanation')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+            <span>📖 Erklärung über die App</span><span class="text-slate-400">&rsaquo;</span>
+          </button>
+        </div>
+        <div class="pt-3 pb-3">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Support</h4>
+          <button onclick="openSubModal('contact')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+            <span>✉️ Kontakt & Feedback</span><span class="text-slate-400">&rsaquo;</span>
+          </button>
+        </div>
+        <div class="pt-3 pb-2 space-y-2">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
+          <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+            <span>📜 Logbuch: Zangenschlosser App</span><span class="text-slate-400">&rsaquo;</span>
+          </button>
+          <button onclick="openSubModal('logbook-etagen')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+            <span>📜 Logbuch: Etagenrechner</span><span class="text-slate-400">&rsaquo;</span>
+          </button>
+          <button onclick="openSubModal('logbook-zuschnitt')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+            <span>📜 Logbuch: Zuschnittsrechner</span><span class="text-slate-400">&rsaquo;</span>
+          </button>
+          <button onclick="openSubModal('logbook-drehwinkel')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+            <span>📜 Logbuch: Verdrehwinkel</span><span class="text-slate-400">&rsaquo;</span>
+          </button>
+        </div>
+      </div>
+      <button onclick="closeTopMenu()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors">
+        Schließen
+      </button>
+    </div>
+  </div>
+
+  <div id="sub_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 id="sub_modal_title" class="font-bold text-lg text-indigo-600">Details</h3>
+        <button onclick="closeSubModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div id="sub_modal_content" class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 min-h-0"></div>
+      <button onclick="closeSubModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors shrink-0">
+        Zurück zum Menü
+      </button>
+    </div>
+  </div>
+
+  <!-- BOOTSTRAPPER mit zentralem Versions-Binding -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const splashVer = document.getElementById('splash_version_text');
+      if (splashVer && window.APP_CONFIG) {
+        splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
+      }
+      
+      AppShell.init();
+      if (window.EtagenApp) EtagenApp.init();
+      if (window.ZuschnittApp) ZuschnittApp.init();
+      if (window.DrehwinkelApp) DrehwinkelApp.init();
+      if (window.TabellenApp) TabellenApp.init();
+      AppShell.switchApp('etagen', 'Etagenrechner');
+    });
+  </script>
+</body>
+</html>
