@@ -14,3 +14,8 @@ function openSubModal(type){const titleEl=document.getElementById('sub_modal_tit
 function closeSubModal(){document.getElementById('sub_modal').classList.add('hidden');}
 function switchApp(appName,appTitle){document.querySelectorAll('.app-view').forEach(el=>el.classList.add('hidden'));document.querySelectorAll('.nav-btn').forEach(el=>{el.classList.remove('text-indigo-600');el.classList.add('text-slate-400');});const targetView=document.getElementById('view-'+appName);if(targetView)targetView.classList.remove('hidden');const activeNav=document.getElementById('nav-'+appName);if(activeNav){activeNav.classList.remove('text-slate-400');activeNav.classList.add('text-indigo-600');}else if(appName==='foobar2'||appName==='foobar3'){const mehrNav=document.getElementById('nav-mehr');if(mehrNav){mehrNav.classList.remove('text-slate-400');mehrNav.classList.add('text-indigo-600');}}const badge=document.getElementById('header-badge');if(appName==='eoform'){badge.classList.remove('hidden');badge.textContent='Einstecktiefe';}else{badge.classList.add('hidden');}document.getElementById('header-title').textContent=appTitle;window.scrollTo(0,0);}
 window.addEventListener('DOMContentLoaded',()=>{checkInstallState();checkDailySplash();renderEoTables();EtagenApp.init();ZuschnittApp.init();DrehwinkelApp.init();switchEoSub('din');restoreSelectedEoRow('din');});
+// Nach targetView.classList.remove('hidden') in switchApp:
+if (appName === 'drehwinkel') {
+  // Event/Resize triggern falls Dials Maße brauchen
+  window.dispatchEvent(new Event('resize'));
+}
