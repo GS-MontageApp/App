@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (Chain + Clear + Export v1.10.60)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (Chain + Progressive Reveal v1.10.61)
 // ============================================================================
 window.ZuschnittApp = (() => {
   let state = {
@@ -27,7 +27,69 @@ window.ZuschnittApp = (() => {
     return val.toFixed(1).replace('.', ',') + ' mm';
   }
 
+  function updateChainVisibility() {
+    const pairs = [
+      { id: 'zuschnitt_pair_1', prevIndex: 0 },
+      { id: 'zuschnitt_pair_2', prevIndex: 1 },
+      { id: 'zuschnitt_pair_3', prevIndex: 2 }
+    ];
+
+    // Check base group activity (Winkel 0 or Schenkel 1/2)
+    const baseW = parseVal(document.querySelector('#zuschnitt_base_group [data-type="winkel"]'));
+    const baseS2 = parseVal(document.querySelector('#zuschnitt_base_group [data-index="1"]'));
+    
+    let activeFlags = [baseW > 0 || baseS2 > 0];
+
+    // Evaluate pair activation chain
+    const p1 = document.getElementById('zuschnitt_pair_1');
+    const p2 = document.getElementById('zuschnitt_pair_2');
+    const p3 = document.getElementById('zuschnitt_pair_3');
+
+    const pairEls = [p1, p2, p3];
+
+    for (let i = 0; i < pairEls.length; i++) {
+      const el = pairEls[i];
+      if (!el) continue;
+      
+      const prevActive = i === 0 ? (baseW > 0 || baseS2 > 0) : (() => {
+        const prevInputs = pairEls[i-1].querySelectorAll('input');
+        return Array.from(prevInputs).some(inp => parseVal(inp) > 0);
+      }()).catch?.() || false;
+
+      // Simple sequential revelation: show pair i if previous block has data or is already visible with data
+      const currentHasData = Array.from(el.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
+      const shouldBeVisible = prevActive || currentHasData || i === 0;
+
+      // Better UX rule: Base group always visible. Pair 1 visible if base has input OR pair 1 has input. Pair 2 visible if pair 1 has input OR pair 2 has input, etc.
+    }
+
+    // Clean progressive visibility rule:
+    // Pair 1 visible if Base group has any value > 0 inwinkel/schenkel2 OR pair 1 has value
+    const hasBaseInput = baseW > 0 || baseS2 > 0;
+    if (p1) {
+      const p1HasVal = Array.from(p1.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
+      if (hasBaseInput || p1HasVal) p1.classList.remove('hidden');
+      else p1.classList.add('hidden');
+    }
+
+    if (p2) {
+      const p1HasVal = p1 ? Array.from(p1.querySelectorAll('input')).some(inp => parseVal(inp) > 0) : false;
+      const p2HasVal = Array.from(p2.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
+      if (p1HasVal || p2HasVal) p2.classList.remove('hidden');
+      else p2.classList.add('hidden');
+    }
+
+    if (p3) {
+      const p2HasVal = p2 ? Array.from(p2.querySelectorAll('input')).some(inp => parseVal(inp) > 0) : false;
+      const p3HasVal = Array.from(p3.querySelectorAll('input')).some(inp => parseVal(inp) > 0);
+      if (p2HasVal || p3HasVal) p3.classList.remove('hidden');
+      else p3.classList.add('hidden');
+    }
+  }
+
   function calculate() {
+    updateChainVisibility();
+
     const dSelect = document.getElementById('zuschnitt_durchmesser');
     const rSelect = document.getElementById('zuschnitt_rfaktor');
     
