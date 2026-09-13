@@ -1,11 +1,13 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.45)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.47)
 // ============================================================================
 window.AppShell = (() => {
   const THEME_STORAGE_KEY = 'zangenschlosser_theme_v1';
 
   function setTheme(themeName) {
     const body = document.body;
+    if (!body) return;
+    
     const btnStandard = document.getElementById('theme_btn_standard');
     const btnGs = document.getElementById('theme_btn_gs');
 
@@ -97,6 +99,8 @@ window.AppShell = (() => {
 
   function openTopMenu() { 
     checkInstallState();
+    const currentTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'standard';
+    setTheme(currentTheme);
     document.getElementById('top_menu_modal')?.classList.remove('hidden'); 
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
@@ -113,7 +117,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-        { version: "v1.10.45", date: "13.09.2026, 19:40 (MEZ)", text: "Integration des umschaltbaren Design-Themes 'Standard' und 'GS'.", border: "border-indigo-500" }
+        { version: "v1.10.47", date: "13.09.2026, 19:58 (MEZ)", text: "Behebung von ServiceWorker-CDN-Abfangfehlern und DOM-Loading.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -141,7 +145,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.45</p>
+          <p class="text-xs text-slate-500">Version: v1.10.47</p>
         </div>
       `;
     }
@@ -181,6 +185,7 @@ window.AppShell = (() => {
     checkInstallState();
     checkDailySplash();
     initServiceWorker();
+    initTheme();
   }
 
   return {
