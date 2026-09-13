@@ -8,6 +8,12 @@
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Anti-Cache Direktiven gegen hartnäckiges Browser-Speichern -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <title id="page-title">Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
@@ -43,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config -->
-  <script src="js/version.js"></script>
-  <script src="js/zuschnitt.js"></script>
-  <script src="js/etagen.js"></script>
-  <script src="js/drehwinkel.js"></script>
-  <script src="js/tabellen.js"></script>
-  <script src="js/drehmoment.js"></script>
-  <script src="js/shell.js"></script>
+  <!-- Single Source of Truth Version Config mit Cache-Busting -->
+  <script src="js/version.js?v=v1.10.53"></script>
+  <script src="js/zuschnitt.js?v=v1.10.53"></script>
+  <script src="js/etagen.js?v=v1.10.53"></script>
+  <script src="js/drehwinkel.js?v=v1.10.53"></script>
+  <script src="js/tabellen.js?v=v1.10.53"></script>
+  <script src="js/drehmoment.js?v=v1.10.53"></script>
+  <script src="js/shell.js?v=v1.10.53"></script>
   
   <style>
     .row-selected {
@@ -606,7 +612,7 @@
         </div>
         <div class="pt-3 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Dokumentation</h4>
-          <button onclick="openSubModal('explanation')" class="w-full text-left p-3 bg-slate-50 hover:bg-indigo-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+          <button onclick="openSubModal('explanation')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>📖 Erklärung über die App</span><span class="text-slate-400">&rsaquo;</span>
           </button>
         </div>
