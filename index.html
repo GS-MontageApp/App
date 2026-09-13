@@ -1,325 +1,70 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="h-full">
 <head>
-  <!--
-    ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.31
-    ================================================================================
-  -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">Zangenschlosser App (Dr. Zange)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Dr. Zange – Zangenschlosser App (v1.10.35)</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f172a">
-  <script src="changelogs.js?v=1.10.31"></script>
+  <link rel="icon" type="image/png" href="./img/icon-512.png">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .row-selected {
-      outline: 2.5px solid #005691 !important;
-      background-color: rgba(0, 86, 145, 0.16) !important;
-      position: relative;
-      z-index: 10;
-    }
-    .group-start-l td {
-      border-top: 2px solid #34d399 !important;
-    }
-    .group-start-s td {
-      border-top: 2px solid #f87171 !important;
+      outline: 2px solid #005691 !important;
+      outline-offset: -2px;
+      background-color: rgba(0, 86, 145, 0.12) !important;
     }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col m-0 p-0">
+<body class="h-full bg-slate-100 text-slate-800 flex flex-col overflow-hidden select-none">
 
-  <!-- Header oben -->
-  <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0">
-    <div class="max-w-3xl mx-auto flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner</h1>
-        <span id="header-badge" class="hidden text-[10px] font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">ISO 8434-1</span>
+  <!-- TOP-HEADER / BRANDING -->
+  <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center gap-2.5">
+      <img src="./img/icon-512.png" alt="Logo" class="w-8 h-8 rounded-lg object-cover">
+      <div>
+        <h1 class="text-xs font-black uppercase tracking-wider text-slate-900 leading-tight">Dr. Zange</h1>
+        <p class="text-[10px] text-slate-500 font-medium">v1.10.35 | MEZ Berlin</p>
       </div>
-      <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
-        ⚙️
-      </button>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <button onclick="openLogbookModal('master')" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl text-xs font-bold transition-all">Logbuch</button>
     </div>
   </header>
 
-  <!-- Hauptcontainer -->
-  <main class="flex-1 max-w-3xl mx-auto space-y-4 w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 md:min-h-[calc(100vh-180px)] flex flex-col justify-start">
+  <!-- MAIN SCROLLABLE APP CONTAINER -->
+  <main class="flex-1 overflow-y-auto p-4 space-y-4 pb-20">
     
-    <!-- MODUL 1: ETAGENRECHNER -->
-    <div id="view-etagen" class="app-view space-y-5 flex-1 block">
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0">
-        <div class="space-y-1.5">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">3D-Isometrie Modell</h2>
-          <div class="w-full h-[260px] sm:h-[340px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center shadow-inner">
-            <svg id="etagen_svg_sketch" viewBox="0 0 1000 580" class="w-full h-full">
-              <g id="etagen_gfx_container"></g>
-            </svg>
-          </div>
-        </div>
+    <!-- VIEW 1: ETAGENRECHNER -->
+    <section id="view-etagen" class="app-view hidden space-y-4">
+      <div class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Etagenrechner (3D-Isometrie)</h2>
+        <p class="text-xs text-slate-600">Berechnung von Höhenversatz (V), Seitenversatz (H), Schräglänge (T) und Nachziehlänge (NZ).</p>
+      </div>
+    </section>
 
-        <div class="space-y-4 pt-2">
-          <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Eingabewerte</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Höhenversatz (V)</label>
-              <div class="relative">
-                <input type="text" id="etagen_v" value="100" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-emerald-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Seitenversatz (H)</label>
-              <div class="relative">
-                <input type="text" id="etagen_h" value="100" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-sky-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Biegewinkel (a)</label>
-              <div class="relative">
-                <input type="text" id="etagen_a" value="30" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-amber-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">°</span>
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Außendurchmesser Rohr (d)</label>
-              <div class="relative">
-                <input type="text" id="etagen_d" value="30" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-slate-400 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-slate-500 focus:outline-none">
-                <span class="absolute right-3 top-2.5 text-slate-400 text-sm">mm</span>
-              </div>
-            </div>
-            <div class="sm:col-span-2">
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Radius Faktor</label>
-              <select id="etagen_r" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                <option value="2">2</option>
-                <option value="3" selected>3</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </section>
+    <!-- VIEW 2: ZUSCHNITTSRECHNER -->
+    <section id="view-zuschnitt" class="app-view hidden space-y-4">
+      <div class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Zuschnittsrechner (Rohr-Ø-Kette)</h2>
+        <p class="text-xs text-slate-600">Schenkel-Ketten-Berechnung mit Cutback-Abzug.</p>
+      </div>
+    </section>
 
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
-        <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
-        <div class="space-y-3">
-          <div class="p-4 bg-pink-50 rounded-xl border-l-4 border-pink-500 shadow-sm">
-            <div class="text-xs font-bold text-pink-800 uppercase tracking-wider">Nachziehlänge (NZ)</div>
-            <div id="etagen_out_t" class="text-xl font-bold text-pink-950 mt-0.5">0 mm</div>
-          </div>
-          <div class="p-4 bg-red-50/50 rounded-xl border-l-4 border-red-500">
-            <div class="text-xs font-semibold text-red-800 uppercase tracking-wider">Kombinierter Raumversatz (C)</div>
-            <div id="etagen_out_c" class="text-xl font-bold text-red-950 mt-0.5">0 mm</div>
-          </div>
-          <div class="p-4 bg-orange-50 rounded-xl border-l-4 border-orange-500 shadow-sm">
-            <div class="text-xs font-bold text-orange-800 uppercase tracking-wider">Schräglänge (T)</div>
-            <div id="etagen_out_travel" class="text-xl font-bold text-orange-950 mt-0.5">0 mm</div>
-          </div>
-          <div class="p-4 bg-sky-50 rounded-xl border-l-4 border-sky-500 shadow-sm">
-            <div class="text-xs font-bold text-sky-800 uppercase tracking-wider">Axialer Versatz (R)</div>
-            <div id="etagen_out_run" class="text-xl font-bold text-sky-950 mt-0.5">0 mm</div>
-          </div>
-          <div class="p-4 bg-purple-50/50 rounded-xl border-l-4 border-purple-500">
-            <div class="text-xs font-semibold text-purple-800 uppercase tracking-wider">Verdrehwinkel für die Biegung</div>
-            <div id="etagen_out_f" class="text-xl font-bold text-purple-950 mt-0.5">0 °</div>
-          </div>
-          <div class="p-4 bg-emerald-50/50 rounded-xl border-l-4 border-emerald-500">
-            <div class="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Anreisumfangmaß</div>
-            <div id="etagen_out_anreisumfang" class="text-xl font-bold text-emerald-950 mt-0.5">0 mm</div>
-          </div>
-        </div>
-      </section>
-    </div>
+    <!-- VIEW 3: VERDREHWINKEL -->
+    <section id="view-drehwinkel" class="app-view hidden space-y-4">
+      <div class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Verdrehwinkel & Armaturen-Dial</h2>
+        <p class="text-xs text-slate-600">Winkelscheibe (0–315°) und Armaturen-Galerie (Anschluss A/B).</p>
+      </div>
+    </section>
 
-    <!-- MODUL 2: ZUSCHNITTSRECHNER -->
-    <div id="view-zuschnitt" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3 first:mt-0">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Globale Parameter (Pflichtfeld)</h2>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Rohr-Ø (d)</label>
-            <select id="zuschnitt_durchmesser" class="w-full bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-              <option value="" disabled selected>Rohr-Ø wählen...</option>
-              <option value="6">6 mm</option><option value="8">8 mm</option><option value="10">10 mm</option><option value="12">12 mm</option><option value="15">15 mm</option><option value="16">16 mm</option><option value="18">18 mm</option><option value="20">20 mm</option><option value="22">22 mm</option><option value="25">25 mm</option><option value="28">28 mm</option><option value="30">30 mm</option><option value="35">35 mm</option><option value="38">38 mm</option><option value="42">42 mm</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Radius-Faktor</label>
-            <select id="zuschnitt_rfaktor" class="w-full bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-              <option value="" disabled selected>Faktor wählen...</option>
-              <option value="2">2</option><option value="3">3</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Schenkel und Bogen-Folge</h2>
-        <div id="zuschnitt_chain_container" class="space-y-3">
-          <div id="zuschnitt_base_group" class="flex items-stretch gap-2">
-            <div class="flex-1 space-y-3">
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 1" data-type="schenkel" data-index="0" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
-              </div>
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Biegewinkel 1" data-type="winkel" data-index="0" inputmode="decimal" min="1" max="180" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
-              </div>
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 2" data-type="schenkel" data-index="1" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
-              </div>
-            </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_base" title="Basis-Kette löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
-              <span class="text-xl">🗑️</span>
-            </button>
-          </div>
-
-          <div id="zuschnitt_pair_1" class="hidden flex items-stretch gap-2">
-            <div class="flex-1 space-y-3">
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Biegewinkel 2" data-type="winkel" data-index="1" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
-              </div>
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 3" data-type="schenkel" data-index="2" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
-              </div>
-            </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_1" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
-              <span class="text-xl">🗑️</span>
-            </button>
-          </div>
-
-          <div id="zuschnitt_pair_2" class="hidden flex items-stretch gap-2">
-            <div class="flex-1 space-y-3">
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Biegewinkel 3" data-type="winkel" data-index="2" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
-              </div>
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 4" data-type="schenkel" data-index="3" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
-              </div>
-            </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_2" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
-              <span class="text-xl">🗑️</span>
-            </button>
-          </div>
-
-          <div id="zuschnitt_pair_3" class="hidden flex items-stretch gap-2">
-            <div class="flex-1 space-y-3">
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Biegewinkel 4" data-type="winkel" data-index="3" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
-              </div>
-              <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 5" data-type="schenkel" data-index="4" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
-              </div>
-            </div>
-            <button type="button" tabindex="-1" id="zuschnitt_clear_3" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
-              <span class="text-xl">🗑️</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-2 border-2 border-red-500">
-        <h2 id="zuschnitt_out_titel" class="text-xs font-semibold text-red-600 uppercase tracking-wider border-b border-red-200 pb-1.5">Ergebnis &ndash; <i>Parameter wählen</i></h2>
-        <div class="p-3 bg-red-50 rounded-xl border-l-4 border-red-600 shadow-sm space-y-0.5">
-          <div class="text-[10px] font-bold text-red-800 uppercase tracking-wider">Gesamtzuschnittlänge</div>
-          <div id="zuschnitt_out_gesamtlänge" class="text-2xl font-bold text-red-950">0 mm</div>
-        </div>
-        <div class="grid grid-cols-2 gap-2 text-xs text-slate-600">
-          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
-            <span class="text-[10px] font-semibold text-slate-400">Biegeradius (R):</span>
-            <span id="zuschnitt_out_biegeradius" class="font-bold text-slate-700 text-sm mt-0.5">-</span>
-          </div>
-          <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
-            <span class="text-[10px] font-semibold text-slate-400">Summe Schenkel:</span>
-            <span id="zuschnitt_out_summeschenkel" class="font-bold text-slate-700 text-sm mt-0.5">0 mm</span>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- MODUL 3: VERDREHWINKEL -->
-    <div id="view-drehwinkel" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Skizze & Ausrichtung</h2>
-        <div class="flex flex-col items-center gap-2">
-          <div class="inline-flex w-auto bg-slate-50 rounded-xl overflow-hidden">
-            <div class="h-[120px] w-[120px] flex items-center justify-center overflow-hidden bg-white">
-              <img id="dw_img_a" src="" alt="Anschluss A" class="h-full object-contain select-none block m-0 p-0">
-            </div>
-            <div class="h-[120px] w-[120px] flex items-center justify-center overflow-hidden bg-white">
-              <img id="dw_img_b" src="" alt="Anschluss B" class="h-full object-contain select-none block m-0 p-0">
-            </div>
-          </div>
-          <div class="w-full flex items-center justify-around border-t border-slate-100 pt-1.5 px-2">
-            <div class="flex flex-col items-center">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Anschluss A</span>
-              <span id="dw_out_a" class="text-base font-extrabold text-slate-400 font-mono w-16 text-center">0°</span>
-            </div>
-            <div class="h-6 w-px bg-slate-200"></div>
-            <div class="flex flex-col items-center">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Anschluss B</span>
-              <span id="dw_out_b" class="text-base font-extrabold text-orange-600 font-mono w-16 text-center">0°</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="space-y-3 flex flex-col">
-        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-[#005691] inline-flex items-center gap-2 mr-auto w-max">
-          <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative transition-opacity duration-200" id="dw_dial_a" data-anschluss="a">
-            <svg viewBox="0 0 200 200" class="w-full h-full select-none">
-              <circle cx="100" cy="100" r="85" fill="#f8fafc" stroke="#000000" stroke-width="4"/>
-              <circle cx="100" cy="185" r="4" fill="#000000"/><text x="100" y="172" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">0</text>
-              <circle cx="160" cy="160" r="4" fill="#000000"/><text x="138" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">45</text>
-              <circle cx="185" cy="100" r="4" fill="#000000"/><text x="155" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">90</text>
-              <circle cx="160" cy="40" r="4" fill="#000000"/><text x="138" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">135</text>
-              <circle cx="100" cy="15" r="4" fill="#000000"/><text x="100" y="48" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">180</text>
-              <circle cx="40" cy="40" r="4" fill="#000000"/><text x="62" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">225</text>
-              <circle cx="15" cy="100" r="4" fill="#000000"/><text x="45" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">270</text>
-              <circle cx="40" cy="160" r="4" fill="#000000"/><text x="62" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">315</text>
-              <line id="dw_pointer_a" x1="100" y1="100" x2="100" y2="185" stroke="#005691" stroke-width="6" stroke-linecap="round"/>
-              <circle cx="100" cy="100" r="7" fill="#1e293b"/>
-            </svg>
-          </div>
-          <div class="flex flex-col bg-slate-100 p-1 rounded-xl w-24 text-xs font-semibold gap-1 justify-center h-[120px]">
-            <button id="dw_btn_gerade" class="flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center">gerade</button>
-            <button id="dw_btn_90" class="flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center">45° | 90°</button>
-          </div>
-        </div>
-
-        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-orange-500 inline-flex flex-col items-center ml-auto w-max">
-          <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative" id="dw_dial_b" data-anschluss="b">
-            <svg viewBox="0 0 200 200" class="w-full h-full select-none">
-              <circle cx="100" cy="100" r="85" fill="#f8fafc" stroke="#000000" stroke-width="4"/>
-              <circle cx="100" cy="185" r="4" fill="#000000"/><text x="100" y="172" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">0</text>
-              <circle cx="160" cy="160" r="4" fill="#000000"/><text x="138" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">45</text>
-              <circle cx="185" cy="100" r="4" fill="#000000"/><text x="155" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">90</text>
-              <circle cx="160" cy="40" r="4" fill="#000000"/><text x="138" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">135</text>
-              <circle cx="100" cy="15" r="4" fill="#000000"/><text x="100" y="48" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">180</text>
-              <circle cx="40" cy="40" r="4" fill="#000000"/><text x="62" y="70" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">225</text>
-              <circle cx="15" cy="100" r="4" fill="#000000"/><text x="45" y="110" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">270</text>
-              <circle cx="40" cy="160" r="4" fill="#000000"/><text x="62" y="152" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">315</text>
-              <line id="dw_pointer_b" x1="100" y1="100" x2="100" y2="185" stroke="#f47321" stroke-width="6" stroke-linecap="round"/>
-              <circle cx="100" cy="100" r="7" fill="#1e293b"/>
-            </svg>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- MODUL 4: TABELLEN (SEGMENTED CONTROL MIT 3 TABELLEN & STICKY HEADERS) -->
-    <div id="view-eoform" class="app-view hidden space-y-4 flex-1">
-      <!-- Segmented Control Bar -->
-      <section class="bg-white p-2 rounded-2xl shadow-sm first:mt-0 flex gap-1 border border-slate-200">
-        <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
-        <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form L</button>
-        <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form-S</button>
-      </section>
-
+    <!-- VIEW 4: TABELLEN (DAUMENGERECHTE SUB-NAV UNTEN + WHITESPACE-NOWRAP + PERSISTENZ) -->
+    <div id="view-eoform" class="app-view flex flex-col space-y-4 pb-4">
       <!-- Subview 1: Einstecktiefe Standard -->
       <section id="eo_sub_din" class="eo-sub-section bg-white p-5 rounded-2xl shadow-sm space-y-4">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Grundmaße & Einstecktiefe (DIN 2353 / ISO 8434-1)</h2>
-        <div class="overflow-x-auto max-h-[60vh]">
-          <table class="w-full text-left text-xs border-collapse">
+        <div class="overflow-x-auto max-h-[50vh]">
+          <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
             <thead class="sticky top-0 bg-white z-10 shadow-xs">
               <tr class="border-b border-slate-200 text-slate-500 uppercase">
                 <th class="py-2.5 px-2 bg-white">Baureihe</th>
@@ -330,1029 +75,132 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">6L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M12x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">8L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">10L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">12L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">15L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">18L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M26x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">22L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">28L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">35L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M45x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">42L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr class="bg-red-50/70 group-start-s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">6S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">8S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">10S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">12S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M20x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">14S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">16S</td><td class="py-2.5 px-2 font-mono">8,5 mm</td><td class="py-2.5 px-2">M24x1,5</td><td class="py-2.5 px-2">400 bar</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">20S</td><td class="py-2.5 px-2 font-mono">10,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">400 bar</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">25S</td><td class="py-2.5 px-2 font-mono">12,0 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">400 bar</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">30S</td><td class="py-2.5 px-2 font-mono">13,5 mm</td><td class="py-2.5 px-2">M42x2</td><td class="py-2.5 px-2">250 bar</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">38S</td><td class="py-2.5 px-2 font-mono">16,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">250 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-6l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">6L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M12x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-8l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">8L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-10l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">10L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-12l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">12L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-15l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">15L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-18l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">18L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M26x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-22l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">22L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-28l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">28L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-35l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">35L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M45x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-emerald-50/70" data-row-id="din-42l"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">42L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-6s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">6S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-8s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">8S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-10s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">10S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-12s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">12S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M20x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-14s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">14S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-16s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">16S</td><td class="py-2.5 px-2 font-mono">8,5 mm</td><td class="py-2.5 px-2">M24x1,5</td><td class="py-2.5 px-2">400 bar</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-20s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">20S</td><td class="py-2.5 px-2 font-mono">10,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">400 bar</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-25s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">25S</td><td class="py-2.5 px-2 font-mono">12,0 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">400 bar</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-30s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">30S</td><td class="py-2.5 px-2 font-mono">13,5 mm</td><td class="py-2.5 px-2">M42x2</td><td class="py-2.5 px-2">250 bar</td></tr>
+              <tr class="bg-red-50/70" data-row-id="din-38s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">38S</td><td class="py-2.5 px-2 font-mono">16,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">250 bar</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- Subview 2: EO-FORM L -->
+      <!-- Subview 2: EO-Form L -->
       <section id="eo_sub_l" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form L Umformwerte</h2>
-        <div class="overflow-x-auto max-h-[60vh]">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead class="sticky top-0 bg-white z-10 shadow-xs">
-              <tr class="border-b border-slate-200 text-slate-500 uppercase">
-                <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
-                <th class="py-2.5 px-2 bg-white">S (Wand)</th>
-                <th class="py-2.5 px-2 bg-white">L Stahl ±0.5</th>
-                <th class="py-2.5 px-2 bg-white">L Edelstahl ±0.5</th>
-                <th class="py-2.5 px-2 bg-white">L₁ Stahl</th>
-                <th class="py-2.5 px-2 bg-white">L₁ Edelstahl</th>
-                <th class="py-2.5 px-2 bg-white">L₂</th>
-                <th class="py-2.5 px-2 bg-white">L₃</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-emerald-100 font-medium text-slate-700 bg-emerald-50/35">
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2" rowspan="2">90</td><td class="py-2 px-2" rowspan="2">63</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
-
-              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">65</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
-
-              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="3">95</td><td class="py-2 px-2" rowspan="3">68</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
-
-              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2" rowspan="3">95</td><td class="py-2 px-2" rowspan="3">70</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.5</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.5</td></tr>
-
-              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">102</td><td class="py-2 px-2" rowspan="4">75</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td></tr>
-
-              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">110</td><td class="py-2 px-2" rowspan="4">80</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">14.0</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">—</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.0</td></tr>
-
-              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">120</td><td class="py-2 px-2" rowspan="4">90</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.5</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.5</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">15.0</td></tr>
-
-              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="5">140</td><td class="py-2 px-2" rowspan="5">98</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">14.5</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">15.0</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">—</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">—</td></tr>
-
-              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">19.0</td><td class="py-2 px-2" rowspan="3">170</td><td class="py-2 px-2" rowspan="3">115</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">18.0</td><td class="py-2 px-2">20.0</td></tr>
-              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">19.0</td><td class="py-2 px-2">21.0</td></tr>
-
-              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2" rowspan="4">190</td><td class="py-2 px-2" rowspan="4">125</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
-              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">21.0</td><td class="py-2 px-2">—</td></tr>
-            </tbody>
-          </table>
-        </div>
       </section>
 
       <!-- Subview 3: EO-Form-S -->
       <section id="eo_sub_s" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form-S Umformwerte</h2>
-        <div class="overflow-x-auto max-h-[60vh]">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead class="sticky top-0 bg-white z-10 shadow-xs">
-              <tr class="border-b border-slate-200 text-slate-500 uppercase">
-                <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
-                <th class="py-2.5 px-2 bg-white">S (Wand)</th>
-                <th class="py-2.5 px-2 bg-white">L Stahl ±0.5</th>
-                <th class="py-2.5 px-2 bg-white">L Edelstahl ±0.5</th>
-                <th class="py-2.5 px-2 bg-white">L₁ Stahl</th>
-                <th class="py-2.5 px-2 bg-white">L₁ Edelstahl</th>
-                <th class="py-2.5 px-2 bg-white">L₂</th>
-                <th class="py-2.5 px-2 bg-white">L₃</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-red-100 font-medium text-slate-700 bg-red-50/35">
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">65</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
-
-              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">68</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
-
-              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">10S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="2">100</td><td class="py-2 px-2" rowspan="2">70</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">10S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td></tr>
-
-              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2" rowspan="4">100</td><td class="py-2 px-2" rowspan="4">72</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">13.5</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">13.5</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.0</td></tr>
-
-              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">15.0</td><td class="py-2 px-2" rowspan="3">135</td><td class="py-2 px-2" rowspan="3">98</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">15.0</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">15.0</td></tr>
-
-              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2" rowspan="4">155</td><td class="py-2 px-2" rowspan="4">112</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">3.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">—</td></tr>
-
-              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2" rowspan="4">140</td><td class="py-2 px-2" rowspan="4">98</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">21.0</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">21.5</td></tr>
-
-              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">22.0</td><td class="py-2 px-2">23.0</td><td class="py-2 px-2" rowspan="3">165</td><td class="py-2 px-2" rowspan="3">122</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">23.0</td><td class="py-2 px-2">23.5</td></tr>
-              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">22.0</td><td class="py-2 px-2">22.5</td></tr>
-
-              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">26.0</td><td class="py-2 px-2">25.5</td><td class="py-2 px-2" rowspan="5">190</td><td class="py-2 px-2" rowspan="5">135</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">11.0</td><td class="py-2 px-2">26.0</td><td class="py-2 px-2">27.0</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">11.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.0</td><td class="py-2 px-2">28.5</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.5</td><td class="py-2 px-2">28.5</td></tr>
-              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.5</td><td class="py-2 px-2">28.5</td></tr>
-            </tbody>
-          </table>
-        </div>
       </section>
-    </div>
 
-    <!-- Platzhalter Mehr-Module -->
-    <div id="view-foobar2" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 2 (Mehr-Menü)</h2>
-        <div class="py-4 text-4xl">🚧</div>
-        <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 2</h3>
-      </section>
-    </div>
-    <div id="view-foobar3" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 3 (Mehr-Menü)</h2>
-        <div class="py-4 text-4xl">🚧</div>
-        <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 3</h3>
+      <!-- DAUMENGERECHTE SUB-NAV UNTEN (FIX AM UNTEREN VIEW-ANKER) -->
+      <section class="bg-white p-2 rounded-2xl shadow-sm flex gap-1 border border-slate-200 mt-auto sticky bottom-14 z-20">
+        <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
+        <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form L</button>
+        <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form-S</button>
       </section>
     </div>
 
   </main>
 
-  <!-- Bottom Tab Bar -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1 shrink-0">
-    <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 text-center">
-      <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 transition-colors">
-        <span class="text-lg">📐</span><span class="text-[10px] font-semibold truncate w-full">Etage</span>
-      </button>
-      <button onclick="switchApp('zuschnitt', 'Zuschnittsrechner')" id="nav-zuschnitt" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="text-lg">✂️</span><span class="text-[10px] font-semibold truncate w-full">Zuschnitt</span>
-      </button>
-      <button onclick="switchApp('drehwinkel', 'Verdrehwinkel')" id="nav-drehwinkel" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="text-lg">🔄</span><span class="text-[10px] font-semibold truncate w-full">Verdrehwinkel</span>
-      </button>
-      <button onclick="switchApp('eoform', 'Tabellen')" id="nav-eoform" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="text-lg">📋</span><span class="text-[10px] font-semibold truncate w-full">Tabellen</span>
-      </button>
-      <button onclick="openMehrModal()" id="nav-mehr" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="text-lg">⋯</span><span class="text-[10px] font-semibold truncate w-full">Mehr</span>
-      </button>
-    </div>
-  </footer>
+  <!-- BOTTOM TAB-BAR (MAIN) -->
+  <nav class="bg-white border-t border-slate-200 h-16 flex items-center justify-around shrink-0 z-30">
+    <button onclick="switchView('etagen')" class="flex flex-col items-center justify-center flex-1 h-full text-slate-500 text-xs">Etagen</button>
+    <button onclick="switchView('zuschnitt')" class="flex flex-col items-center justify-center flex-1 h-full text-slate-500 text-xs">Zuschnitt</button>
+    <button onclick="switchView('drehwinkel')" class="flex flex-col items-center justify-center flex-1 h-full text-slate-500 text-xs">Winkel</button>
+    <button onclick="switchView('eoform')" class="flex flex-col items-center justify-center flex-1 h-full text-indigo-600 font-bold text-xs">Tabellen</button>
+  </nav>
 
-  <!-- Mehr-Modal -->
-  <div id="mehr_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end justify-center p-0">
-    <div class="bg-white rounded-t-3xl p-5 max-w-lg w-full space-y-3 text-slate-800 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
-      <div class="flex justify-between items-center border-b pb-2.5">
-        <h3 class="font-bold text-base text-slate-700">Weitere Module (Mehr)</h3>
-        <button onclick="closeMehrModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+  <!-- MODAL / LOGBOOK OVERLAY CONTAINER -->
+  <div id="logbook-modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-2xl p-5 space-y-4 max-h-[80vh] flex flex-col">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900">Projekt-Logbuch</h3>
+        <button onclick="closeLogbookModal()" class="text-slate-400 hover:text-slate-700 font-bold px-2 py-1">✕</button>
       </div>
-      <div class="space-y-2">
-        <button onclick="selectMehrItem('foobar2', 'Foobar 2')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-          <span>📌 Foobar 2</span><span class="text-slate-400">&rsaquo;</span>
-        </button>
-        <button onclick="selectMehrItem('foobar3', 'Foobar 3')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-          <span>📌 Foobar 3</span><span class="text-slate-400">&rsaquo;</span>
-        </button>
-      </div>
-      <button onclick="closeMehrModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors mt-2">
-        Abbrechen
-      </button>
+      <div id="logbook-content" class="overflow-y-auto space-y-3 flex-1 text-xs"></div>
     </div>
   </div>
 
-  <!-- Startbild / Splash-Screen Modal (ohne LOS-Hinweis) -->
-  <div id="daily_splash_modal" class="fixed inset-0 bg-black z-50 flex items-center justify-center p-0">
-    <div onclick="closeDailySplash()" class="relative w-full h-full max-w-lg max-h-screen bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer group">
-      <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
-
-      <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-40" aria-label="Schließen">&times;</button>
-
-      <div class="absolute bottom-0 right-0 bg-black/90 backdrop-blur-md text-white/95 text-[11px] font-mono px-3.5 py-1.5 rounded-tl-lg border-l border-t border-white/25 pointer-events-none z-30 shadow-xl">
-        v1.10.31 | 13.09.2026, 12:15 (MEZ)
-      </div>
-    </div>
-  </div>
-
-  <!-- Top-Menu Modal -->
-  <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-lg text-indigo-600">⚙️ Zangenschlosser App</h3>
-        <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
-      </div>
-      <div class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 divide-y divide-slate-100">
-        <div id="install_container" class="pt-1 pb-3">
-          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Installation</h4>
-          <button onclick="installPWA()" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-xl font-semibold text-indigo-700 transition-colors flex items-center justify-between shadow-sm">
-            <span>📱 Web-App installieren</span>
-            <span class="text-indigo-400">&rsaquo;</span>
-          </button>
-        </div>
-        <div class="pt-3 pb-3">
-          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Dokumentation</h4>
-          <button onclick="openSubModal('explanation')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📖 Erklärung über die App</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-        </div>
-        <div class="pt-3 pb-3">
-          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Support</h4>
-          <button onclick="openSubModal('contact')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>✉️ Kontakt & Feedback</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-        </div>
-        <div class="pt-3 pb-2 space-y-2">
-          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
-          <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Zangenschlosser App</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-          <button onclick="openSubModal('logbook-etagen')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Etagenrechner</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-          <button onclick="openSubModal('logbook-zuschnitt')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Zuschnittsrechner</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-          <button onclick="openSubModal('logbook-drehwinkel')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Verdrehwinkel</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-        </div>
-      </div>
-      <button onclick="closeTopMenu()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors">
-        Schließen
-      </button>
-    </div>
-  </div>
-
-  <!-- Sub-Modal -->
-  <div id="sub_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 id="sub_modal_title" class="font-bold text-lg text-indigo-600">Details</h3>
-        <button onclick="closeSubModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
-      </div>
-      <div id="sub_modal_content" class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 min-h-0"></div>
-      <button onclick="closeSubModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors shrink-0">
-        Zurück zum Menü
-      </button>
-    </div>
-  </div>
-
-  <!-- MASTER LOGIC -->
+  <script src="./changelogs.js"></script>
   <script>
-    function checkDailySplash() {
-      document.getElementById('daily_splash_modal').classList.remove('hidden');
-    }
-    function closeDailySplash() {
-      document.getElementById('daily_splash_modal').classList.add('hidden');
-    }
-
-    function openMehrModal() { document.getElementById('mehr_modal').classList.remove('hidden'); }
-    function closeMehrModal() { document.getElementById('mehr_modal').classList.add('hidden'); }
-    function selectMehrItem(appName, appTitle) {
-      closeMehrModal();
-      switchApp(appName, appTitle);
+    function switchView(viewId) {
+      document.querySelectorAll('.app-view').forEach(v => v.classList.add('hidden'));
+      const target = document.getElementById('view-' + viewId);
+      if (target) target.classList.remove('hidden');
     }
 
-    // Tabellen Segmented Sub-View Switcher
-    function switchEoSub(subKey) {
-      document.querySelectorAll('.eo-sub-section').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('#view-eoform section button').forEach(btn => {
-        btn.classList.remove('bg-[#005691]', 'text-white', 'shadow-sm');
-        btn.classList.add('text-slate-600', 'hover:text-slate-900');
-      });
-
-      const targetSub = document.getElementById('eo_sub_' + subKey);
-      if (targetSub) targetSub.classList.remove('hidden');
-
-      const activeBtn = document.getElementById('eo_tab_' + subKey);
-      if (activeBtn) {
-        activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900');
-        activeBtn.classList.add('bg-[#005691]', 'text-white', 'shadow-sm');
-      }
-
-      const badge = document.getElementById('header-badge');
-      if (badge) {
-        badge.classList.remove('hidden');
-        if (subKey === 'din') badge.textContent = 'Einstecktiefe';
-        if (subKey === 'l') badge.textContent = 'EO-Form L';
-        if (subKey === 's') badge.textContent = 'EO-Form-S';
-      }
-    }
-
-    function checkInstallState() {
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-      const installContainer = document.getElementById('install_container');
-      if (isStandalone && installContainer) {
-        installContainer.style.display = 'none';
-      }
-    }
-
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
-
-    window.addEventListener('appinstalled', () => {
-      const installContainer = document.getElementById('install_container');
-      if (installContainer) installContainer.style.display = 'none';
-      deferredPrompt = null;
-    });
-
-    function installPWA() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            document.getElementById('install_container').style.display = 'none';
-          }
-          deferredPrompt = null;
-        });
-      } else {
-        alert('Die App ist bereits installiert oder wird in diesem Browser direkt über das Menü unterstützt.');
-      }
-    }
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => {
-            console.log('ServiceWorker registriert:', reg.scope);
-            reg.update();
-          })
-          .catch(err => console.log('ServiceWorker Fehler:', err));
-      });
-    }
-
-    function openTopMenu() { 
-      checkInstallState();
-      document.getElementById('top_menu_modal').classList.remove('hidden'); 
-    }
-    function closeTopMenu() { document.getElementById('top_menu_modal').classList.add('hidden'); }
-
-    function openSubModal(type) {
-      const titleEl = document.getElementById('sub_modal_title');
-      const contentEl = document.getElementById('sub_modal_content');
-      contentEl.innerHTML = '';
-
-      if (type.startsWith('logbook-')) {
-        const key = type.replace('logbook-', '');
-        const titles = { master: 'Zangenschlosser App', etagen: 'Etagenrechner', zuschnitt: 'Zuschnittsrechner', drehwinkel: 'Verdrehwinkel' };
-        titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
-        
-        const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.10.31", date: "13.09.2026, 12:15 (MEZ)", text: "Tabellen-Architektur aktiv.", border: "border-indigo-500" }
-        ];
-
-        let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
-        logs.forEach(item => {
-          html += `<div class="p-3 bg-slate-50 rounded-xl border-l-4 ${item.border} text-xs shrink-0 shadow-sm">
-            <div class="flex justify-between font-bold text-slate-700"><span>Version ${item.version}</span><span>${item.date}</span></div>
-            <p class="mt-1 text-slate-600 leading-relaxed">${item.text}</p>
-          </div>`;
-        });
-        html += '</div>';
-        contentEl.innerHTML = html;
-
-      } else if (type === 'explanation') {
-        titleEl.textContent = '📖 Erklärung über die App';
-        contentEl.innerHTML = `
-          <div class="space-y-3 text-slate-700 text-sm">
-            <p><strong>Zangenschlosser App (Dr. Zange)</strong> ist eine professionelle mobile Web-Applikation (PWA) für Techniker im Bereich Rohrleitung- und Hydraulikbau.</p>
-            <div class="pt-2">
-              <img src="./img/dr-zange.jpg" alt="Dr. Zange" class="rounded-xl shadow-md w-full object-cover">
-            </div>
-          </div>
-        `;
-      } else if (type === 'contact') {
-        titleEl.textContent = '✉️ Kontakt & Support';
-        contentEl.innerHTML = `
-          <div class="space-y-3 text-slate-700 text-sm">
-            <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.10.31</p>
-          </div>
-        `;
-      }
-      document.getElementById('sub_modal').classList.remove('hidden');
-    }
-
-    function closeSubModal() { document.getElementById('sub_modal').classList.add('hidden'); }
-
-    function switchApp(appName, appTitle) {
-      document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.nav-btn').forEach(el => {
-        el.classList.remove('text-indigo-600');
-        el.classList.add('text-slate-400');
-      });
-
-      const targetView = document.getElementById('view-' + appName);
-      if (targetView) targetView.classList.remove('hidden');
-
-      const activeNav = document.getElementById('nav-' + appName);
-      if (activeNav) {
-        activeNav.classList.remove('text-slate-400');
-        activeNav.classList.add('text-indigo-600');
-      } else if (appName === 'foobar2' || appName === 'foobar3') {
-        const mehrNav = document.getElementById('nav-mehr');
-        if (mehrNav) {
-          mehrNav.classList.remove('text-slate-400');
-          mehrNav.classList.add('text-indigo-600');
-        }
-      }
-
-      const badge = document.getElementById('header-badge');
-      if (appName === 'eoform') {
-        badge.classList.remove('hidden');
-        badge.textContent = 'Einstecktiefe';
-      } else {
-        badge.classList.add('hidden');
-      }
-
-      document.getElementById('header-title').textContent = appTitle;
-      window.scrollTo(0, 0);
-    }
-
-    // 1. ETAGENRECHNER
-    const EtagenApp = (() => {
-      const toRad = (deg) => (deg * Math.PI) / 180;
-      const toDeg = (rad) => (rad * 180) / Math.PI;
-      const inputIds = ['etagen_v', 'etagen_h', 'etagen_a', 'etagen_d', 'etagen_r'];
-
-      function init() {
-        inputIds.forEach(id => {
-          const saved = localStorage.getItem('etagen_' + id);
-          if (saved !== null) {
-            const el = document.getElementById(id);
-            if (el) el.value = saved;
-          }
-        });
-        calculate();
-
-        inputIds.forEach(id => {
-          const el = document.getElementById(id);
-          if(el) {
-            el.addEventListener('input', function() {
-              if (id === 'etagen_a') {
-                let val = parseFloat(this.value.replace(',', '.')) || 0;
-                if (val < 0) this.value = '0';
-                if (val > 180) this.value = '180';
-              }
-              localStorage.setItem('etagen_' + id, el.value);
-              calculate();
-            });
-            el.addEventListener('change', () => {
-              localStorage.setItem('etagen_' + id, el.value);
-              calculate();
-            });
-            el.addEventListener('focus', function() {
-              setTimeout(() => { this.setSelectionRange(0, 9999); }, 50);
-            });
-          }
-        });
-      }
-
-      function calculate() {
-        const v = parseFloat(document.getElementById('etagen_v').value.replace(',', '.')) || 0;
-        const h = parseFloat(document.getElementById('etagen_h').value.replace(',', '.')) || 0;
-        const a = parseFloat(document.getElementById('etagen_a').value.replace(',', '.')) || 0;
-        const d = parseFloat(document.getElementById('etagen_d').value.replace(',', '.')) || 0;
-        const rFaktor = parseFloat(document.getElementById('etagen_r').value) || 3;
-
-        const rBiege = d * rFaktor;
-        const c = Math.sqrt((h * h) + (v * v));
-
-        let travel = 0, run = 0, t_cutback = 0;
-
-        if (a !== 0) {
-          const angleRad = toRad(a);
-          if (Math.abs(a - 90) < 0.001) {
-            travel = c; 
-            run = 0;
-            const radHalfA = toRad(45);
-            t_cutback = c - (2 * rBiege * (Math.tan(radHalfA) - toRad(45)));
+    function switchEoSub(sub) {
+      document.querySelectorAll('.eo-sub-section').forEach(s => s.classList.add('hidden'));
+      const target = document.getElementById('eo_sub_' + sub);
+      if (target) target.classList.remove('hidden');
+      
+      ['din', 'l', 's'].forEach(k => {
+        const btn = document.getElementById('eo_tab_' + k);
+        if (btn) {
+          if (k === sub) {
+            btn.className = 'flex-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm';
           } else {
-            travel = c / Math.sin(angleRad);
-            run = c / Math.tan(angleRad);
-            const radHalfA = angleRad / 2;
-            t_cutback = travel - (2 * rBiege * (Math.tan(radHalfA) - radHalfA));
+            btn.className = 'flex-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all';
           }
         }
+      });
+    }
 
-        let f = (v !== 0 || h !== 0) ? toDeg(Math.atan2(h, v)) : 0;
-        const anreisumfang = (d * Math.PI * Math.abs(f)) / 360;
-
-        document.getElementById('etagen_out_t').textContent = Math.round(t_cutback).toLocaleString('de-DE') + ' mm';
-        document.getElementById('etagen_out_c').textContent = Math.round(c).toLocaleString('de-DE') + ' mm';
-        document.getElementById('etagen_out_travel').textContent = Math.round(travel).toLocaleString('de-DE') + ' mm';
-        document.getElementById('etagen_out_run').textContent = Math.round(run).toLocaleString('de-DE') + ' mm';
-        document.getElementById('etagen_out_f').textContent = Math.round(f).toLocaleString('de-DE') + ' °';
-        document.getElementById('etagen_out_anreisumfang').textContent = Math.round(anreisumfang).toLocaleString('de-DE') + ' mm';
-
-        drawBoxAndLines(v, h, a, c, travel, t_cutback);
-      }
-
-      function drawBoxAndLines(v, h, a, c, travel, t) {
-        const container = document.getElementById('etagen_gfx_container');
-        container.innerHTML = '';
-
-        let depthVal = (a > 0 && Math.abs(a - 90) >= 0.001) ? (c / Math.tan(toRad(a))) : 0;
-        if (a > 0 && a < 14) depthVal = depthVal * (a / 14);
-        
-        const isoCos = Math.cos(toRad(30)), isoSin = Math.sin(toRad(30));
-        const testPxH = h, testPxV = v, testPxT = Math.max(depthVal, 0);
-
-        const localMinX = -testPxT * isoCos, localMaxX = testPxH * isoCos;
-        const localMinY = -testPxV - testPxT * isoSin, localMaxY = 0;
-
-        const baseWidth = Math.abs(localMaxX - localMinX) || 1;
-        const baseHeight = Math.abs(localMaxY - localMinY) || 1;
-
-        let scale = Math.min((1000 * 0.90) / baseWidth, (580 * 0.90) / baseHeight);
-        scale = Math.min(scale, 4.5);
-
-        const pxH = h * scale, pxV = v * scale, pxT = Math.max(depthVal * scale, 0);
-        const scaledLocalMinX = -pxT * isoCos, scaledLocalMaxX = pxH * isoCos;
-        const scaledLocalMinY = -pxV - pxT * isoSin, scaledLocalMaxY = 0;
-
-        const objWidth = scaledLocalMaxX - scaledLocalMinX;
-        const objHeight = scaledLocalMaxY - scaledLocalMinY;
-
-        const originX = 500 - (scaledLocalMinX + objWidth / 2);
-        const originY = 290 - (scaledLocalMinY + objHeight / 2);
-
-        const A = { x: originX, y: originY };
-        const B = { x: A.x + pxH * isoCos, y: A.y - pxH * isoSin };
-        const C_pt = { x: B.x, y: B.y - pxV };
-        const D = { x: A.x, y: A.y - pxV };
-
-        const A_back = { x: A.x - pxT * isoCos, y: A.y - pxT * isoSin };
-        const B_back_fixed = { x: B.x - pxT * isoCos, y: B.y - pxT * isoSin };
-        const C_back = { x: C_pt.x - pxT * isoCos, y: C_pt.y - pxT * isoSin };
-        const D_back = { x: D.x - pxT * isoCos, y: D.y - pxT * isoSin };
-
-        const extLen = pxT === 0 ? 0 : 100;
-        const P_in = { x: A_back.x - extLen * isoCos, y: A_back.y - extLen * isoSin };
-        const P_out = { x: C_pt.x + extLen * isoCos, y: C_pt.y + extLen * isoSin };
-
-        const createLine = (p1, p2, color = '#64748b', width = '3', dash = '6,6') => {
-          const el = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          el.setAttribute('x1', p1.x); el.setAttribute('y1', p1.y);
-          el.setAttribute('x2', p2.x); el.setAttribute('y2', p2.y);
-          el.setAttribute('stroke', color); el.setAttribute('stroke-width', width);
-          if (dash) el.setAttribute('stroke-dasharray', dash);
-          return el;
-        };
-
-        const createTextLabel = (text, p, color, offsetX = 0, offsetY = 0, fontSize = '48') => {
-          const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          txt.setAttribute('x', p.x + offsetX); txt.setAttribute('y', p.y + offsetY);
-          txt.setAttribute('fill', color); txt.setAttribute('font-size', fontSize);
-          txt.setAttribute('font-weight', '900'); txt.setAttribute('text-anchor', 'middle');
-          txt.setAttribute('dominant-baseline', 'central');
-          txt.textContent = text;
-          return txt;
-        };
-
-        container.appendChild(createLine(A, B));
-        container.appendChild(createLine(B, C_pt));
-        container.appendChild(createLine(C_pt, D));
-        container.appendChild(createLine(D, A));
-        
-        if (pxT > 0) {
-          container.appendChild(createLine(A_back, B_back_fixed));
-          container.appendChild(createLine(B_back_fixed, C_back));
-          container.appendChild(createLine(C_back, D_back));
-          container.appendChild(createLine(D_back, A_back));
-          container.appendChild(createLine(A, A_back));
-          container.appendChild(createLine(B, B_back_fixed));
-          container.appendChild(createLine(C_pt, C_back));
-          container.appendChild(createLine(D, D_back));
-        }
-
-        if (a > 0 && pxT > 0) {
-          const arcGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          const vR = { x: A.x - A_back.x, y: A.y - A_back.y };
-          const vT = { x: C_pt.x - A_back.x, y: C_pt.y - A_back.y };
-          const lenR = Math.sqrt(vR.x * vR.x + vR.y * vR.y);
-          const lenT = Math.sqrt(vT.x * vT.x + vT.y * vT.y);
-          const rArc = 180;
-          const pR = { x: A_back.x + (vR.x / lenR) * rArc, y: A_back.y + (vR.y / lenR) * rArc };
-          const pT = { x: A_back.x + (vT.x / lenT) * rArc, y: A_back.y + (vT.y / lenT) * rArc };
-
-          const wedge = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-          wedge.setAttribute('points', `${A_back.x},${A_back.y} ${pR.x},${pR.y} ${pT.x},${pT.y}`);
-          wedge.setAttribute('fill', 'rgba(254, 240, 138, 0.6)');
-          wedge.setAttribute('stroke', '#ca8a04'); wedge.setAttribute('stroke-width', '2.5');
-          arcGroup.appendChild(wedge);
-
-          const midX = (vR.x / lenR + vT.x / lenT) / 2;
-          const midY = (vR.y / lenR + vT.y / lenT) / 2;
-          const midLen = Math.sqrt(midX * midX + midY * midY);
-          arcGroup.appendChild(createTextLabel(`${a}°`, { x: A_back.x + (midX / midLen) * 100, y: A_back.y + (midY / midLen) * 100 }, '#854d0e', 0, 0, '40'));
-          container.appendChild(arcGroup);
-        }
-
-        const pipeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        const dPath = pxT === 0 ? `M ${A.x - 100} ${A.y - 100} L ${A.x} ${A.y} L ${C_pt.x} ${C_pt.y} L ${C_pt.x + 100} ${C_pt.y + 100}` : `M ${P_in.x} ${P_in.y} L ${A_back.x} ${A_back.y} L ${C_pt.x} ${C_pt.y} L ${P_out.x} ${P_out.y}`;
-        
-        const pipeOuter = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        pipeOuter.setAttribute('d', dPath); pipeOuter.setAttribute('fill', 'none');
-        pipeOuter.setAttribute('stroke', '#64748b'); pipeOuter.setAttribute('stroke-width', '36');
-        pipeOuter.setAttribute('stroke-linecap', 'round'); pipeOuter.setAttribute('stroke-linejoin', 'round'); pipeOuter.setAttribute('opacity', '0.7');
-
-        const pipeInner = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        pipeInner.setAttribute('d', dPath); pipeInner.setAttribute('fill', 'none');
-        pipeInner.setAttribute('stroke', '#e2e8f0'); pipeInner.setAttribute('stroke-width', '22');
-        pipeInner.setAttribute('stroke-linecap', 'round'); pipeInner.setAttribute('stroke-linejoin', 'round');
-
-        const createPipeEnd = (p) => {
-          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          const outerRing = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-          outerRing.setAttribute('cx', p.x); outerRing.setAttribute('cy', p.y);
-          outerRing.setAttribute('rx', '13'); outerRing.setAttribute('ry', '18');
-          outerRing.setAttribute('fill', '#94a3b8'); outerRing.setAttribute('stroke', '#475569'); outerRing.setAttribute('stroke-width', '3');
-          const innerHole = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-          innerHole.setAttribute('cx', p.x); innerHole.setAttribute('cy', p.y);
-          innerHole.setAttribute('rx', '7'); innerHole.setAttribute('ry', '11');
-          innerHole.setAttribute('fill', '#334155');
-          g.appendChild(outerRing); g.appendChild(innerHole);
-          return g;
-        };
-
-        pipeGroup.appendChild(pipeOuter);
-        pipeGroup.appendChild(pipeInner);
-        pipeGroup.appendChild(createPipeEnd(pxT === 0 ? { x: C_pt.x + 100, y: C_pt.y + 100 } : P_out));
-        container.appendChild(pipeGroup);
-
-        if (h > 0) container.appendChild(createLine(A, B, '#0284c7', '6', null));
-        if (v > 0) container.appendChild(createLine(B, C_pt, '#16a34a', '6', null));
-        if (c > 0) container.appendChild(createLine(A, C_pt, '#dc2626', '6', null));
-        if (Math.abs(a - 90) >= 0.001 && pxT > 0) container.appendChild(createLine(A_back, A, '#ea580c', '6', null));
-        if (t > 0 || a > 0) container.appendChild(createLine(pxT === 0 ? A : A_back, C_pt, '#ec4899', '6', null));
-
-        if (h > 0) container.appendChild(createTextLabel('H', { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 }, '#0284c7', 20, 28));
-        if (v > 0) container.appendChild(createTextLabel('V', { x: (B.x + C_pt.x) / 2, y: (B.y + C_pt.y) / 2 }, '#16a34a', 28, 0));
-        if (c > 0) container.appendChild(createTextLabel('C', { x: (A.x + C_pt.x) / 2, y: (A.y + C_pt.y) / 2 }, '#dc2626', -35, 10));
-        if (Math.abs(a - 90) >= 0.001 && pxT > 0) container.appendChild(createTextLabel('R', { x: (A_back.x + A.x) / 2, y: (A_back.y + A.y) / 2 }, '#ea580c', -25, 28));
-        if (t > 0 || a > 0) container.appendChild(createTextLabel('T', { x: ((pxT === 0 ? A.x : A_back.x) + C_pt.x) / 2, y: ((pxT === 0 ? A.y : A_back.y) + C_pt.y) / 2 }, '#ec4899', 0, -28));
-      }
-
-      return { init };
-    })();
-
-    // 2. ZUSCHNITTSRECHNER
-    const ZuschnittApp = (() => {
-      function init() {
-        document.getElementById('zuschnitt_durchmesser').addEventListener('change', function() {
-          this.classList.remove('bg-amber-50', 'border-amber-300');
-          this.classList.add('bg-slate-50', 'border-slate-300');
-          checkParameters();
-        });
-
-        document.getElementById('zuschnitt_rfaktor').addEventListener('change', function() {
-          this.classList.remove('bg-amber-50', 'border-amber-300');
-          this.classList.add('bg-slate-50', 'border-slate-300');
-          checkParameters();
-        });
-
-        document.getElementById('zuschnitt_clear_base').addEventListener('click', clearBaseGroup);
-        document.getElementById('zuschnitt_clear_1').addEventListener('click', () => clearPair(1));
-        document.getElementById('zuschnitt_clear_2').addEventListener('click', () => clearPair(2));
-        document.getElementById('zuschnitt_clear_3').addEventListener('click', () => clearPair(3));
-
-        const allInputs = Array.from(document.querySelectorAll('#view-zuschnitt input[type="text"]'));
-        allInputs.forEach((input) => {
-          input.addEventListener('focus', function() {
-            if (this.hasAttribute('disabled')) return;
-            this.value = this.value.replace(' mm', '').replace(' Grad', '');
-            setTimeout(() => { 
-              this.setSelectionRange(0, 9999); 
-              const myWrapper = this.closest('.input-wrapper, div[id^="zuschnitt_pair_"], div[id="zuschnitt_base_group"]');
-              myWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 150);
-          });
-
-          input.addEventListener('blur', function() {
-            if (this.hasAttribute('disabled')) return;
-            const type = this.getAttribute('data-type');
-            let val = getCleanVal(this.value);
-            if (val !== '') {
-              if (type === 'schenkel') this.value = val + ' mm';
-              if (type === 'winkel') {
-                let num = Math.min(Math.max(parseFloat(val) || 0, 1), 180);
-                this.value = num + ' Grad';
-              }
-            }
-          });
-
-          input.addEventListener('input', () => {
-            updateVisibility();
-            calculateZuschnitt();
-          });
-
-          input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              this.blur();
-              const visibleInputs = Array.from(document.querySelectorAll('#view-zuschnitt input[type="text"]')).filter(inp => !inp.hasAttribute('disabled') && !inp.closest('.hidden'));
-              const currentIndex = visibleInputs.indexOf(this);
-              if (currentIndex !== -1 && currentIndex + 1 < visibleInputs.length) {
-                visibleInputs[currentIndex + 1].focus();
-              }
-            }
-          });
-        });
-
-        checkParameters();
-      }
-
-      function checkParameters() {
-        const dVal = document.getElementById('zuschnitt_durchmesser').value;
-        const rVal = document.getElementById('zuschnitt_rfaktor').value;
-        const baseInputs = document.querySelectorAll('#zuschnitt_base_group input[type="text"]');
-
-        if (dVal && rVal) {
-          baseInputs.forEach(inp => {
-            inp.removeAttribute('disabled');
-            inp.classList.remove('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
-            const type = inp.getAttribute('data-type');
-            if (type === 'schenkel') inp.classList.add('bg-sky-50', 'border-sky-200');
-            if (type === 'winkel') inp.classList.add('bg-emerald-50', 'border-emerald-200');
-          });
-        } else {
-          baseInputs.forEach(inp => {
-            inp.setAttribute('disabled', 'true');
-            inp.className = 'w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors';
-            inp.value = '';
-          });
-        }
-        updateVisibility();
-        calculateZuschnitt();
-      }
-
-      function updateVisibility() {
-        const dVal = document.getElementById('zuschnitt_durchmesser').value;
-        const rVal = document.getElementById('zuschnitt_rfaktor').value;
-        const pair1 = document.getElementById('zuschnitt_pair_1');
-        const pair2 = document.getElementById('zuschnitt_pair_2');
-        const pair3 = document.getElementById('zuschnitt_pair_3');
-
-        if (!dVal || !rVal) {
-          pair1.classList.add('hidden'); pair2.classList.add('hidden'); pair3.classList.add('hidden');
-          return;
-        }
-
-        const s2Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="1"]').value);
-        const w1Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="0"]').value);
-
-        if (s2Val !== '' && w1Val !== '') pair1.classList.remove('hidden');
-        else { pair1.classList.add('hidden'); pair2.classList.add('hidden'); pair3.classList.add('hidden'); return; }
-
-        const w2Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="1"]').value);
-        const s3Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="2"]').value);
-        if (w2Val !== '' && s3Val !== '') pair2.classList.remove('hidden');
-        else { pair2.classList.add('hidden'); pair3.classList.add('hidden'); return; }
-
-        const w3Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="2"]').value);
-        const s4Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="3"]').value);
-        if (w3Val !== '' && s4Val !== '') pair3.classList.remove('hidden');
-        else pair3.classList.add('hidden');
-      }
-
-      function clearBaseGroup() {
-        document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="0"]').value = '';
-        document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="0"]').value = '';
-        document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="1"]').value = '';
-        clearPair(1);
-      }
-
-      function clearPair(pairNum) {
-        const startIndex = pairNum === 1 ? 1 : (pairNum === 2 ? 2 : 3);
-        const schenkelIdx = pairNum === 1 ? 2 : (pairNum === 2 ? 3 : 4);
-        
-        document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]').forEach((inp, idx) => {
-          if (idx >= startIndex) inp.value = '';
-        });
-        document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]').forEach((inp, idx) => {
-          if (idx >= schenkelIdx) inp.value = '';
-        });
-        updateVisibility();
-        calculateZuschnitt();
-      }
-
-      function getCleanVal(str) {
-        if (!str) return '';
-        return str.replace(' mm', '').replace(' Grad', '').replace(',', '.').trim();
-      }
-
-      function calculateZuschnitt() {
-        const dVal = document.getElementById('zuschnitt_durchmesser').value;
-        const rVal = document.getElementById('zuschnitt_rfaktor').value;
-        const titelEl = document.getElementById('zuschnitt_out_titel');
-
-        if (!dVal || !rVal) {
-          document.getElementById('zuschnitt_out_gesamtlänge').textContent = "0 mm";
-          titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
-          document.getElementById('zuschnitt_out_biegeradius').textContent = "-";
-          document.getElementById('zuschnitt_out_summeschenkel').textContent = "0 mm";
-          return;
-        } else {
-          titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
-        }
-
-        const schenkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]');
-        const winkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]');
-
-        let sumSchenkel = 0, schenkelVals = [];
-        schenkelInputs.forEach((inp) => {
-          const v = parseFloat(getCleanVal(inp.value)) || 0;
-          schenkelVals.push(v);
-          sumSchenkel += v;
-        });
-
-        let totalCutback = 0, totalBogenMaß = 0;
-        const rBiege = parseFloat(dVal) * parseFloat(rVal);
-
-        winkelInputs.forEach((inp, idx) => {
-          if (schenkelVals[idx + 1] === undefined || schenkelVals[idx + 1] === 0) return;
-          let alpha = parseFloat(getCleanVal(inp.value)) || 0;
-          if (alpha > 0) {
-            alpha = Math.min(Math.max(alpha, 1), 180);
-            const angleRad = (alpha * Math.PI) / 180;
-            totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
-            totalBogenMaß += angleRad * rBiege;
-          }
-        });
-
-        let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
-        document.getElementById('zuschnitt_out_gesamtlänge').textContent = Math.round(gesamtlänge).toLocaleString('de-DE') + ' mm';
-        document.getElementById('zuschnitt_out_biegeradius').textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
-        document.getElementById('zuschnitt_out_summeschenkel').textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
-      }
-
-      return { init };
-    })();
-
-    // 3. VERDREHWINKEL
-    const DrehwinkelApp = (() => {
-      const assets = {
-        'a-0': 'img/a-0.png', 'a-45': 'img/a-45.png', 'a-90': 'img/a-90.png', 'a-135': 'img/a-135.png',
-        'a-180': 'img/a-180.png', 'a-225': 'img/a-225.png', 'a-270': 'img/a-270.png', 'a-315': 'img/a-315.png',
-        'a-f': 'img/a-f.png', 'b-0': 'img/b-0.png', 'b-45': 'img/b-45.png', 'b-90': 'img/b-90.png',
-        'b-135': 'img/b-135.png', 'b-180': 'img/b-180.png', 'b-225': 'img/b-225.png', 'b-270': 'img/b-270.png',
-        'b-315': 'img/b-315.png', 'b-f': 'img/b-0.png'
-      };
-
-      let state = { angleA: 0, angleB: 0, isGeradeA: true };
-      const gueltigeWerte = [0, 45, 90, 135, 180, 225, 270, 315];
-
-      function init() {
-        document.getElementById('dw_btn_gerade').addEventListener('click', () => setAnschlussAType('gerade'));
-        document.getElementById('dw_btn_90').addEventListener('click', () => setAnschlussAType('90'));
-
-        document.querySelectorAll('.dw-dial').forEach(dial => {
-          let isDragging = false;
-          dial.addEventListener('pointerdown', (e) => {
-            isDragging = true;
-            dial.setPointerCapture(e.pointerId);
-            handleInteraction(e, dial);
-          });
-          dial.addEventListener('pointermove', (e) => {
-            if (!isDragging) return;
-            handleInteraction(e, dial);
-          });
-          dial.addEventListener('pointerup', (e) => {
-            isDragging = false;
-            dial.releasePointerCapture(e.pointerId);
-          });
-        });
-
-        setAnschlussAType('gerade');
-        updateVisualisierung('a', 0);
-        updateVisualisierung('b', 0);
-      }
-
-      function updateGallery() {
-        let keyA = state.isGeradeA ? 'a-f' : `a-${state.angleA}`;
-        document.getElementById('dw_img_a').src = assets[keyA] || assets['a-f'];
-        let keyB = `b-${state.angleB}`;
-        document.getElementById('dw_img_b').src = assets[keyB] || assets['b-0'];
-      }
-
-      function setAnschlussAType(type) {
-        state.isGeradeA = (type === 'gerade');
-        const dialA = document.getElementById('dw_dial_a');
-        const outA = document.getElementById('dw_out_a');
-        const btnGerade = document.getElementById('dw_btn_gerade');
-        const btn90 = document.getElementById('dw_btn_90');
-
-        if (state.isGeradeA) {
-          dialA.style.opacity = '0.4';
-          dialA.style.pointerEvents = 'none';
-          btnGerade.className = 'flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center';
-          btn90.className = 'flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center';
-          outA.textContent = '0°';
-          outA.className = 'text-base font-extrabold text-slate-400 font-mono w-16 text-center transition-all';
-        } else {
-          dialA.style.opacity = '1';
-          dialA.style.pointerEvents = 'auto';
-          btn90.className = 'flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center';
-          btnGerade.className = 'flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center';
-          outA.textContent = state.angleA + '°';
-          outA.className = 'text-base font-extrabold text-[#005691] font-mono w-16 text-center transition-all';
-        }
-        updateGallery();
-      }
-
-      function updateVisualisierung(anschluss, grad) {
-        const radius = 85;
-        let mappedDeg = (360 - grad + 180) % 360;
-        let rad = (mappedDeg - 90) * (Math.PI / 180);
-
-        const endX = 100 + radius * Math.cos(rad);
-        const endY = 100 + radius * Math.sin(rad);
-
-        if (anschluss === 'a') {
-          state.angleA = grad;
-          if (!state.isGeradeA) document.getElementById('dw_out_a').textContent = grad + '°';
-          let pointer = document.querySelector('#dw_dial_a line');
-          pointer.setAttribute('x2', endX); pointer.setAttribute('y2', endY);
-        } else {
-          state.angleB = grad;
-          document.getElementById('dw_out_b').textContent = grad + '°';
-          let pointer = document.querySelector('#dw_dial_b line');
-          pointer.setAttribute('x2', endX); pointer.setAttribute('y2', endY);
-        }
-        updateGallery();
-      }
-
-      function handleInteraction(e, dialElement) {
-        const rect = dialElement.getBoundingClientRect();
-        const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-        const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-
-        const dx = clientX - (rect.left + rect.width / 2);
-        const dy = clientY - (rect.top + rect.height / 2);
-
-        let userDeg = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
-        if (userDeg < 0) userDeg += 360;
-        if (userDeg >= 360) userDeg -= 360;
-        userDeg = (360 - userDeg + 180) % 360;
-
-        let naechsterSchritt = gueltigeWerte.reduce((prev, curr) => (Math.abs(curr - userDeg) < Math.abs(prev - userDeg) ? curr : prev));
-        if (userDeg >= 337.5 || userDeg < 22.5) naechsterSchritt = 0;
-
-        updateVisualisierung(dialElement.dataset.anschluss, naechsterSchritt);
-      }
-
-      return { init };
-    })();
-
-    // Init Touch-Outline / Row Selection für Tabellen-Modul
     function initTableInteractions() {
-      document.querySelectorAll('#view-eoform tbody tr').forEach(row => {
+      document.querySelectorAll('#view-eoform tbody tr').forEach((row, index) => {
         row.style.cursor = 'pointer';
-        row.addEventListener('click', () => {
-          const tbody = row.closest('tbody');
-          tbody.querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
+        const rowId = row.getAttribute('data-row-id') || ('row-' + index);
+        const subSec = row.closest('.eo-sub-section');
+        const subKey = subSec ? subSec.id.replace('eo_sub_', '') : 'din';
+        
+        if (localStorage.getItem('drzange_row_sel_' + subKey) === rowId) {
           row.classList.add('row-selected');
+        }
+
+        row.addEventListener('click', () => {
+          row.closest('tbody').querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
+          row.classList.add('row-selected');
+          localStorage.setItem('drzange_row_sel_' + subKey, rowId);
         });
       });
+    }
+
+    function openLogbookModal(type) {
+      const container = document.getElementById('logbook-content');
+      container.innerHTML = '';
+      const list = window.allLogbooks && window.allLogbooks[type] ? window.allLogbooks[type] : [];
+      list.forEach(entry => {
+        const div = document.createElement('div');
+        div.className = `p-3 rounded-xl border-l-4 bg-slate-50 space-y-1 ${entry.border || 'border-slate-400'}`;
+        div.innerHTML = `<div class="flex justify-between text-[10px] text-slate-500 font-semibold"><span>${entry.version}</span><span>${entry.date}</span></div><div class="text-slate-700">${entry.text}</div>`;
+        container.appendChild(div);
+      });
+      document.getElementById('logbook-modal').classList.remove('hidden');
+    }
+
+    function closeLogbookModal() {
+      document.getElementById('logbook-modal').classList.add('hidden');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      checkInstallState();
-      checkDailySplash();
-      EtagenApp.init();
-      ZuschnittApp.init();
-      DrehwinkelApp.init();
-      switchEoSub('din');
       initTableInteractions();
     });
   </script>
