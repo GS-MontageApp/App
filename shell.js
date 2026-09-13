@@ -1,7 +1,39 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.44)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.45)
 // ============================================================================
 window.AppShell = (() => {
+  const THEME_STORAGE_KEY = 'zangenschlosser_theme_v1';
+
+  function setTheme(themeName) {
+    const body = document.body;
+    const btnStandard = document.getElementById('theme_btn_standard');
+    const btnGs = document.getElementById('theme_btn_gs');
+
+    if (themeName === 'gs') {
+      body.classList.add('theme-gs');
+      if (btnGs) {
+        btnGs.className = 'p-2.5 rounded-xl text-xs font-bold border-2 border-yellow-400 bg-slate-900 text-yellow-400 shadow-md transition-all text-center';
+      }
+      if (btnStandard) {
+        btnStandard.className = 'p-2.5 rounded-xl text-xs font-bold border border-slate-600 bg-slate-800 text-slate-300 transition-all text-center';
+      }
+    } else {
+      body.classList.remove('theme-gs');
+      if (btnStandard) {
+        btnStandard.className = 'p-2.5 rounded-xl text-xs font-bold border-2 border-indigo-600 bg-white text-indigo-700 shadow-md transition-all text-center';
+      }
+      if (btnGs) {
+        btnGs.className = 'p-2.5 rounded-xl text-xs font-bold border border-slate-300 bg-slate-100 text-slate-700 transition-all text-center';
+      }
+    }
+    localStorage.setItem(THEME_STORAGE_KEY, themeName);
+  }
+
+  function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'standard';
+    setTheme(savedTheme);
+  }
+
   function checkDailySplash() {
     document.getElementById('daily_splash_modal')?.classList.remove('hidden');
   }
@@ -81,7 +113,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-        { version: "v1.10.44", date: "13.09.2026, 19:00 (MEZ)", text: "Integration der Drehmomenttabelle für 8.8, 10.9 und 12.9 Schrauben.", border: "border-indigo-500" }
+        { version: "v1.10.45", date: "13.09.2026, 19:40 (MEZ)", text: "Integration des umschaltbaren Design-Themes 'Standard' und 'GS'.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -109,7 +141,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.44</p>
+          <p class="text-xs text-slate-500">Version: v1.10.45</p>
         </div>
       `;
     }
@@ -153,6 +185,7 @@ window.AppShell = (() => {
 
   return {
     init,
+    setTheme, initTheme,
     checkDailySplash, closeDailySplash,
     openMehrModal, closeMehrModal, selectMehrItem,
     installPWA, openTopMenu, closeTopMenu,
@@ -161,6 +194,7 @@ window.AppShell = (() => {
 })();
 
 // Globale Brücken für HTML-OnClick-Attribut-Kompatibilität
+window.setTheme = (t) => window.AppShell.setTheme(t);
 window.closeDailySplash = () => window.AppShell.closeDailySplash();
 window.openMehrModal = () => window.AppShell.openMehrModal();
 window.closeMehrModal = () => window.AppShell.closeMehrModal();
