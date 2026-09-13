@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.47 (Max-Viewport Table View)
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.48 (SSoT Version Binding + Max-Viewport Tables)
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -13,12 +13,13 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   
-  <script src="js/version.js"></script>
-  <script src="js/zuschnitt.js"></script>
-  <script src="js/etagen.js"></script>
-  <script src="js/drehwinkel.js"></script>
-  <script src="js/tabellen.js"></script>
-  <script src="js/shell.js"></script>
+  <!-- Single Source of Truth Version Config FIRST -->
+  <script src="js/version.js?v=1.10.48"></script>
+  <script src="js/zuschnitt.js?v=1.10.48"></script>
+  <script src="js/etagen.js?v=1.10.48"></script>
+  <script src="js/drehwinkel.js?v=1.10.48"></script>
+  <script src="js/tabellen.js?v=1.10.48"></script>
+  <script src="js/shell.js?v=1.10.48"></script>
   
   <style>
     .row-selected {
@@ -188,8 +189,14 @@
     </div>
   </footer>
 
+  <!-- BOOTSTRAPPER mit zentralem Versions-Binding & dynamischem Splash-Text -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
+      const splashVer = document.getElementById('splash_version_text');
+      if (splashVer && window.APP_CONFIG) {
+        splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
+      }
+      
       if (window.AppShell) AppShell.init();
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
