@@ -1,61 +1,62 @@
-const CACHE_NAME = 'zangenschlosser-app-v1.10.41';
-const urlsToCache = [
+// ============================================================================
+// ZANGENSCHLOSSER APP SERVICE WORKER (Dynamic Version via APP_CONFIG)
+// ============================================================================
+importScripts('./js/version.js');
+
+const CACHE_NAME = `zangenschlosser-app-${self.APP_CONFIG ? self.APP_CONFIG.version : 'fallback'}`;
+const ASSETS = [
+  './',
   './index.html',
-  './changelogs.js',
-  './js/zuschnitt.js',
-  './js/etagen.js',
-  './js/drehwinkel.js',
-  './js/tabellen.js',
+  './js/version.js',
   './js/shell.js',
-  './manifest.json',
-  'https://cdn.tailwindcss.com',
-  './img/icon-512.png',
-  './img/dr-zange.jpg',
-  './img/a-0.png',
-  './img/a-45.png',
-  './img/a-90.png',
-  './img/a-135.png',
-  './img/a-180.png',
-  './img/a-225.png',
-  './img/a-270.png',
-  './img/a-315.png',
-  './img/a-f.png',
-  './img/b-0.png',
-  './img/b-45.png',
-  './img/b-90.png',
-  './img/b-135.png',
-  './img/b-180.png',
-  './img/b-225.png',
-  './img/b-270.png',
-  './img/b-315.png'
+  './js/etagen.js',
+  './js/zuschnitt.js',
+  './js/drehwinkel.js',
+  './js/tabellen.js'
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
-  );
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS).catch((err) => {
+        console.warn('Nicht alle Assets konnten vorgecached werden:', err);
+      });
+    })
+  );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => response || fetch(event.request))
+    caches.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request).then((networkResponse) => {
+        return caches.open(CACHE_NAME).then((cache) => {
+          if (event.request.url.startsWith(self.location.origin)) {
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        });
+      }).catch(() => {
+        // Fallback für Navigation / Offline
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+      });
+    })
   );
 });
