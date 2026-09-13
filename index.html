@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.39
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.40 (Fixed Thumb-Dock)
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,12 +12,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <script src="changelogs.js?v=1.10.39"></script>
-  <script src="js/zuschnitt.js?v=1.10.39"></script>
-  <script src="js/etagen.js?v=1.10.39"></script>
-  <script src="js/drehwinkel.js?v=1.10.39"></script>
-  <script src="js/tabellen.js?v=1.10.39"></script>
-  <script src="js/shell.js?v=1.10.39"></script>
+  <script src="changelogs.js?v=1.10.40"></script>
+  <script src="js/zuschnitt.js?v=1.10.40"></script>
+  <script src="js/etagen.js?v=1.10.40"></script>
+  <script src="js/drehwinkel.js?v=1.10.40"></script>
+  <script src="js/tabellen.js?v=1.10.40"></script>
+  <script src="js/shell.js?v=1.10.40"></script>
   <style>
     .row-selected {
       outline: 2.5px solid #005691 !important;
@@ -311,9 +311,9 @@
       </section>
     </div>
 
-    <!-- MODUL 4: TABELLEN (Datengetrieben + Daumen-Nav unten) -->
-    <div id="view-eoform" class="app-view hidden space-y-4 flex-1 flex flex-col justify-between">
-      <div class="space-y-4 pb-20">
+    <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand) -->
+    <div id="view-eoform" class="app-view hidden space-y-4 flex-1 relative">
+      <div class="space-y-4 pb-28">
         <!-- Subview 1: Einstecktiefe Standard -->
         <section id="eo_sub_din" class="eo-sub-section bg-white p-5 rounded-2xl shadow-sm space-y-4">
           <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Grundmaße & Einstecktiefe (DIN 2353 / ISO 8434-1)</h2>
@@ -378,11 +378,13 @@
         </section>
       </div>
 
-      <!-- DAUMENFREUNDLICHE SUB-NAV AM UNTEREN RAND DES MODULES -->
-      <section class="sticky bottom-14 bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-lg border border-slate-200 flex gap-1 z-20">
-        <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
-        <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form L</button>
-        <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form-S</button>
+      <!-- FIXIERTES DAUMEN-DOCK ÜBER DER TAB-BAR -->
+      <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
+        <div class="bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto">
+          <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
+          <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form L</button>
+          <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form-S</button>
+        </div>
       </section>
     </div>
 
@@ -451,7 +453,7 @@
       <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
       <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-40" aria-label="Schließen">&times;</button>
       <div class="absolute bottom-0 right-0 bg-black/90 backdrop-blur-md text-white/95 text-[11px] font-mono px-3.5 py-1.5 rounded-tl-lg border-l border-t border-white/25 pointer-events-none z-30 shadow-xl">
-        v1.10.39 | 13.09.2026, 12:45 (MEZ)
+        v1.10.40 | 13.09.2026, 12:45 (MEZ)
       </div>
     </div>
   </div>
@@ -517,7 +519,6 @@
     </div>
   </div>
 
-  <!-- ULTRA-SLIM BOOTSTRAPPER -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       AppShell.init();
