@@ -1,8 +1,8 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / PERSISTENT SELECTION) v1.10.41
+// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / DREHMOMENT) v1.10.44
 // ============================================================================
 window.TabellenApp = (() => {
-  const STORAGE_KEY = 'zangenschlosser_table_selections_v1';
+  const STORAGE_KEY = 'zangenschlosser_table_selections_v2';
 
   const dinData = [
     { type: 'Leicht (L)', od: '6L', l1: '7,0 mm', nut: 'M12x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
@@ -101,6 +101,22 @@ window.TabellenApp = (() => {
     { od: '38S', s: '7.0', lStahl: '11.5', lEdel: '12.5', l1Stahl: '27.5', l1Edel: '28.5', l2: '', l3: '' }
   ];
 
+  const drehmomentData = [
+    { gewinde: 'M3',  nm88: '1,2',   nm109: '1,8',   nm129: '2,1' },
+    { gewinde: 'M4',  nm88: '2,9',   nm109: '4,1',   nm129: '4,9' },
+    { gewinde: 'M5',  nm88: '5,7',   nm109: '8,1',   nm129: '9,5' },
+    { gewinde: 'M6',  nm88: '9,8',   nm109: '14,0',  nm129: '16,5', bold: true },
+    { gewinde: 'M8',  nm88: '23,0',  nm109: '34,0',  nm129: '40,0', bold: true },
+    { gewinde: 'M10', nm88: '46,0',  nm109: '68,0',  nm129: '79,0', bold: true },
+    { gewinde: 'M12', nm88: '79,0',  nm109: '115,0', nm129: '135,0', bold: true },
+    { gewinde: 'M14', nm88: '125,0', nm109: '185,0', nm129: '215,0' },
+    { gewinde: 'M16', nm88: '195,0', nm109: '280,0', nm129: '330,0' },
+    { gewinde: 'M18', nm88: '270,0', nm109: '390,0', nm129: '460,0' },
+    { gewinde: 'M20', nm88: '380,0', nm109: '540,0', nm129: '635,0' },
+    { gewinde: 'M22', nm88: '510,0', nm109: '730,0', nm129: '855,0' },
+    { gewinde: 'M24', nm88: '655,0', nm109: '935,0', nm129: '1100,0' }
+  ];
+
   function getStoredSelections() {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
@@ -130,7 +146,7 @@ window.TabellenApp = (() => {
   }
 
   function applyAllStoredSelections() {
-    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s'].forEach(key => applyStoredSelectionsFor(key));
+    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s', 'eo_tbody_drehmoment'].forEach(key => applyStoredSelectionsFor(key));
   }
 
   function renderTables() {
@@ -179,6 +195,18 @@ window.TabellenApp = (() => {
       `).join('');
     }
 
+    const dmTbody = document.getElementById('eo_tbody_drehmoment');
+    if (dmTbody) {
+      dmTbody.innerHTML = drehmomentData.map(r => `
+        <tr class="bg-slate-50/50 hover:bg-slate-100/60 transition-colors">
+          <td class="py-2.5 px-3 font-bold ${r.bold ? 'text-indigo-700' : 'text-slate-800'}">${r.gewinde}</td>
+          <td class="py-2.5 px-3 font-mono font-semibold text-slate-800">${r.nm88}</td>
+          <td class="py-2.5 px-3 font-mono font-semibold text-amber-700">${r.nm109}</td>
+          <td class="py-2.5 px-3 font-mono font-semibold text-red-700">${r.nm129}</td>
+        </tr>
+      `).join('');
+    }
+
     applyAllStoredSelections();
   }
 
@@ -204,14 +232,20 @@ window.TabellenApp = (() => {
   }
 
   function initTableInteractions() {
-    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s'].forEach(bindPersistentTable);
+    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s', 'eo_tbody_drehmoment'].forEach(bindPersistentTable);
   }
 
   function switchEoSub(subKey) {
     document.querySelectorAll('.eo-sub-section').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('#view-eoform section button').forEach(btn => {
-      btn.classList.remove('bg-[#005691]', 'text-white', 'shadow-sm');
-      btn.classList.add('text-slate-600', 'hover:text-slate-900');
+    
+    // reset tab style for all 4 buttons
+    const btnIds = ['din', 'l', 's', 'drehmoment'];
+    btnIds.forEach(k => {
+      const btn = document.getElementById('eo_tab_' + k);
+      if (btn) {
+        btn.classList.remove('bg-[#005691]', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-600', 'hover:text-slate-900');
+      }
     });
 
     const targetSub = document.getElementById('eo_sub_' + subKey);
@@ -229,6 +263,7 @@ window.TabellenApp = (() => {
       if (subKey === 'din') badge.textContent = 'Einstecktiefe';
       if (subKey === 'l') badge.textContent = 'EO-Form L';
       if (subKey === 's') badge.textContent = 'EO-Form-S';
+      if (subKey === 'drehmoment') badge.textContent = 'Nm-Werte';
     }
   }
 
