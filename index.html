@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.35
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.36
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,10 +12,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <script src="changelogs.js?v=1.10.35"></script>
-  <script src="js/zuschnitt.js?v=1.10.35"></script>
-  <script src="js/etagen.js?v=1.10.35"></script>
-  <script src="js/drehwinkel.js?v=1.10.35"></script>
+  <script src="changelogs.js?v=1.10.36"></script>
+  <script src="js/zuschnitt.js?v=1.10.36"></script>
+  <script src="js/etagen.js?v=1.10.36"></script>
+  <script src="js/drehwinkel.js?v=1.10.36"></script>
+  <script src="js/tabellen.js?v=1.10.36"></script>
   <style>
     .row-selected {
       outline: 2.5px solid #005691 !important;
@@ -557,7 +558,7 @@
       <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-40" aria-label="Schließen">&times;</button>
 
       <div class="absolute bottom-0 right-0 bg-black/90 backdrop-blur-md text-white/95 text-[11px] font-mono px-3.5 py-1.5 rounded-tl-lg border-l border-t border-white/25 pointer-events-none z-30 shadow-xl">
-        v1.10.35 | 13.09.2026, 12:45 (MEZ)
+        v1.10.36 | 13.09.2026, 12:45 (MEZ)
       </div>
     </div>
   </div>
@@ -641,32 +642,6 @@
       switchApp(appName, appTitle);
     }
 
-    // Tabellen Segmented Sub-View Switcher
-    function switchEoSub(subKey) {
-      document.querySelectorAll('.eo-sub-section').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('#view-eoform section button').forEach(btn => {
-        btn.classList.remove('bg-[#005691]', 'text-white', 'shadow-sm');
-        btn.classList.add('text-slate-600', 'hover:text-slate-900');
-      });
-
-      const targetSub = document.getElementById('eo_sub_' + subKey);
-      if (targetSub) targetSub.classList.remove('hidden');
-
-      const activeBtn = document.getElementById('eo_tab_' + subKey);
-      if (activeBtn) {
-        activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900');
-        activeBtn.classList.add('bg-[#005691]', 'text-white', 'shadow-sm');
-      }
-
-      const badge = document.getElementById('header-badge');
-      if (badge) {
-        badge.classList.remove('hidden');
-        if (subKey === 'din') badge.textContent = 'Einstecktiefe';
-        if (subKey === 'l') badge.textContent = 'EO-Form L';
-        if (subKey === 's') badge.textContent = 'EO-Form-S';
-      }
-    }
-
     function checkInstallState() {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
       const installContainer = document.getElementById('install_container');
@@ -729,7 +704,7 @@
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.10.35", date: "13.09.2026, 12:45 (MEZ)", text: "Tabellen-Architektur & Modul-Entkopplung aktiv.", border: "border-indigo-500" }
+          { version: "v1.10.36", date: "13.09.2026, 12:45 (MEZ)", text: "Tabellen-Modul vollständig ausgelagert.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -757,7 +732,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.10.35</p>
+            <p class="text-xs text-slate-500">Version: v1.10.36</p>
           </div>
         `;
       }
@@ -800,26 +775,13 @@
       window.scrollTo(0, 0);
     }
 
-    // Init Touch-Outline / Row Selection für Tabellen-Modul
-    function initTableInteractions() {
-      document.querySelectorAll('#view-eoform tbody tr').forEach(row => {
-        row.style.cursor = 'pointer';
-        row.addEventListener('click', () => {
-          const tbody = row.closest('tbody');
-          tbody.querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
-          row.classList.add('row-selected');
-        });
-      });
-    }
-
     window.addEventListener('DOMContentLoaded', () => {
       checkInstallState();
       checkDailySplash();
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
       if (window.DrehwinkelApp) DrehwinkelApp.init();
-      switchEoSub('din');
-      initTableInteractions();
+      if (window.TabellenApp) TabellenApp.init();
     });
   </script>
 </body>
