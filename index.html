@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.29
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.31
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,7 +12,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <script src="changelogs.js?v=1.10.29"></script>
+  <script src="changelogs.js?v=1.10.31"></script>
+  <style>
+    .row-selected {
+      outline: 2.5px solid #005691 !important;
+      background-color: rgba(0, 86, 145, 0.16) !important;
+      position: relative;
+      z-index: 10;
+    }
+    .group-start-l td {
+      border-top: 2px solid #34d399 !important;
+    }
+    .group-start-s td {
+      border-top: 2px solid #f87171 !important;
+    }
+  </style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col m-0 p-0">
 
@@ -297,8 +311,8 @@
       <!-- Segmented Control Bar -->
       <section class="bg-white p-2 rounded-2xl shadow-sm first:mt-0 flex gap-1 border border-slate-200">
         <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
-        <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EU Form L</button>
-        <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EU Form S</button>
+        <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form L</button>
+        <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form-S</button>
       </section>
 
       <!-- Subview 1: Einstecktiefe Standard -->
@@ -316,34 +330,34 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">6L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M12x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">8L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">10L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">12L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">15L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">18L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M26x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">22L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">28L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">35L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M45x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">42L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">160 bar</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">6S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">8S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">10S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">12S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M20x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">14S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">16S</td><td class="py-2.5 px-2 font-mono">8,5 mm</td><td class="py-2.5 px-2">M24x1,5</td><td class="py-2.5 px-2">400 bar</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">20S</td><td class="py-2.5 px-2 font-mono">10,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">400 bar</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">25S</td><td class="py-2.5 px-2 font-mono">12,0 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">400 bar</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">30S</td><td class="py-2.5 px-2 font-mono">13,5 mm</td><td class="py-2.5 px-2">M42x2</td><td class="py-2.5 px-2">250 bar</td></tr>
-              <tr class="bg-slate-50"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">38S</td><td class="py-2.5 px-2 font-mono">16,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">250 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">6L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M12x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">8L</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">10L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">12L</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">15L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">18L</td><td class="py-2.5 px-2 font-mono">10,0 mm</td><td class="py-2.5 px-2">M26x1,5</td><td class="py-2.5 px-2">315 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">22L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">28L</td><td class="py-2.5 px-2 font-mono">11,5 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">35L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M45x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2.5 px-2">Leicht (L)</td><td class="py-2.5 px-2 font-bold">42L</td><td class="py-2.5 px-2 font-mono">14,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">160 bar</td></tr>
+              <tr class="bg-red-50/70 group-start-s"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">6S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M14x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">8S</td><td class="py-2.5 px-2 font-mono">7,0 mm</td><td class="py-2.5 px-2">M16x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">10S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M18x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">12S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M20x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">14S</td><td class="py-2.5 px-2 font-mono">7,5 mm</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">630 bar*</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">16S</td><td class="py-2.5 px-2 font-mono">8,5 mm</td><td class="py-2.5 px-2">M24x1,5</td><td class="py-2.5 px-2">400 bar</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">20S</td><td class="py-2.5 px-2 font-mono">10,5 mm</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">400 bar</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">25S</td><td class="py-2.5 px-2 font-mono">12,0 mm</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">400 bar</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">30S</td><td class="py-2.5 px-2 font-mono">13,5 mm</td><td class="py-2.5 px-2">M42x2</td><td class="py-2.5 px-2">250 bar</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2.5 px-2 font-bold text-slate-800">Schwer (S)</td><td class="py-2.5 px-2 font-bold text-indigo-700">38S</td><td class="py-2.5 px-2 font-mono">16,0 mm</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">250 bar</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- Subview 2: EU Form L -->
+      <!-- Subview 2: EO-FORM L -->
       <section id="eo_sub_l" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | Baureihe EU Form L Umformwerte</h2>
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form L Umformwerte</h2>
         <div class="overflow-x-auto max-h-[60vh]">
           <table class="w-full text-left text-xs border-collapse">
             <thead class="sticky top-0 bg-white z-10 shadow-xs">
@@ -358,61 +372,61 @@
                 <th class="py-2.5 px-2 bg-white">L₃</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-              <tr><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2" rowspan="2">90</td><td class="py-2 px-2" rowspan="2">63</td></tr>
-              <tr><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
+            <tbody class="divide-y divide-emerald-100 font-medium text-slate-700 bg-emerald-50/35">
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2" rowspan="2">90</td><td class="py-2 px-2" rowspan="2">63</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">6L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">65</td></tr>
-              <tr><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
+              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">65</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">8L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="3">95</td><td class="py-2 px-2" rowspan="3">68</td></tr>
-              <tr><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
+              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="3">95</td><td class="py-2 px-2" rowspan="3">68</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">10L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2" rowspan="3">95</td><td class="py-2 px-2" rowspan="3">70</td></tr>
-              <tr><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.5</td></tr>
+              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2" rowspan="3">95</td><td class="py-2 px-2" rowspan="3">70</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.5</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">12L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.5</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">102</td><td class="py-2 px-2" rowspan="4">75</td></tr>
-              <tr><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td></tr>
+              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">102</td><td class="py-2 px-2" rowspan="4">75</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.0</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">15L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">110</td><td class="py-2 px-2" rowspan="4">80</td></tr>
-              <tr><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">14.0</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">—</td></tr>
-              <tr><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.0</td></tr>
+              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">110</td><td class="py-2 px-2" rowspan="4">80</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">14.0</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">—</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">18L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.0</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">120</td><td class="py-2 px-2" rowspan="4">90</td></tr>
-              <tr><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">15.0</td></tr>
+              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="4">120</td><td class="py-2 px-2" rowspan="4">90</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.5</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">14.5</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">22L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">15.0</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="5">140</td><td class="py-2 px-2" rowspan="5">98</td></tr>
-              <tr><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">14.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">15.0</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">—</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">—</td></tr>
+              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="5">140</td><td class="py-2 px-2" rowspan="5">98</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">14.5</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">15.0</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.5</td><td class="py-2 px-2">—</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">28L</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2">—</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">19.0</td><td class="py-2 px-2" rowspan="3">170</td><td class="py-2 px-2" rowspan="3">115</td></tr>
-              <tr><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">18.0</td><td class="py-2 px-2">20.0</td></tr>
-              <tr><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">19.0</td><td class="py-2 px-2">21.0</td></tr>
+              <tr class="group-start-l bg-emerald-50/50"><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">19.0</td><td class="py-2 px-2" rowspan="3">170</td><td class="py-2 px-2" rowspan="3">115</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">18.0</td><td class="py-2 px-2">20.0</td></tr>
+              <tr class="bg-emerald-50/50"><td class="py-2 px-2 font-bold">35L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">19.0</td><td class="py-2 px-2">21.0</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2" rowspan="4">190</td><td class="py-2 px-2" rowspan="4">125</td></tr>
-              <tr><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">21.0</td><td class="py-2 px-2">—</td></tr>
+              <tr class="group-start-l bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">7.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2" rowspan="4">190</td><td class="py-2 px-2" rowspan="4">125</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">10.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
+              <tr class="bg-emerald-50/70"><td class="py-2 px-2 font-bold">42L</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">21.0</td><td class="py-2 px-2">—</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- Subview 3: EU Form S -->
+      <!-- Subview 3: EO-Form-S -->
       <section id="eo_sub_s" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | Baureihe EU Form S Umformwerte</h2>
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form-S Umformwerte</h2>
         <div class="overflow-x-auto max-h-[60vh]">
           <table class="w-full text-left text-xs border-collapse">
             <thead class="sticky top-0 bg-white z-10 shadow-xs">
@@ -427,46 +441,46 @@
                 <th class="py-2.5 px-2 bg-white">L₃</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-              <tr><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">65</td></tr>
-              <tr><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
+            <tbody class="divide-y divide-red-100 font-medium text-slate-700 bg-red-50/35">
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">65</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">13.0</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">6S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">68</td></tr>
-              <tr><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
+              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">1.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2" rowspan="2">92</td><td class="py-2 px-2" rowspan="2">68</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">12.5</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">8S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2"></td><td class="py-2 px-2"></td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">10S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="2">100</td><td class="py-2 px-2" rowspan="2">70</td></tr>
-              <tr><td class="py-2 px-2 font-bold">10S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td></tr>
+              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">10S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2" rowspan="2">100</td><td class="py-2 px-2" rowspan="2">70</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">10S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">13.5</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2" rowspan="4">100</td><td class="py-2 px-2" rowspan="4">72</td></tr>
-              <tr><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">13.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">13.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.0</td></tr>
+              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">1.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">14.0</td><td class="py-2 px-2" rowspan="4">100</td><td class="py-2 px-2" rowspan="4">72</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">13.5</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">13.5</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">12S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">4.5</td><td class="py-2 px-2">12.0</td><td class="py-2 px-2">12.0</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">15.0</td><td class="py-2 px-2" rowspan="3">135</td><td class="py-2 px-2" rowspan="3">98</td></tr>
-              <tr><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">15.0</td></tr>
-              <tr><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">15.0</td></tr>
+              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">15.0</td><td class="py-2 px-2" rowspan="3">135</td><td class="py-2 px-2" rowspan="3">98</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">5.5</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.5</td><td class="py-2 px-2">15.0</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">16S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">6.5</td><td class="py-2 px-2">13.0</td><td class="py-2 px-2">15.0</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2" rowspan="4">155</td><td class="py-2 px-2" rowspan="4">112</td></tr>
-              <tr><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td></tr>
-              <tr class="bg-slate-50/50"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">3.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">—</td></tr>
+              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td><td class="py-2 px-2" rowspan="4">155</td><td class="py-2 px-2" rowspan="4">112</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">18.5</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">20S</td><td class="py-2 px-2">3.5</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">—</td><td class="py-2 px-2">17.5</td><td class="py-2 px-2">—</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2" rowspan="4">140</td><td class="py-2 px-2" rowspan="4">98</td></tr>
-              <tr><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">21.0</td></tr>
-              <tr><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">21.5</td></tr>
+              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">2.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2" rowspan="4">140</td><td class="py-2 px-2" rowspan="4">98</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">2.5</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">21.0</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">20.0</td><td class="py-2 px-2">21.5</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">25S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">20.5</td><td class="py-2 px-2">21.5</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">22.0</td><td class="py-2 px-2">23.0</td><td class="py-2 px-2" rowspan="3">165</td><td class="py-2 px-2" rowspan="3">122</td></tr>
-              <tr><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">23.0</td><td class="py-2 px-2">23.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">22.0</td><td class="py-2 px-2">22.5</td></tr>
+              <tr class="group-start-s bg-red-50/50"><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">22.0</td><td class="py-2 px-2">23.0</td><td class="py-2 px-2" rowspan="3">165</td><td class="py-2 px-2" rowspan="3">122</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">23.0</td><td class="py-2 px-2">23.5</td></tr>
+              <tr class="bg-red-50/50"><td class="py-2 px-2 font-bold">30S</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">8.5</td><td class="py-2 px-2">9.0</td><td class="py-2 px-2">22.0</td><td class="py-2 px-2">22.5</td></tr>
 
-              <tr><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">26.0</td><td class="py-2 px-2">25.5</td><td class="py-2 px-2" rowspan="5">190</td><td class="py-2 px-2" rowspan="5">135</td></tr>
-              <tr><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">11.0</td><td class="py-2 px-2">26.0</td><td class="py-2 px-2">27.0</td></tr>
-              <tr><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">11.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.0</td><td class="py-2 px-2">28.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.5</td><td class="py-2 px-2">28.5</td></tr>
-              <tr><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.5</td><td class="py-2 px-2">28.5</td></tr>
+              <tr class="group-start-s bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">3.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">9.5</td><td class="py-2 px-2">26.0</td><td class="py-2 px-2">25.5</td><td class="py-2 px-2" rowspan="5">190</td><td class="py-2 px-2" rowspan="5">135</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">4.0</td><td class="py-2 px-2">10.0</td><td class="py-2 px-2">11.0</td><td class="py-2 px-2">26.0</td><td class="py-2 px-2">27.0</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">5.0</td><td class="py-2 px-2">11.0</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.0</td><td class="py-2 px-2">28.5</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">6.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.5</td><td class="py-2 px-2">28.5</td></tr>
+              <tr class="bg-red-50/70"><td class="py-2 px-2 font-bold">38S</td><td class="py-2 px-2">7.0</td><td class="py-2 px-2">11.5</td><td class="py-2 px-2">12.5</td><td class="py-2 px-2">27.5</td><td class="py-2 px-2">28.5</td></tr>
             </tbody>
           </table>
         </div>
@@ -541,7 +555,7 @@
       <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-40" aria-label="Schließen">&times;</button>
 
       <div class="absolute bottom-0 right-0 bg-black/90 backdrop-blur-md text-white/95 text-[11px] font-mono px-3.5 py-1.5 rounded-tl-lg border-l border-t border-white/25 pointer-events-none z-30 shadow-xl">
-        v1.10.29 | 13.09.2026, 12:05
+        v1.10.31 | 13.09.2026, 12:15 (MEZ)
       </div>
     </div>
   </div>
@@ -646,8 +660,8 @@
       if (badge) {
         badge.classList.remove('hidden');
         if (subKey === 'din') badge.textContent = 'Einstecktiefe';
-        if (subKey === 'l') badge.textContent = 'EU Form L';
-        if (subKey === 's') badge.textContent = 'EU Form S';
+        if (subKey === 'l') badge.textContent = 'EO-Form L';
+        if (subKey === 's') badge.textContent = 'EO-Form-S';
       }
     }
 
@@ -713,7 +727,7 @@
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.10.29", date: "13.09.2026, 12:05 (MEZ)", text: "Tabellen-Architektur aktiv.", border: "border-indigo-500" }
+          { version: "v1.10.31", date: "13.09.2026, 12:15 (MEZ)", text: "Tabellen-Architektur aktiv.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -741,7 +755,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.10.29</p>
+            <p class="text-xs text-slate-500">Version: v1.10.31</p>
           </div>
         `;
       }
@@ -1320,6 +1334,18 @@
       return { init };
     })();
 
+    // Init Touch-Outline / Row Selection für Tabellen-Modul
+    function initTableInteractions() {
+      document.querySelectorAll('#view-eoform tbody tr').forEach(row => {
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', () => {
+          const tbody = row.closest('tbody');
+          tbody.querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
+          row.classList.add('row-selected');
+        });
+      });
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       checkInstallState();
       checkDailySplash();
@@ -1327,6 +1353,7 @@
       ZuschnittApp.init();
       DrehwinkelApp.init();
       switchEoSub('din');
+      initTableInteractions();
     });
   </script>
 </body>
