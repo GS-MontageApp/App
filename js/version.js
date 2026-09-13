@@ -2,8 +2,8 @@
 // SINGLE SOURCE OF TRUTH: VERSION & BUILD
 // ============================================================================
 const APP_CONFIG = {
-  version: 'v1.10.44',
-  date: '13.09.2026, 19:15 (MEZ)'
+  version: 'v1.10.45',
+  date: '13.09.2026, 19:23 (MEZ)'
 };
 
 // Global export for Window (Browser) and ServiceWorker (self)
