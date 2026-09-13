@@ -3,7 +3,7 @@
 // ============================================================================
 window.allLogbooks = {
   master: [
-    { version: "v1.10.35", date: "13.09.2026, 12:30 (MEZ)", text: "Vollständige Rekonstruktion und Integration aller Einzel-Logbücher (Etagenrechner, Zuschnittsrechner, Verdrehwinkel, Tabellen). Sub-Tab-Bar unten platziert, LocalStorage Row-Persistence & whitespace-nowrap aktiv.", border: "border-indigo-500" },
+    { version: "v1.10.99", date: "13.09.2026, 12:30 (MEZ)", text: "Vollständige Rekonstruktion und Integration aller Einzel-Logbücher (Etagenrechner, Zuschnittsrechner, Verdrehwinkel, Tabellen). Sub-Tab-Bar unten platziert, LocalStorage Row-Persistence & whitespace-nowrap aktiv.", border: "border-indigo-500" },
     { version: "v1.10.34", date: "13.09.2026, 12:25 (MEZ)", text: "Sub-Tab-Bar (Einstecktiefe, EO-Form L, EO-Form-S) an den daumengerechten Fuß des Tabellen-Views verlegt; Einstecktiefe-Tabelle mit whitespace-nowrap; LocalStorage Row-Persistence aktiviert.", border: "border-indigo-500" },
     { version: "v1.10.33", date: "13.09.2026, 12:22 (MEZ)", text: "Persistente Tabellenzeilen-Auswahl via LocalStorage bei Seiten-Reload ergänzt.", border: "border-slate-400" },
     { version: "v1.10.32", date: "13.09.2026, 12:20 (MEZ)", text: "Einstecktiefe-Tabelle mit whitespace-nowrap gegen Textumbrüche auf mobilen Geräten ausgestattet.", border: "border-slate-400" },
