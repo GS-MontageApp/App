@@ -19,3 +19,12 @@ if (appName === 'drehwinkel') {
   // Event/Resize triggern falls Dials Maße brauchen
   window.dispatchEvent(new Event('resize'));
 }
+// Entweder beim globalen Start:
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof ZuschnittApp !== 'undefined' && ZuschnittApp.init) {
+    ZuschnittApp.init();
+  }
+  if (typeof DrehwinkelApp !== 'undefined' && DrehwinkelApp.init) {
+    DrehwinkelApp.init();
+  }
+});
