@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.43)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.44)
 // ============================================================================
 window.AppShell = (() => {
   function checkDailySplash() {
@@ -81,7 +81,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-        { version: "v1.10.43", date: "13.09.2026, 18:45 (MEZ)", text: "Layout-Bereinigung und Badge-Entfernung.", border: "border-indigo-500" }
+        { version: "v1.10.44", date: "13.09.2026, 19:00 (MEZ)", text: "Integration der Drehmomenttabelle für 8.8, 10.9 und 12.9 Schrauben.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -109,7 +109,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.43</p>
+          <p class="text-xs text-slate-500">Version: v1.10.44</p>
         </div>
       `;
     }
