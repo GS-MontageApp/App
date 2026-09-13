@@ -138,11 +138,11 @@ window.TabellenApp = (() => {
     if (dinTbody) {
       dinTbody.innerHTML = dinData.map(r => `
         <tr class="${r.cls || ''}">
-          <td class="py-2.5 px-2 ${r.bold ? 'font-bold text-slate-800' : ''}">${r.type}</td>
-          <td class="py-2.5 px-2 font-bold ${r.od.endsWith('S') ? 'text-indigo-700' : ''}">${r.od}</td>
-          <td class="py-2.5 px-2 font-mono">${r.l1}</td>
-          <td class="py-2.5 px-2">${r.nut}</td>
-          <td class="py-2.5 px-2">${r.pn}</td>
+          <td class="py-2.5 px-3 ${r.bold ? 'font-bold text-slate-800' : ''}">${r.type}</td>
+          <td class="py-2.5 px-3 font-bold ${r.od.endsWith('S') ? 'text-indigo-700' : ''}">${r.od}</td>
+          <td class="py-2.5 px-3 font-mono">${r.l1}</td>
+          <td class="py-2.5 px-3">${r.nut}</td>
+          <td class="py-2.5 px-3">${r.pn}</td>
         </tr>
       `).join('');
     }
@@ -223,12 +223,12 @@ window.TabellenApp = (() => {
       activeBtn.classList.add('bg-[#005691]', 'text-white', 'shadow-sm');
     }
 
-    const badge = document.getElementById('header-badge');
-    if (badge) {
-      badge.classList.remove('hidden');
-      if (subKey === 'din') badge.textContent = 'Einstecktiefe';
-      if (subKey === 'l') badge.textContent = 'EO-Form L';
-      if (subKey === 's') badge.textContent = 'EO-Form-S';
+    const headerTitle = document.getElementById('header-title');
+    if (headerTitle) {
+      let subName = 'Einstecktiefe';
+      if (subKey === 'l') subName = 'EO-FORM L';
+      if (subKey === 's') subName = 'EO-FORM S';
+      headerTitle.textContent = `Tabellen | ${subName}`;
     }
   }
 
