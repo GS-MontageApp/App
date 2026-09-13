@@ -1,56 +1,120 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL VERDREHWINKEL (Raum-Trigonometrie v1.10.65)
+// ZANGENSCHLOSSER-APP: MODUL VERDREHWINKEL
 // ============================================================================
 window.DrehwinkelApp = (() => {
-  function parseVal(id) {
-    const el = document.getElementById(id);
-    if (!el || !el.value) return 0;
-    const num = parseFloat(el.value.replace(',', '.'));
-    return isNaN(num) ? 0 : num;
-  }
+  const assets = {
+    'a-0': 'img/a-0.png', 'a-45': 'img/a-45.png', 'a-90': 'img/a-90.png', 'a-135': 'img/a-135.png',
+    'a-180': 'img/a-180.png', 'a-225': 'img/a-225.png', 'a-270': 'img/a-270.png', 'a-315': 'img/a-315.png',
+    'a-f': 'img/a-f.png', 'b-0': 'img/b-0.png', 'b-45': 'img/b-45.png', 'b-90': 'img/b-90.png',
+    'b-135': 'img/b-135.png', 'b-180': 'img/b-180.png', 'b-225': 'img/b-225.png', 'b-270': 'img/b-270.png',
+    'b-315': 'img/b-315.png', 'b-f': 'img/b-0.png'
+  };
 
-  function formatDeg(val) {
-    if (isNaN(val)) return '0,0 °';
-    return val.toFixed(1).replace('.', ',') + ' °';
-  }
-
-  function calculate() {
-    const v1 = parseVal('dw_v1'); // Höhenversatz Ebene 1
-    const h1 = parseVal('dw_h1'); // Seitenversatz Ebene 1
-    const v2 = parseVal('dw_v2'); // Höhenversatz Ebene 2
-    const h2 = parseVal('dw_h2'); // Seitenversatz Ebene 2
-
-    // Raumwinkel / Projektionsvektoren je Ebene
-    const angle1 = h1 !== 0 || v1 !== 0 ? Math.atan2(v1, h1) * (180 / Math.PI) : 0;
-    const angle2 = h2 !== 0 || v2 !== 0 ? Math.atan2(v2, h2) * (180 / Math.PI) : 0;
-
-    // Relativer Verdrehwinkel zwischen den beiden Raumebenen
-    let twist = Math.abs(angle2 - angle1);
-    while (twist > 180) twist = 360 - twist;
-
-    // Differenzvektor Raummaß (Spatial Hypotenuse projection)
-    const totalV = Math.sqrt(v1*v1 + v2*v2);
-    const totalH = Math.sqrt(h1*h1 + h2*h2);
-    const spatialTwist = (totalH !== 0 || totalV !== 0) ? Math.atan2(totalV, totalH) * (180 / Math.PI) : 0;
-
-    // DOM Updates
-    const outTwist = document.getElementById('dw_out_twist');
-    const outVec1 = document.getElementById('dw_out_vec1');
-    const outVec2 = document.getElementById('dw_out_vec2');
-
-    if (outTwist) outTwist.textContent = formatDeg(twist);
-    if (outVec1) outVec1.textContent = formatDeg(angle1);
-    if (outVec2) outVec2.textContent = formatDeg(angle2);
-  }
+  let state = { angleA: 0, angleB: 0, isGeradeA: true };
+  const gueltigeWerte = [0, 45, 90, 135, 180, 225, 270, 315];
 
   function init() {
-    const inputs = ['dw_v1', 'dw_h1', 'dw_v2', 'dw_h2'];
-    inputs.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', calculate);
+    const btnGerade = document.getElementById('dw_btn_gerade');
+    const btn90 = document.getElementById('dw_btn_90');
+    if (btnGerade) btnGerade.addEventListener('click', () => setAnschlussAType('gerade'));
+    if (btn90) btn90.addEventListener('click', () => setAnschlussAType('90'));
+
+    document.querySelectorAll('.dw-dial').forEach(dial => {
+      let isDragging = false;
+      dial.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        dial.setPointerCapture(e.pointerId);
+        handleInteraction(e, dial);
+      });
+      dial.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        handleInteraction(e, dial);
+      });
+      dial.addEventListener('pointerup', (e) => {
+        isDragging = false;
+        if (dial.hasPointerCapture(e.pointerId)) {
+          dial.releasePointerCapture(e.pointerId);
+        }
+      });
     });
-    calculate();
+
+    setAnschlussAType('gerade');
+    updateVisualisierung('a', 0);
+    updateVisualisierung('b', 0);
   }
 
-  return { init, calculate };
+  function updateGallery() {
+    let keyA = state.isGeradeA ? 'a-f' : `a-${state.angleA}`;
+    const imgA = document.getElementById('dw_img_a');
+    if (imgA) imgA.src = assets[keyA] || assets['a-f'];
+    let keyB = `b-${state.angleB}`;
+    const imgB = document.getElementById('dw_img_b');
+    if (imgB) imgB.src = assets[keyB] || assets['b-0'];
+  }
+
+  function setAnschlussAType(type) {
+    state.isGeradeA = (type === 'gerade');
+    const dialA = document.getElementById('dw_dial_a');
+    const outA = document.getElementById('dw_out_a');
+    const btnGerade = document.getElementById('dw_btn_gerade');
+    const btn90 = document.getElementById('dw_btn_90');
+
+    if (state.isGeradeA) {
+      if (dialA) { dialA.style.opacity = '0.4'; dialA.style.pointerEvents = 'none'; }
+      if (btnGerade) btnGerade.className = 'flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center';
+      if (btn90) btn90.className = 'flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center';
+      if (outA) { outA.textContent = '0°'; outA.className = 'text-base font-extrabold text-slate-400 font-mono w-16 text-center transition-all'; }
+    } else {
+      if (dialA) { dialA.style.opacity = '1'; dialA.style.pointerEvents = 'auto'; }
+      if (btn90) btn90.className = 'flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center';
+      if (btnGerade) btnGerade.className = 'flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center';
+      if (outA) { outA.textContent = state.angleA + '°'; outA.className = 'text-base font-extrabold text-[#005691] font-mono w-16 text-center transition-all'; }
+    }
+    updateGallery();
+  }
+
+  function updateVisualisierung(anschluss, grad) {
+    const radius = 85;
+    let mappedDeg = (360 - grad + 180) % 360;
+    let rad = (mappedDeg - 90) * (Math.PI / 180);
+
+    const endX = 100 + radius * Math.cos(rad);
+    const endY = 100 + radius * Math.sin(rad);
+
+    if (anschluss === 'a') {
+      state.angleA = grad;
+      const outA = document.getElementById('dw_out_a');
+      if (!state.isGeradeA && outA) outA.textContent = grad + '°';
+      let pointer = document.querySelector('#dw_dial_a line');
+      if (pointer) { pointer.setAttribute('x2', endX); pointer.setAttribute('y2', endY); }
+    } else {
+      state.angleB = grad;
+      const outB = document.getElementById('dw_out_b');
+      if (outB) outB.textContent = grad + '°';
+      let pointer = document.querySelector('#dw_dial_b line');
+      if (pointer) { pointer.setAttribute('x2', endX); pointer.setAttribute('y2', endY); }
+    }
+    updateGallery();
+  }
+
+  function handleInteraction(e, dialElement) {
+    const rect = dialElement.getBoundingClientRect();
+    const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+    const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+
+    const dx = clientX - (rect.left + rect.width / 2);
+    const dy = clientY - (rect.top + rect.height / 2);
+
+    let userDeg = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+    if (userDeg < 0) userDeg += 360;
+    if (userDeg >= 360) userDeg -= 360;
+    userDeg = (360 - userDeg + 180) % 360;
+
+    let naechsterSchritt = gueltigeWerte.reduce((prev, curr) => (Math.abs(curr - userDeg) < Math.abs(prev - userDeg) ? curr : prev));
+    if (userDeg >= 337.5 || userDeg < 22.5) naechsterSchritt = 0;
+
+    updateVisualisierung(dialElement.dataset.anschluss, naechsterSchritt);
+  }
+
+  return { init };
 })();
