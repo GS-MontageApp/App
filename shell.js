@@ -1,43 +1,7 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.48)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.49)
 // ============================================================================
-
-// Globale Funktion SOFORT im Window-Scope registrieren, damit onclick niemals fehlschlägt
-window.setTheme = function(themeName) {
-  const body = document.body;
-  if (!body) return;
-  
-  const btnStandard = document.getElementById('theme_btn_standard');
-  const btnGs = document.getElementById('theme_btn_gs');
-
-  if (themeName === 'gs') {
-    body.classList.add('theme-gs');
-    if (btnGs) {
-      btnGs.className = 'p-2.5 rounded-xl text-xs font-bold border-2 border-yellow-400 bg-slate-900 text-yellow-400 shadow-md transition-all text-center';
-    }
-    if (btnStandard) {
-      btnStandard.className = 'p-2.5 rounded-xl text-xs font-bold border border-slate-600 bg-slate-800 text-slate-300 transition-all text-center';
-    }
-  } else {
-    body.classList.remove('theme-gs');
-    if (btnStandard) {
-      btnStandard.className = 'p-2.5 rounded-xl text-xs font-bold border-2 border-indigo-600 bg-white text-indigo-700 shadow-md transition-all text-center';
-    }
-    if (btnGs) {
-      btnGs.className = 'p-2.5 rounded-xl text-xs font-bold border border-slate-300 bg-slate-100 text-slate-700 transition-all text-center';
-    }
-  }
-  localStorage.setItem('zangenschlosser_theme_v1', themeName);
-};
-
 window.AppShell = (() => {
-  const THEME_STORAGE_KEY = 'zangenschlosser_theme_v1';
-
-  function initTheme() {
-    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'standard';
-    window.setTheme(savedTheme);
-  }
-
   function checkDailySplash() {
     document.getElementById('daily_splash_modal')?.classList.remove('hidden');
   }
@@ -101,8 +65,8 @@ window.AppShell = (() => {
 
   function openTopMenu() { 
     checkInstallState();
-    const currentTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'standard';
-    window.setTheme(currentTheme);
+    const currentTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'standard';
+    if (window.setTheme) window.setTheme(currentTheme);
     document.getElementById('top_menu_modal')?.classList.remove('hidden'); 
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
@@ -119,7 +83,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-        { version: "v1.10.48", date: "13.09.2026, 20:05 (MEZ)", text: "Globale Window-Fixierung für setTheme-Umschalter.", border: "border-indigo-500" }
+        { version: "v1.10.49", date: "13.09.2026, 20:08 (MEZ)", text: "Zentrales Head-Script für setTheme zur Behebung von Referenzfehlern.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -147,7 +111,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.48</p>
+          <p class="text-xs text-slate-500">Version: v1.10.49</p>
         </div>
       `;
     }
@@ -187,12 +151,10 @@ window.AppShell = (() => {
     checkInstallState();
     checkDailySplash();
     initServiceWorker();
-    initTheme();
   }
 
   return {
     init,
-    initTheme,
     checkDailySplash, closeDailySplash,
     openMehrModal, closeMehrModal, selectMehrItem,
     installPWA, openTopMenu, closeTopMenu,
