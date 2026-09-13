@@ -1,7 +1,9 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM L / EO-FORM-S) v1.10.39
+// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / PERSISTENT SELECTION) v1.10.41
 // ============================================================================
 window.TabellenApp = (() => {
+  const STORAGE_KEY = 'zangenschlosser_table_selections_v1';
+
   const dinData = [
     { type: 'Leicht (L)', od: '6L', l1: '7,0 mm', nut: 'M12x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
     { type: 'Leicht (L)', od: '8L', l1: '7,0 mm', nut: 'M14x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
@@ -99,6 +101,38 @@ window.TabellenApp = (() => {
     { od: '38S', s: '7.0', lStahl: '11.5', lEdel: '12.5', l1Stahl: '27.5', l1Edel: '28.5', l2: '', l3: '' }
   ];
 
+  function getStoredSelections() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveStoredSelection(tableKey, rowIndex) {
+    const sels = getStoredSelections();
+    sels[tableKey] = rowIndex;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sels));
+  }
+
+  function applyStoredSelectionsFor(tableKey) {
+    const tbody = document.getElementById(tableKey);
+    if (!tbody) return;
+    const sels = getStoredSelections();
+    const storedIndex = sels[tableKey];
+    if (storedIndex !== undefined) {
+      const rows = tbody.querySelectorAll('tr');
+      rows.forEach(r => r.classList.remove('row-selected'));
+      if (rows[storedIndex]) {
+        rows[storedIndex].classList.add('row-selected');
+      }
+    }
+  }
+
+  function applyAllStoredSelections() {
+    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s'].forEach(key => applyStoredSelectionsFor(key));
+  }
+
   function renderTables() {
     const dinTbody = document.getElementById('eo_tbody_din');
     if (dinTbody) {
@@ -144,6 +178,33 @@ window.TabellenApp = (() => {
         </tr>
       `).join('');
     }
+
+    applyAllStoredSelections();
+  }
+
+  function bindPersistentTable(tableKey) {
+    const tbody = document.getElementById(tableKey);
+    if (!tbody || tbody.dataset.persistentBound) return;
+    tbody.dataset.persistentBound = 'true';
+    tbody.style.cursor = 'pointer';
+
+    tbody.addEventListener('click', (e) => {
+      const row = e.target.closest('tr');
+      if (!row || !tbody.contains(row)) return;
+
+      tbody.querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
+      row.classList.add('row-selected');
+
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const index = rows.indexOf(row);
+      saveStoredSelection(tableKey, index);
+    });
+
+    applyStoredSelectionsFor(tableKey);
+  }
+
+  function initTableInteractions() {
+    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s'].forEach(bindPersistentTable);
   }
 
   function switchEoSub(subKey) {
@@ -171,24 +232,13 @@ window.TabellenApp = (() => {
     }
   }
 
-  function initTableInteractions() {
-    document.querySelectorAll('#view-eoform tbody tr').forEach(row => {
-      row.style.cursor = 'pointer';
-      row.addEventListener('click', () => {
-        const tbody = row.closest('tbody');
-        tbody.querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
-        row.classList.add('row-selected');
-      });
-    });
-  }
-
   function init() {
     renderTables();
     initTableInteractions();
     switchEoSub('din');
   }
 
-  return { init, switchEoSub };
+  return { init, switchEoSub, bindPersistentTable };
 })();
 
 window.switchEoSub = (subKey) => window.TabellenApp.switchEoSub(subKey);
