@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.9.8
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.0
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,8 +12,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <!-- Cache-Buster Parameter -->
-  <script src="changelogs.js?v=1.9.8"></script>
+  <script src="changelogs.js?v=1.10.0"></script>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-24 md:pb-16 flex flex-col justify-between">
 
@@ -21,14 +20,14 @@
   <header class="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner</h1>
-      <button onclick="openTopMenu()" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center gap-1 text-xs font-semibold">
-        <span class="text-base">⚙️</span> Menü
+      <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
+        ⚙️
       </button>
     </div>
   </header>
 
-  <!-- Hauptcontainer -->
-  <div class="max-w-3xl mx-auto space-y-4 w-full p-3 md:p-6">
+  <!-- Hauptcontainer (Globaler Top-Abstand halbiert: pt-1.5 md:pt-3) -->
+  <div class="max-w-3xl mx-auto space-y-4 w-full pt-1.5 pb-3 px-3 md:pt-3 md:pb-6 md:px-6">
     
     <!-- MODUL 1: ETAGENRECHNER -->
     <div id="view-etagen" class="app-view space-y-5">
@@ -87,9 +86,10 @@
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
         <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
         <div class="space-y-3">
+          <!-- Nachziehlänge harmonisiert auf text-xl -->
           <div class="p-4 bg-pink-50 rounded-xl border-l-4 border-pink-500 shadow-sm">
             <div class="text-xs font-bold text-pink-800 uppercase tracking-wider">Nachziehlänge (NZ)</div>
-            <div id="etagen_out_t" class="text-2xl font-bold text-pink-950 mt-0.5">0 mm</div>
+            <div id="etagen_out_t" class="text-xl font-bold text-pink-950 mt-0.5">0 mm</div>
           </div>
           <div class="p-4 bg-red-50/50 rounded-xl border-l-4 border-red-500">
             <div class="text-xs font-semibold text-red-800 uppercase tracking-wider">Kombinierter Raumversatz (C)</div>
@@ -287,31 +287,31 @@
       </section>
     </div>
 
-    <!-- DUMMIES: FOOBAR 1, 2, 3 -->
+    <!-- MODULE 4 & OVERFLOW (FOOBAR 1, 2, 3) -->
     <div id="view-foobar1" class="app-view hidden space-y-4">
       <section class="bg-white p-8 rounded-2xl shadow-sm text-center space-y-3">
         <div class="text-4xl">🚧</div>
-        <h2 class="text-xl font-bold text-slate-700">Foobar 1 (Platzhalter)</h2>
+        <h2 class="text-xl font-bold text-slate-700">Foobar 1 (Haupttab 4)</h2>
       </section>
     </div>
     <div id="view-foobar2" class="app-view hidden space-y-4">
       <section class="bg-white p-8 rounded-2xl shadow-sm text-center space-y-3">
         <div class="text-4xl">🚧</div>
-        <h2 class="text-xl font-bold text-slate-700">Foobar 2 (Platzhalter)</h2>
+        <h2 class="text-xl font-bold text-slate-700">Foobar 2 (Mehr-Menü)</h2>
       </section>
     </div>
     <div id="view-foobar3" class="app-view hidden space-y-4">
       <section class="bg-white p-8 rounded-2xl shadow-sm text-center space-y-3">
         <div class="text-4xl">🚧</div>
-        <h2 class="text-xl font-bold text-slate-700">Foobar 3 (Platzhalter)</h2>
+        <h2 class="text-xl font-bold text-slate-700">Foobar 3 (Mehr-Menü)</h2>
       </section>
     </div>
 
   </div>
 
-  <!-- Bottom Tab Bar -->
+  <!-- Bottom Tab Bar (4 Haupttabs + 1 Mehr-Tab = grid-cols-5) -->
   <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1">
-    <div class="max-w-3xl mx-auto grid grid-cols-6 gap-1 text-center">
+    <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 text-center">
       <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 transition-colors">
         <span class="text-lg">📐</span><span class="text-[10px] font-semibold truncate w-full">Etage</span>
       </button>
@@ -324,25 +324,38 @@
       <button onclick="switchApp('foobar1', 'Foobar 1')" id="nav-foobar1" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">📌</span><span class="text-[10px] font-semibold truncate w-full">Foobar 1</span>
       </button>
-      <button onclick="switchApp('foobar2', 'Foobar 2')" id="nav-foobar2" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="text-lg">📌</span><span class="text-[10px] font-semibold truncate w-full">Foobar 2</span>
-      </button>
-      <button onclick="switchApp('foobar3', 'Foobar 3')" id="nav-foobar3" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
-        <span class="text-lg">📌</span><span class="text-[10px] font-semibold truncate w-full">Foobar 3</span>
+      <button onclick="openMehrModal()" id="nav-mehr" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">⋯</span><span class="text-[10px] font-semibold truncate w-full">Mehr</span>
       </button>
     </div>
   </footer>
 
-  <!-- Startbild / Splash-Screen Modal -->
+  <!-- Mehr-Modal (Overflow / Action Sheet für Tab 5) -->
+  <div id="mehr_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end justify-center p-0">
+    <div class="bg-white rounded-t-3xl p-5 max-w-lg w-full space-y-3 text-slate-800 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="font-bold text-base text-slate-700">Weitere Module (Mehr)</h3>
+        <button onclick="closeMehrModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div class="space-y-2">
+        <button onclick="selectMehrItem('foobar2', 'Foobar 2')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+          <span>📌 Foobar 2</span><span class="text-slate-400">&rsaquo;</span>
+        </button>
+        <button onclick="selectMehrItem('foobar3', 'Foobar 3')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+          <span>📌 Foobar 3</span><span class="text-slate-400">&rsaquo;</span>
+        </button>
+      </div>
+      <button onclick="closeMehrModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors mt-2">
+        Abbrechen
+      </button>
+    </div>
+  </div>
+
+  <!-- Startbild / Splash-Screen Modal (Testmodus: bei jedem Start) -->
   <div id="daily_splash_modal" class="fixed inset-0 bg-black z-50 flex items-center justify-center p-0">
     <div class="relative w-full h-full max-w-lg max-h-screen bg-slate-950 flex items-center justify-center overflow-hidden">
-      <!-- Das Bild als Vollbild -->
       <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
-      
-      <!-- Unsichtbarer Klick-Button exakt über dem Handy im Bild (Prozentual positioniert) -->
       <button onclick="closeDailySplash()" title="App starten" class="absolute left-[5%] top-[15%] w-[42%] h-[40%] cursor-pointer opacity-0 bg-red-500 hover:opacity-25 transition-opacity z-20" aria-label="App starten"></button>
-
-      <!-- X-Button rechts unten -->
       <button onclick="closeDailySplash()" class="absolute bottom-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-30" aria-label="Schließen">&times;</button>
     </div>
   </div>
@@ -354,10 +367,7 @@
         <h3 class="font-bold text-lg text-indigo-600">⚙️ Zangenschlosser App</h3>
         <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
-
       <div class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 divide-y divide-slate-100">
-        
-        <!-- Sektion: Web-App Installation -->
         <div id="install_container" class="pt-1 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Installation</h4>
           <button onclick="installPWA()" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-xl font-semibold text-indigo-700 transition-colors flex items-center justify-between shadow-sm">
@@ -365,22 +375,18 @@
             <span class="text-indigo-400">&rsaquo;</span>
           </button>
         </div>
-
         <div class="pt-3 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Dokumentation</h4>
           <button onclick="openSubModal('explanation')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>📖 Erklärung über die App</span><span class="text-slate-400">&rsaquo;</span>
           </button>
         </div>
-
         <div class="pt-3 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Support</h4>
           <button onclick="openSubModal('contact')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>✉️ Kontakt & Feedback</span><span class="text-slate-400">&rsaquo;</span>
           </button>
         </div>
-
-        <!-- Logbücher -->
         <div class="pt-3 pb-2 space-y-2">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
           <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
@@ -396,9 +402,7 @@
             <span>📜 Logbuch: Verdrehwinkel</span><span class="text-slate-400">&rsaquo;</span>
           </button>
         </div>
-
       </div>
-
       <button onclick="closeTopMenu()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors">
         Schließen
       </button>
@@ -421,13 +425,18 @@
 
   <!-- MASTER LOGIC -->
   <script>
-    // Splash-Screen bei jedem Start anzeigen (für Testzwecke)
     function checkDailySplash() {
       document.getElementById('daily_splash_modal').classList.remove('hidden');
     }
-
     function closeDailySplash() {
       document.getElementById('daily_splash_modal').classList.add('hidden');
+    }
+
+    function openMehrModal() { document.getElementById('mehr_modal').classList.remove('hidden'); }
+    function closeMehrModal() { document.getElementById('mehr_modal').classList.add('hidden'); }
+    function selectMehrItem(appName, appTitle) {
+      closeMehrModal();
+      switchApp(appName, appTitle);
     }
 
     function checkInstallState() {
@@ -492,7 +501,7 @@
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.9.8", date: "13.09.2026, 02:15", text: "Startbild-Splash-Screen aktiv.", border: "border-indigo-500" }
+          { version: "v1.10.0", date: "13.09.2026, 09:20", text: "Footer-Refactoring aktiv.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -520,7 +529,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.9.8</p>
+            <p class="text-xs text-slate-500">Version: v1.10.0</p>
           </div>
         `;
       }
@@ -536,10 +545,22 @@
         el.classList.add('text-slate-400');
       });
 
-      document.getElementById('view-' + appName).classList.remove('hidden');
+      const targetView = document.getElementById('view-' + appName);
+      if (targetView) targetView.classList.remove('hidden');
+
+      // Highlight main nav buttons if they match
       const activeNav = document.getElementById('nav-' + appName);
-      activeNav.classList.remove('text-slate-400');
-      activeNav.classList.add('text-indigo-600');
+      if (activeNav) {
+        activeNav.classList.remove('text-slate-400');
+        activeNav.classList.add('text-indigo-600');
+      } else if (appName === 'foobar2' || appName === 'foobar3') {
+        // Highlight Mehr button if overflow item selected
+        const mehrNav = document.getElementById('nav-mehr');
+        if (mehrNav) {
+          mehrNav.classList.remove('text-slate-400');
+          mehrNav.classList.add('text-indigo-600');
+        }
+      }
 
       document.getElementById('header-title').textContent = appTitle;
       window.scrollTo(0, 0);
@@ -1081,10 +1102,9 @@
       return { init };
     })();
 
-    // Initialisierung beim Laden der App
     window.addEventListener('DOMContentLoaded', () => {
       checkInstallState();
-      checkDailySplash(); // Startbild bei jedem Start anzeigen
+      checkDailySplash();
       EtagenApp.init();
       ZuschnittApp.init();
       DrehwinkelApp.init();
