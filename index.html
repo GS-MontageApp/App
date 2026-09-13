@@ -3,14 +3,14 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Dynamic Versioning & Theming
+    ZANGENSCHLOSSER APP (Dr. Zange) - HARTER CACHE-BUSTER (v1.10.58)
     ================================================================================
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Anti-Cache Direktiven gegen hartnäckiges Browser-Speichern -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <!-- Kompromisslose Anti-Cache Direktiven -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
@@ -49,14 +49,22 @@
     };
   </script>
 
-  <!-- Single Source of Truth  Config mit Cache-Busting -->
-  <script src="js/version.js?v=v1.10.58"></script>
-  <script src="js/zuschnitt.js?v=v1.10.58"></script>
-  <script src="js/etagen.js?v=v1.10.58"></script>
-  <script src="js/drehwinkel.js?v=v1.10.58"></script>
-  <script src="js/tabellen.js?v=v1.10.58"></script>
-  <script src="js/drehmoment.js?v=v1.10.58"></script>
-  <script src="js/shell.js?v=v1.10.58"></script>
+  <!-- DYNAMISCHER HARD-BUSTER: Lädt alle Skripte garantiert ohne alten Cache -->
+  <script>
+    const BUILD_HASH = 'v1.10.58_' + Date.now(); // Erzwingt bei jedem Deploy neue URLs
+    const scripts = [
+      'js/version.js',
+      'js/zuschnitt.js',
+      'js/etagen.js',
+      'js/drehwinkel.js',
+      'js/tabellen.js',
+      'js/drehmoment.js',
+      'js/shell.js'
+    ];
+    scripts.forEach(src => {
+      document.write(`<script src="${src}?v=${BUILD_HASH}"><\/script>`);
+    });
+  </script>
   
   <style>
     .row-selected {
