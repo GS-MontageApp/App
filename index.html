@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.34
+    ZANGENSCHLOSSER APP (Dr. Zange) v1.10.35
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -12,9 +12,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  <script src="changelogs.js?v=1.10.34"></script>
-  <script src="js/zuschnitt.js?v=1.10.34"></script>
-  <script src="js/etagen.js?v=1.10.34"></script>
+  <script src="changelogs.js?v=1.10.35"></script>
+  <script src="js/zuschnitt.js?v=1.10.35"></script>
+  <script src="js/etagen.js?v=1.10.35"></script>
+  <script src="js/drehwinkel.js?v=1.10.35"></script>
   <style>
     .row-selected {
       outline: 2.5px solid #005691 !important;
@@ -556,7 +557,7 @@
       <button onclick="event.stopPropagation(); closeDailySplash()" class="absolute top-6 right-6 bg-black/70 hover:bg-black text-white font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl transition-colors shadow-2xl border-2 border-white/20 z-40" aria-label="Schließen">&times;</button>
 
       <div class="absolute bottom-0 right-0 bg-black/90 backdrop-blur-md text-white/95 text-[11px] font-mono px-3.5 py-1.5 rounded-tl-lg border-l border-t border-white/25 pointer-events-none z-30 shadow-xl">
-        v1.10.34 | 13.09.2026, 12:45 (MEZ)
+        v1.10.35 | 13.09.2026, 12:45 (MEZ)
       </div>
     </div>
   </div>
@@ -728,7 +729,7 @@
         titleEl.textContent = `📜 Logbuch: ${titles[key]}`;
         
         const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-          { version: "v1.10.34", date: "13.09.2026, 12:45 (MEZ)", text: "Tabellen-Architektur aktiv.", border: "border-indigo-500" }
+          { version: "v1.10.35", date: "13.09.2026, 12:45 (MEZ)", text: "Tabellen-Architektur & Modul-Entkopplung aktiv.", border: "border-indigo-500" }
         ];
 
         let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -756,7 +757,7 @@
         contentEl.innerHTML = `
           <div class="space-y-3 text-slate-700 text-sm">
             <p>Support & Feedback über dein internes Projekt-Team.</p>
-            <p class="text-xs text-slate-500">Version: v1.10.34</p>
+            <p class="text-xs text-slate-500">Version: v1.10.35</p>
           </div>
         `;
       }
@@ -799,121 +800,6 @@
       window.scrollTo(0, 0);
     }
 
-    // 3. VERDREHWINKEL
-    const DrehwinkelApp = (() => {
-      const assets = {
-        'a-0': 'img/a-0.png', 'a-45': 'img/a-45.png', 'a-90': 'img/a-90.png', 'a-135': 'img/a-135.png',
-        'a-180': 'img/a-180.png', 'a-225': 'img/a-225.png', 'a-270': 'img/a-270.png', 'a-315': 'img/a-315.png',
-        'a-f': 'img/a-f.png', 'b-0': 'img/b-0.png', 'b-45': 'img/b-45.png', 'b-90': 'img/b-90.png',
-        'b-135': 'img/b-135.png', 'b-180': 'img/b-180.png', 'b-225': 'img/b-225.png', 'b-270': 'img/b-270.png',
-        'b-315': 'img/b-315.png', 'b-f': 'img/b-0.png'
-      };
-
-      let state = { angleA: 0, angleB: 0, isGeradeA: true };
-      const gueltigeWerte = [0, 45, 90, 135, 180, 225, 270, 315];
-
-      function init() {
-        document.getElementById('dw_btn_gerade').addEventListener('click', () => setAnschlussAType('gerade'));
-        document.getElementById('dw_btn_90').addEventListener('click', () => setAnschlussAType('90'));
-
-        document.querySelectorAll('.dw-dial').forEach(dial => {
-          let isDragging = false;
-          dial.addEventListener('pointerdown', (e) => {
-            isDragging = true;
-            dial.setPointerCapture(e.pointerId);
-            handleInteraction(e, dial);
-          });
-          dial.addEventListener('pointermove', (e) => {
-            if (!isDragging) return;
-            handleInteraction(e, dial);
-          });
-          dial.addEventListener('pointerup', (e) => {
-            isDragging = false;
-            dial.releasePointerCapture(e.pointerId);
-          });
-        });
-
-        setAnschlussAType('gerade');
-        updateVisualisierung('a', 0);
-        updateVisualisierung('b', 0);
-      }
-
-      function updateGallery() {
-        let keyA = state.isGeradeA ? 'a-f' : `a-${state.angleA}`;
-        document.getElementById('dw_img_a').src = assets[keyA] || assets['a-f'];
-        let keyB = `b-${state.angleB}`;
-        document.getElementById('dw_img_b').src = assets[keyB] || assets['b-0'];
-      }
-
-      function setAnschlussAType(type) {
-        state.isGeradeA = (type === 'gerade');
-        const dialA = document.getElementById('dw_dial_a');
-        const outA = document.getElementById('dw_out_a');
-        const btnGerade = document.getElementById('dw_btn_gerade');
-        const btn90 = document.getElementById('dw_btn_90');
-
-        if (state.isGeradeA) {
-          dialA.style.opacity = '0.4';
-          dialA.style.pointerEvents = 'none';
-          btnGerade.className = 'flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center';
-          btn90.className = 'flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center';
-          outA.textContent = '0°';
-          outA.className = 'text-base font-extrabold text-slate-400 font-mono w-16 text-center transition-all';
-        } else {
-          dialA.style.opacity = '1';
-          dialA.style.pointerEvents = 'auto';
-          btn90.className = 'flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center';
-          btnGerade.className = 'flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center';
-          outA.textContent = state.angleA + '°';
-          outA.className = 'text-base font-extrabold text-[#005691] font-mono w-16 text-center transition-all';
-        }
-        updateGallery();
-      }
-
-      function updateVisualisierung(anschluss, grad) {
-        const radius = 85;
-        let mappedDeg = (360 - grad + 180) % 360;
-        let rad = (mappedDeg - 90) * (Math.PI / 180);
-
-        const endX = 100 + radius * Math.cos(rad);
-        const endY = 100 + radius * Math.sin(rad);
-
-        if (anschluss === 'a') {
-          state.angleA = grad;
-          if (!state.isGeradeA) document.getElementById('dw_out_a').textContent = grad + '°';
-          let pointer = document.querySelector('#dw_dial_a line');
-          pointer.setAttribute('x2', endX); pointer.setAttribute('y2', endY);
-        } else {
-          state.angleB = grad;
-          document.getElementById('dw_out_b').textContent = grad + '°';
-          let pointer = document.querySelector('#dw_dial_b line');
-          pointer.setAttribute('x2', endX); pointer.setAttribute('y2', endY);
-        }
-        updateGallery();
-      }
-
-      function handleInteraction(e, dialElement) {
-        const rect = dialElement.getBoundingClientRect();
-        const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-        const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-
-        const dx = clientX - (rect.left + rect.width / 2);
-        const dy = clientY - (rect.top + rect.height / 2);
-
-        let userDeg = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
-        if (userDeg < 0) userDeg += 360;
-        if (userDeg >= 360) userDeg -= 360;
-        userDeg = (360 - userDeg + 180) % 360;
-
-        let naechsterSchritt = gueltigeWerte.reduce((prev, curr) => (Math.abs(curr - userDeg) < Math.abs(prev - userDeg) ? curr : prev));
-        if (userDeg >= 337.5 || userDeg < 22.5) naechsterSchritt = 0;
-
-        updateVisualisierung(dialElement.dataset.anschluss, naechsterSchritt);
-      }
-
-      return { init };
-    })();
-
     // Init Touch-Outline / Row Selection für Tabellen-Modul
     function initTableInteractions() {
       document.querySelectorAll('#view-eoform tbody tr').forEach(row => {
@@ -931,7 +817,7 @@
       checkDailySplash();
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
-      DrehwinkelApp.init();
+      if (window.DrehwinkelApp) DrehwinkelApp.init();
       switchEoSub('din');
       initTableInteractions();
     });
