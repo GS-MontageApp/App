@@ -180,7 +180,7 @@
       background-color: #1D375B !important;
     }
 
-    /* GS: TABELLEN-MODUL — Sämtliche Rahmen in den Tabellen-Sektionen (Skizzen-Boxen & Tabellen-Container) auf Gelb (#ffe600) umstellen */
+    /* GS: TABELLEN-MODUL — Sämtliche Rahmen in den Tabellen-Sektionen auf Gelb (#ffe600) umstellen */
     body.theme-gs #view-eoform .eo-sub-section,
     body.theme-gs #view-eoform .eo-sub-section > div,
     body.theme-gs #view-eoform .eo-sub-section table {
@@ -529,7 +529,7 @@
     <div id="view-eoform" class="app-view hidden flex-col w-full h-full flex-1 relative min-h-0">
       <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-24 min-h-0">
         
-        <!-- Subview 1: Einstecktiefe Standard -->
+        <!-- Subview 1: Einstecktiefe Standard (Direktes Sticky ohne Foto) -->
         <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
           <div class="flex-1 min-h-0 overflow-y-auto border border-slate-100 rounded-xl w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -547,12 +547,14 @@
           </div>
         </section>
 
-        <!-- Subview 2: EO-FORM L -->
-        <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors space-y-3">
-          <div class="bg-emerald-50/40 p-2.5 rounded-xl border border-emerald-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-emerald-50/70 transition-colors" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM L Technische Skizze')">
-            <img src="./img/eo-form.png" alt="EO-FORM L Skizze" class="max-h-32 sm:max-h-40 object-contain select-none pointer-events-none">
-          </div>
+        <!-- Subview 2: EO-FORM L (Gemeinsamer Scroll-Container: Foto scrollt weg, danach klebt der Tabellenkopf) -->
+        <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
           <div class="flex-1 min-h-0 overflow-y-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full relative">
+            <!-- Foto am Anfang des gemeinsamen Scroll-Containers -->
+            <div class="bg-emerald-50/40 p-2.5 m-2 rounded-xl border border-emerald-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-emerald-50/70 transition-colors" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM L Technische Skizze')">
+              <img src="./img/eo-form.png" alt="EO-FORM L Skizze" class="max-h-32 sm:max-h-40 object-contain select-none pointer-events-none">
+            </div>
+            <!-- Tabelle folgt im selben Container -->
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -571,12 +573,14 @@
           </div>
         </section>
 
-        <!-- Subview 3: EO-Form-S -->
-        <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors space-y-3">
-          <div class="bg-red-50/40 p-2.5 rounded-xl border border-red-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-red-50/70 transition-colors" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM S Technische Skizze')">
-            <img src="./img/eo-form.png" alt="EO-FORM S Skizze" class="max-h-32 sm:max-h-40 object-contain select-none pointer-events-none">
-          </div>
+        <!-- Subview 3: EO-Form-S (Gemeinsamer Scroll-Container: Foto scrollt weg, danach klebt der Tabellenkopf) -->
+        <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
           <div class="flex-1 min-h-0 overflow-y-auto border border-red-100 rounded-xl bg-red-50/20 w-full relative">
+            <!-- Foto am Anfang des gemeinsamen Scroll-Containers -->
+            <div class="bg-red-50/40 p-2.5 m-2 rounded-xl border border-red-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-red-50/70 transition-colors" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM S Technische Skizze')">
+              <img src="./img/eo-form.png" alt="EO-FORM S Skizze" class="max-h-32 sm:max-h-40 object-contain select-none pointer-events-none">
+            </div>
+            <!-- Tabelle folgt im selben Container -->
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -595,7 +599,7 @@
           </div>
         </section>
 
-        <!-- Subview 4: Drehmomente -->
+        <!-- Subview 4: Drehmomente (Direktes Sticky ohne Foto) -->
         <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
           <div class="flex-1 min-h-0 overflow-y-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
