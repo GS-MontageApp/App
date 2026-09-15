@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.113
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.114
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.113 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.114 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.113) -->
-  <script src="js/version.js?v=v1.10.113"></script>
-  <script src="js/zuschnitt.js?v=v1.10.113"></script>
-  <script src="js/etagen.js?v=v1.10.113"></script>
-  <script src="js/drehwinkel.js?v=v1.10.113"></script>
-  <script src="js/tabellen.js?v=v1.10.113"></script>
-  <script src="js/drehmoment.js?v=v1.10.113"></script>
-  <script src="js/shell.js?v=v1.10.113"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.114) -->
+  <script src="js/version.js?v=v1.10.114"></script>
+  <script src="js/zuschnitt.js?v=v1.10.114"></script>
+  <script src="js/etagen.js?v=v1.10.114"></script>
+  <script src="js/drehwinkel.js?v=v1.10.114"></script>
+  <script src="js/tabellen.js?v=v1.10.114"></script>
+  <script src="js/drehmoment.js?v=v1.10.114"></script>
+  <script src="js/shell.js?v=v1.10.114"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -247,7 +247,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.113)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.114)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -526,7 +526,6 @@
     </div>
 
     <!-- MODUL 4: TABELLEN -->
-    <!-- Korrigierte Viewport-Berechnung: h-[calc(100dvh-172px)] berücksichtigt exakt den oberen Header (ca. 50px) sowie den unteren Tab-Bar-Footer (ca. 60px) und das fixe Daumen-Menü (ca. 60px) -->
     <div id="view-eoform" class="app-view hidden flex-col w-full h-[calc(100dvh-172px)] flex-1 relative min-h-0">
       <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-2 min-h-0 relative">
         
@@ -548,14 +547,14 @@
           </div>
         </section>
 
-        <!-- Subview 2: EO-FORM L -->
+        <!-- Subview 2: EO-FORM L (Grafik entkoppelt & fix zentriert oben; Tabelle scrollt darunter horizontal & vertikal unabhängig) -->
         <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors relative overflow-hidden">
-          <div class="absolute inset-3 sm:inset-5 overflow-y-auto border border-emerald-100 rounded-xl bg-emerald-50/20">
-            <!-- Foto am Anfang des gemeinsamen Scroll-Containers -->
-            <div class="bg-emerald-50/40 p-2.5 m-2 rounded-xl border border-emerald-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-emerald-50/70 transition-colors" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM L Technische Skizze')">
-              <img src="./img/eo-form.png" alt="EO-FORM L Skizze" class="max-h-28 sm:max-h-36 object-contain select-none pointer-events-none">
-            </div>
-            <!-- Tabelle folgt im selben Container -->
+          <!-- Fix zentrierte Grafik-Box (wandert beim seitlichen Scrollen NICHT mit) -->
+          <div class="bg-emerald-50/40 p-2.5 mb-2 rounded-xl border border-emerald-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-emerald-50/70 transition-colors z-10" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM L Technische Skizze')">
+            <img src="./img/eo-form.png" alt="EO-FORM L Skizze" class="max-h-24 sm:max-h-32 object-contain select-none pointer-events-none">
+          </div>
+          <!-- Separater Scroll-Container für die Tabelle (ermöglicht sauberes horizontales & vertikales Scrollen bei fixem Tabellenkopf) -->
+          <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -574,14 +573,14 @@
           </div>
         </section>
 
-        <!-- Subview 3: EO-Form-S -->
+        <!-- Subview 3: EO-Form-S (Grafik entkoppelt & fix zentriert oben; Tabelle scrollt darunter horizontal & vertikal unabhängig) -->
         <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors relative overflow-hidden">
-          <div class="absolute inset-3 sm:inset-5 overflow-y-auto border border-red-100 rounded-xl bg-red-50/20">
-            <!-- Foto am Anfang des gemeinsamen Scroll-Containers -->
-            <div class="bg-red-50/40 p-2.5 m-2 rounded-xl border border-red-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-red-50/70 transition-colors" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM S Technische Skizze')">
-              <img src="./img/eo-form.png" alt="EO-FORM S Skizze" class="max-h-28 sm:max-h-36 object-contain select-none pointer-events-none">
-            </div>
-            <!-- Tabelle folgt im selben Container -->
+          <!-- Fix zentrierte Grafik-Box (wandert beim seitlichen Scrollen NICHT mit) -->
+          <div class="bg-red-50/40 p-2.5 mb-2 rounded-xl border border-red-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-red-50/70 transition-colors z-10" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM S Technische Skizze')">
+            <img src="./img/eo-form.png" alt="EO-FORM S Skizze" class="max-h-24 sm:max-h-32 object-contain select-none pointer-events-none">
+          </div>
+          <!-- Separater Scroll-Container für die Tabelle (ermöglicht sauberes horizontales & vertikales Scrollen bei fixem Tabellenkopf) -->
+          <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -619,7 +618,7 @@
 
       </div>
 
-      <!-- FIXIERTES DAUMEN-DOCK (Exakt positioniert über dem globalen Footer) -->
+      <!-- FIXIERTES DAUMEN-DOCK -->
       <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
         <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto transition-colors">
           <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
