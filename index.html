@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.66
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.67
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1645 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1711 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.65) -->
-  <script src="js/version.js?v=v1.10.65"></script>
-  <script src="js/zuschnitt.js?v=v1.10.65"></script>
-  <script src="js/etagen.js?v=v1.10.65"></script>
-  <script src="js/drehwinkel.js?v=v1.10.65"></script>
-  <script src="js/tabellen.js?v=v1.10.65"></script>
-  <script src="js/drehmoment.js?v=v1.10.65"></script>
-  <script src="js/shell.js?v=v1.10.65"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.67) -->
+  <script src="js/version.js?v=v1.10.67"></script>
+  <script src="js/zuschnitt.js?v=v1.10.67"></script>
+  <script src="js/etagen.js?v=v1.10.67"></script>
+  <script src="js/drehwinkel.js?v=v1.10.67"></script>
+  <script src="js/tabellen.js?v=v1.10.67"></script>
+  <script src="js/drehmoment.js?v=v1.10.67"></script>
+  <script src="js/shell.js?v=v1.10.67"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -66,7 +66,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Überschreibung potenzieller Monospace-Schriften in Zahlenfeldern für einheitlichen Look */
     input, select, button, table {
       font-family: inherit !important;
     }
@@ -628,7 +627,7 @@
     </div>
   </div>
 
-  <!-- BOOTSTRAPPER mit DOMContentLoaded & Tages-Splash-Logik -->
+  <!-- BOOTSTRAPPER mit DOMContentLoaded & robuster Initialisierung -->
   <script>
     function checkDailySplash() {
       const today = new Date().toISOString().slice(0, 10);
@@ -670,8 +669,13 @@
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
       if (window.DrehwinkelApp) DrehwinkelApp.init();
-      if (window.TabellenApp) TabellenApp.init();
-      if (window.DrehmomentApp) DrehmomentApp.init();
+      
+      // Verzögerter Start für Tabellen- und Drehmoment-Module, um sicherzustellen, dass die DOM-Container bereit sind
+      setTimeout(() => {
+        if (window.TabellenApp) TabellenApp.init();
+        if (window.DrehmomentApp) DrehmomentApp.init();
+      }, 50);
+
       AppShell.switchApp('etagen', 'Etagenrechner');
     });
   </script>
