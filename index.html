@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.101
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.102
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.101 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.102 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.101) -->
-  <script src="js/version.js?v=v1.10.101"></script>
-  <script src="js/zuschnitt.js?v=v1.10.101"></script>
-  <script src="js/etagen.js?v=v1.10.101"></script>
-  <script src="js/drehwinkel.js?v=v1.10.101"></script>
-  <script src="js/tabellen.js?v=v1.10.101"></script>
-  <script src="js/drehmoment.js?v=v1.10.101"></script>
-  <script src="js/shell.js?v=v1.10.101"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.102) -->
+  <script src="js/version.js?v=v1.10.102"></script>
+  <script src="js/zuschnitt.js?v=v1.10.102"></script>
+  <script src="js/etagen.js?v=v1.10.102"></script>
+  <script src="js/drehwinkel.js?v=v1.10.102"></script>
+  <script src="js/tabellen.js?v=v1.10.102"></script>
+  <script src="js/drehmoment.js?v=v1.10.102"></script>
+  <script src="js/shell.js?v=v1.10.102"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -174,14 +174,18 @@
       background-color: #1D375B !important;
     }
 
-    /* GS: Die beiden Container im Verdrehwinkel-Modul (Anschluss A und B) erhalten saubere Akzentbalken (#005691 und #f47321) */
-    body.theme-gs #view-drehwinkel section:nth-of-type(2) > div:nth-child(1) {
-      border-left-color: #005691 !important;
+    /* GS: Die beiden Container im Verdrehwinkel-Modul (Anschluss A und B) erhalten ebenfalls den einheitlichen gelben Akzentbalken (#ffe600) */
+    body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
+      border-left-color: #ffe600 !important;
       background-color: #1D375B !important;
     }
-    body.theme-gs #view-drehwinkel section:nth-of-type(2) > div:nth-child(2) {
-      border-left-color: #f47321 !important;
-      background-color: #1D375B !important;
+
+    /* GS: Wechselseitige Textfarben für die Umschalt-Buttons bei Anschluss A (aktiv = weiß, inaktiv = schwarz/dunkel) */
+    body.theme-gs #view-drehwinkel .dw-mode-btn-active {
+      color: #ffffff !important;
+    }
+    body.theme-gs #view-drehwinkel .dw-mode-btn-inactive {
+      color: #000000 !important;
     }
 
     /* GS: Absolut kompromisslose Erzwingung von weißem Text für sämtliche Inhalte in den Ergebnis-Boxen (Etagen, Zuschnitt & Verdrehwinkel) */
@@ -194,6 +198,10 @@
     body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"],
     body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] * {
       color: #ffffff !important;
+    }
+    /* Ausnahme für den inaktiv geschalteten Button im GS-Theme (soll schwarz sein) */
+    body.theme-gs #view-drehwinkel .dw-mode-btn-inactive {
+      color: #000000 !important;
     }
 
     body.theme-gs table th {
@@ -234,7 +242,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.101)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.102)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -468,7 +476,7 @@
       </section>
 
       <section class="space-y-3 flex flex-col">
-        <!-- Anschluss A Container (angepasst an den GS-Style mit 2.5px Rahmen & 12px Akzentbalken) -->
+        <!-- Anschluss A Container (angepasst an den GS-Style mit gelbem Akzentbalken & wechselseitigen Button-Texten) -->
         <div class="bg-white p-2 rounded-2xl shadow-sm border-[2.5px] border-slate-200 border-l-[12px] border-l-[#005691] inline-flex items-center gap-2 mr-auto w-max transition-colors">
           <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative transition-opacity duration-200" id="dw_dial_a" data-anschluss="a">
             <svg viewBox="0 0 200 200" class="w-full h-full select-none">
@@ -486,12 +494,12 @@
             </svg>
           </div>
           <div class="flex flex-col bg-slate-100 p-1 rounded-xl w-24 text-xs font-semibold gap-1 justify-center h-[120px]">
-            <button id="dw_btn_gerade" class="flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white transition-all text-center flex items-center justify-center">gerade</button>
-            <button id="dw_btn_90" class="flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center">45° | 90°</button>
+            <button id="dw_btn_gerade" class="flex-1 py-1 px-1.5 rounded-lg bg-[#005691] text-white dw-mode-btn-active transition-all text-center flex items-center justify-center">gerade</button>
+            <button id="dw_btn_90" class="flex-1 py-1 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 dw-mode-btn-inactive transition-all text-center flex items-center justify-center">45° | 90°</button>
           </div>
         </div>
 
-        <!-- Anschluss B Container (angepasst an den GS-Style mit 2.5px Rahmen & 12px Akzentbalken) -->
+        <!-- Anschluss B Container (angepasst an den GS-Style mit gelbem Akzentbalken) -->
         <div class="bg-white p-2 rounded-2xl shadow-sm border-[2.5px] border-slate-200 border-l-[12px] border-l-orange-500 inline-flex flex-col items-center ml-auto w-max transition-colors">
           <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative" id="dw_dial_b" data-anschluss="b">
             <svg viewBox="0 0 200 200" class="w-full h-full select-none">
