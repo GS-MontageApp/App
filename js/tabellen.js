@@ -1,10 +1,11 @@
 /**
  * ============================================================================
- * ZANGENSCHLOSSER APP (Dr. Zange) - Modul Tabellen (v1.10.66)
+ * ZANGENSCHLOSSER APP (Dr. Zange) - Modul Tabellen (v1.10.68)
  * ============================================================================
  */
 
 const TabellenApp = (() => {
+  let isInitialized = false;
 
   const dataDin = [
     { baureihe: 'L', rohr: '6', einsteck: '7.0', mutter: 'M 12 x 1.5', pn: '315' },
@@ -60,6 +61,7 @@ const TabellenApp = (() => {
     renderDinTable();
     renderLTable();
     renderSTable();
+    isInitialized = true;
   }
 
   function renderDinTable() {
@@ -168,7 +170,8 @@ const TabellenApp = (() => {
 
   return {
     init,
-    switchEoSub
+    switchEoSub,
+    get isInitialized() { return isInitialized; }
   };
 })();
 
