@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.69
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.70
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1725 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1742 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.68) -->
-  <script src="js/version.js?v=v1.10.68"></script>
-  <script src="js/zuschnitt.js?v=v1.10.68"></script>
-  <script src="js/etagen.js?v=v1.10.68"></script>
-  <script src="js/drehwinkel.js?v=v1.10.68"></script>
-  <script src="js/tabellen.js?v=v1.10.68"></script>
-  <script src="js/drehmoment.js?v=v1.10.68"></script>
-  <script src="js/shell.js?v=v1.10.68"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.70) -->
+  <script src="js/version.js?v=v1.10.70"></script>
+  <script src="js/zuschnitt.js?v=v1.10.70"></script>
+  <script src="js/etagen.js?v=v1.10.70"></script>
+  <script src="js/drehwinkel.js?v=v1.10.70"></script>
+  <script src="js/tabellen.js?v=v1.10.70"></script>
+  <script src="js/drehmoment.js?v=v1.10.70"></script>
+  <script src="js/shell.js?v=v1.10.70"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -418,14 +418,15 @@
       </section>
     </div>
 
-    <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand) -->
+    <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand mit Sticky Headers) -->
     <div id="view-eoform" class="app-view hidden flex-col w-full h-full flex-1 relative min-h-0">
       <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-24 min-h-0">
+        
         <!-- Subview 1: Einstecktiefe Standard -->
         <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
+          <div class="flex-1 min-h-0 overflow-y-auto border border-slate-100 rounded-xl w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
-              <thead class="sticky top-0 bg-white z-10 shadow-xs">
+              <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-3 bg-white">Baureihe</th>
                   <th class="py-2.5 px-3 bg-white">Rohr-Ø</th>
@@ -441,9 +442,9 @@
 
         <!-- Subview 2: EO-FORM L -->
         <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full">
+          <div class="flex-1 min-h-0 overflow-y-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
-              <thead class="sticky top-0 bg-white z-10 shadow-xs">
+              <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
                   <th class="py-2.5 px-2 bg-white">S (Wand)</th>
@@ -462,9 +463,9 @@
 
         <!-- Subview 3: EO-Form-S -->
         <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 w-full">
+          <div class="flex-1 min-h-0 overflow-y-auto border border-red-100 rounded-xl bg-red-50/20 w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
-              <thead class="sticky top-0 bg-white z-10 shadow-xs">
+              <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
                   <th class="py-2.5 px-2 bg-white">S (Wand)</th>
@@ -483,9 +484,9 @@
 
         <!-- Subview 4: Drehmomente -->
         <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full">
+          <div class="flex-1 min-h-0 overflow-y-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
-              <thead class="sticky top-0 bg-white z-10 shadow-xs">
+              <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-3 bg-white">Gewinde</th>
                   <th class="py-2.5 px-3 bg-white">8.8 (Nm)</th>
@@ -497,6 +498,7 @@
             </table>
           </div>
         </section>
+
       </div>
 
       <!-- FIXIERTES DAUMEN-DOCK ÜBER DER TAB-BAR -->
@@ -627,7 +629,7 @@
     </div>
   </div>
 
-  <!-- BOOTSTRAPPER mit DOMContentLoaded & robustem Auto-Init beim Tab-Wechsel -->
+  <!-- BOOTSTRAPPER mit DOMContentLoaded -->
   <script>
     function checkDailySplash() {
       const today = new Date().toISOString().slice(0, 10);
@@ -648,7 +650,6 @@
       if (splashModal) splashModal.classList.add('hidden');
     }
 
-    // Wrapper für den Tabellen-Wechsel, der bei Bedarf das Rendering erzwingt
     function switchAppWithTablesCheck(viewId, title) {
       if (window.switchApp) {
         window.switchApp(viewId, title);
@@ -681,7 +682,6 @@
       if (window.ZuschnittApp) ZuschnittApp.init();
       if (window.DrehwinkelApp) DrehwinkelApp.init();
       
-      // Verzögerter Initialisierungsversuch beim Start
       setTimeout(() => {
         if (window.TabellenApp) TabellenApp.init();
         if (window.DrehmomentApp) DrehmomentApp.init();
