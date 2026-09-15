@@ -1,33 +1,64 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="h-full">
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Dynamic Versioning
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.63
+    Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">16:10 - Zangenschlosser App (Dr. Zange)</title>
+
+  <!-- Anti-Cache Direktiven -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <title id="page-title">1513 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
-  
-  <!-- Single Source of Truth Version Config -->
-  <script src="js/version.js"></script>
-  <!-- <script src="changelogs.js"></script> -->
-  <script src="js/zuschnitt.js"></script>
-  <script src="js/etagen.js"></script>
-  <script src="js/drehwinkel.js"></script>
-  <script src="js/tabellen.js"></script>
-  <script src="js/shell.js"></script>
-  
-  <style>
-    /* Einheitliche Sans-Serif-Typografie */
-    body, table, th, td, input, button, select, textarea, .list-title, h1, h2, h3, h4, h5, h6 {
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-    }
 
+  <!-- Sofortige globale Bereitstellung der Theme-Funktion für OnClick-Handler -->
+  <script>
+    window.setTheme = function(themeName) {
+      const body = document.body;
+      if (!body) return;
+
+      const btnStandard = document.getElementById('theme_btn_standard');
+      const btnGs = document.getElementById('theme_btn_gs');
+      if (themeName === 'gs') {
+        body.classList.add('theme-gs');
+        if (btnGs) {
+          btnGs.className = 'p-2.5 rounded-xl text-xs font-bold border-2 border-yellow-400 bg-slate-900 text-yellow-400 shadow-md transition-all text-center';
+        }
+        if (btnStandard) {
+          btnStandard.className = 'p-2.5 rounded-xl text-xs font-bold border border-slate-600 bg-slate-800 text-slate-300 transition-all text-center';
+        }
+      } else {
+        body.classList.remove('theme-gs');
+        if (btnStandard) {
+          btnStandard.className = 'p-2.5 rounded-xl text-xs font-bold border-2 border-indigo-600 bg-white text-indigo-700 shadow-md transition-all text-center';
+        }
+        if (btnGs) {
+          btnGs.className = 'p-2.5 rounded-xl text-xs font-bold border border-slate-300 bg-slate-100 text-slate-700 transition-all text-center';
+        }
+      }
+      localStorage.setItem('zangenschlosser_theme_v1', themeName);
+    };
+  </script>
+
+  <!-- Single Source of Truth Version Config & Module -->
+  <script src="js/version.js?v=v1.10.63"></script>
+  <script src="js/zuschnitt.js?v=v1.10.63"></script>
+  <script src="js/etagen.js?v=v1.10.63"></script>
+  <script src="js/drehwinkel.js?v=v1.10.63"></script>
+  <script src="js/tabellen.js?v=v1.10.63"></script>
+  <script src="js/drehmoment.js?v=v1.10.63"></script>
+  <script src="js/shell.js?v=v1.10.63"></script>
+
+  <style>
     .row-selected {
       outline: 2.5px solid #005691 !important;
       background-color: rgba(0, 86, 145, 0.16) !important;
@@ -40,16 +71,72 @@
     .group-start-s td {
       border-top: 2px solid #f87171 !important;
     }
+
+    /* THEME: GS (Gustav Schmidt Look) */
+    body.theme-gs {
+      background-color: #0b1d3a !important;
+      color: #f8fafc !important;
+    }
+    body.theme-gs header {
+      background-color: rgba(11, 29, 58, 0.95) !important;
+      border-bottom-color: #1e3a8a !important;
+    }
+    body.theme-gs header h1, body.theme-gs header span {
+      color: #ffffff !important;
+    }
+    body.theme-gs main section, 
+    body.theme-gs main .bg-white {
+      background-color: #112a52 !important;
+      color: #ffffff !important;
+      border-color: #1e3a8a !important;
+    }
+    body.theme-gs main h2, 
+    body.theme-gs main h3, 
+    body.theme-gs main label, 
+    body.theme-gs main span,
+    body.theme-gs main div {
+      color: #f1f5f9;
+    }
+    body.theme-gs main h2 {
+      color: #ffe600 !important;
+    }
+    body.theme-gs footer {
+      background-color: rgba(11, 29, 58, 0.95) !important;
+      border-top-color: #1e3a8a !important;
+    }
+    body.theme-gs .nav-btn span {
+      color: #cbd5e1 !important;
+    }
+    body.theme-gs .nav-btn.text-indigo-600 span {
+      color: #ffe600 !important;
+    }
+    body.theme-gs input, body.theme-gs select {
+      background-color: #0b1d3a !important;
+      color: #ffffff !important;
+      border-color: #334155 !important;
+    }
+    body.theme-gs input::placeholder {
+      color: #94a3b8 !important;
+    }
+    body.theme-gs table th {
+      background-color: #112a52 !important;
+      color: #ffe600 !important;
+      border-bottom-color: #1e3a8a !important;
+    }
+    body.theme-gs table td {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+    }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col m-0 p-0">
+<body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
   <!-- Header oben -->
-  <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0">
+  <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
         <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner</h1>
-        <span id="header-badge" class="hidden text-[10px] font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">ISO 8434-1</span>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -58,11 +145,11 @@
   </header>
 
   <!-- Hauptcontainer -->
-  <main class="flex-1 max-w-3xl mx-auto space-y-4 w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 md:min-h-[calc(100vh-180px)] flex flex-col justify-start">
-    
+  <main class="flex-1 max-w-3xl mx-auto w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 flex flex-col justify-start">
+        
     <!-- MODUL 1: ETAGENRECHNER -->
     <div id="view-etagen" class="app-view space-y-5 flex-1 block">
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0 transition-colors">
         <div class="space-y-1.5">
           <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">3D-Isometrie Modell</h2>
           <div class="w-full h-[260px] sm:h-[340px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center shadow-inner">
@@ -114,7 +201,7 @@
         </div>
       </section>
 
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 transition-colors">
         <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
         <div class="space-y-3">
           <div class="p-4 bg-pink-50 rounded-xl border-l-4 border-pink-500 shadow-sm">
@@ -147,7 +234,7 @@
 
     <!-- MODUL 2: ZUSCHNITTSRECHNER -->
     <div id="view-zuschnitt" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3 first:mt-0">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3 first:mt-0 transition-colors">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Globale Parameter (Pflichtfeld)</h2>
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -167,7 +254,7 @@
         </div>
       </section>
 
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3 transition-colors">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Schenkel und Bogen-Folge</h2>
         <div id="zuschnitt_chain_container" class="space-y-3">
           <div id="zuschnitt_base_group" class="flex items-stretch gap-2">
@@ -231,7 +318,7 @@
         </div>
       </section>
 
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-2 border-2 border-red-500">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-2 border-2 border-red-500 transition-colors">
         <h2 id="zuschnitt_out_titel" class="text-xs font-semibold text-red-600 uppercase tracking-wider border-b border-red-200 pb-1.5">Ergebnis &ndash; <i>Parameter wählen</i></h2>
         <div class="p-3 bg-red-50 rounded-xl border-l-4 border-red-600 shadow-sm space-y-0.5">
           <div class="text-[10px] font-bold text-red-800 uppercase tracking-wider">Gesamtzuschnittlänge</div>
@@ -252,7 +339,7 @@
 
     <!-- MODUL 3: VERDREHWINKEL -->
     <div id="view-drehwinkel" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0 transition-colors">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Skizze & Ausrichtung</h2>
         <div class="flex flex-col items-center gap-2">
           <div class="inline-flex w-auto bg-slate-50 rounded-xl overflow-hidden">
@@ -278,7 +365,7 @@
       </section>
 
       <section class="space-y-3 flex flex-col">
-        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-[#005691] inline-flex items-center gap-2 mr-auto w-max">
+        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-[#005691] inline-flex items-center gap-2 mr-auto w-max transition-colors">
           <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative transition-opacity duration-200" id="dw_dial_a" data-anschluss="a">
             <svg viewBox="0 0 200 200" class="w-full h-full select-none">
               <circle cx="100" cy="100" r="85" fill="#f8fafc" stroke="#000000" stroke-width="4"/>
@@ -300,7 +387,7 @@
           </div>
         </div>
 
-        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-orange-500 inline-flex flex-col items-center ml-auto w-max">
+        <div class="bg-white p-2 rounded-2xl shadow-sm border-l-8 border-orange-500 inline-flex flex-col items-center ml-auto w-max transition-colors">
           <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative" id="dw_dial_b" data-anschluss="b">
             <svg viewBox="0 0 200 200" class="w-full h-full select-none">
               <circle cx="100" cy="100" r="85" fill="#f8fafc" stroke="#000000" stroke-width="4"/>
@@ -321,20 +408,19 @@
     </div>
 
     <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand) -->
-    <div id="view-eoform" class="app-view hidden space-y-4 flex-1 relative">
-      <div class="space-y-4 pb-28">
+    <div id="view-eoform" class="app-view hidden flex-col w-full h-full flex-1 relative min-h-0">
+      <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-24 min-h-0">
         <!-- Subview 1: Einstecktiefe Standard -->
-        <section id="eo_sub_din" class="eo-sub-section bg-white p-5 rounded-2xl shadow-sm space-y-4">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Grundmaße & Einstecktiefe (DIN 2353 / ISO 8434-1)</h2>
-          <div class="overflow-x-auto max-h-[55vh]">
+        <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
+          <div class="flex-1 min-h-0 overflow-auto border border-slate-100 rounded-xl w-full">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
-                  <th class="py-2.5 px-2 bg-white">Baureihe</th>
-                  <th class="py-2.5 px-2 bg-white">Rohr-Ø</th>
-                  <th class="py-2.5 px-2 bg-white">Einstecktiefe (l₁)</th>
-                  <th class="py-2.5 px-2 bg-white">Überwurfmutter</th>
-                  <th class="py-2.5 px-2 bg-white">PN (Stahl max.)</th>
+                  <th class="py-2.5 px-3 bg-white">Baureihe</th>
+                  <th class="py-2.5 px-3 bg-white">Rohr-Ø</th>
+                  <th class="py-2.5 px-3 bg-white">Einstecktiefe (l₁)</th>
+                  <th class="py-2.5 px-3 bg-white">Überwurfmutter</th>
+                  <th class="py-2.5 px-3 bg-white">PN (Stahl max.)</th>
                 </tr>
               </thead>
               <tbody id="eo_tbody_din" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
@@ -343,10 +429,9 @@
         </section>
 
         <!-- Subview 2: EO-FORM L -->
-        <section id="eo_sub_l" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form L Umformwerte</h2>
-          <div class="overflow-x-auto max-h-[55vh]">
-            <table class="w-full text-left text-xs border-collapse">
+        <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
+          <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full">
+            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
@@ -365,10 +450,9 @@
         </section>
 
         <!-- Subview 3: EO-Form-S -->
-        <section id="eo_sub_s" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
-          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form-S Umformwerte</h2>
-          <div class="overflow-x-auto max-h-[55vh]">
-            <table class="w-full text-left text-xs border-collapse">
+        <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
+          <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 w-full">
+            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-10 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
                   <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
@@ -385,28 +469,46 @@
             </table>
           </div>
         </section>
+
+        <!-- Subview 4: Drehmomente -->
+        <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
+          <div class="flex-1 min-h-0 overflow-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full">
+            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
+              <thead class="sticky top-0 bg-white z-10 shadow-xs">
+                <tr class="border-b border-slate-200 text-slate-500 uppercase">
+                  <th class="py-2.5 px-3 bg-white">Gewinde</th>
+                  <th class="py-2.5 px-3 bg-white">8.8 (Nm)</th>
+                  <th class="py-2.5 px-3 bg-white">10.9 (Nm)</th>
+                  <th class="py-2.5 px-3 bg-white">12.9 (Nm)</th>
+                </tr>
+              </thead>
+              <tbody id="eo_tbody_drehmoment" class="divide-y divide-amber-100 font-medium text-slate-700 bg-amber-50/35"></tbody>
+            </table>
+          </div>
+        </section>
       </div>
 
       <!-- FIXIERTES DAUMEN-DOCK ÜBER DER TAB-BAR -->
       <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
-        <div class="bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto">
-          <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
-          <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form L</button>
-          <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-Form-S</button>
+        <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto transition-colors">
+          <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
+          <button onclick="switchEoSub('l')" id="eo_tab_l" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM L</button>
+          <button onclick="switchEoSub('s')" id="eo_tab_s" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">EO-FORM S</button>
+          <button onclick="switchEoSub('drehmoment')" id="eo_tab_drehmoment" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all">Drehmoment</button>
         </div>
       </section>
     </div>
 
     <!-- Platzhalter Mehr-Module -->
     <div id="view-foobar2" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
+      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0 transition-colors">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 2 (Mehr-Menü)</h2>
         <div class="py-4 text-4xl">🚧</div>
         <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 2</h3>
       </section>
     </div>
     <div id="view-foobar3" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
+      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0 transition-colors">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 3 (Mehr-Menü)</h2>
         <div class="py-4 text-4xl">🚧</div>
         <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 3</h3>
@@ -416,7 +518,7 @@
   </main>
 
   <!-- Bottom Tab Bar (Global) -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1 shrink-0">
+  <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 text-center">
       <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 transition-colors">
         <span class="text-lg">📐</span><span class="text-[10px] font-semibold truncate w-full">Etage</span>
@@ -427,7 +529,7 @@
       <button onclick="switchApp('drehwinkel', 'Verdrehwinkel')" id="nav-drehwinkel" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">🔄</span><span class="text-[10px] font-semibold truncate w-full">Verdrehwinkel</span>
       </button>
-      <button onclick="switchApp('eoform', 'Tabellen')" id="nav-eoform" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+      <button onclick="switchApp('eoform', 'Tabellen | Einstecktiefe')" id="nav-eoform" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">📋</span><span class="text-[10px] font-semibold truncate w-full">Tabellen</span>
       </button>
       <button onclick="openMehrModal()" id="nav-mehr" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
@@ -467,15 +569,26 @@
     </div>
   </div>
 
-  <!-- TOP-MENÜ (Zahnrad-Menü: bereinigt gemäß Punkt 3) -->
+  <!-- TOP-MENÜ (Zahnrad-Menü: bereinigt) -->
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-lg text-indigo-600">⚙️ Zangenschlosser App</h3>
+        <div>
+          <h3 class="font-bold text-lg text-indigo-600 leading-tight">⚙️ Zangenschlosser App</h3>
+          <p id="menu_version_subtitle" class="text-xs font-mono text-slate-400 mt-0.5">Lade Version...</p>
+        </div>
         <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
       <div class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 divide-y divide-slate-100">
-        <div id="install_container" class="pt-1 pb-3">
+        <!-- Theme Umschalter -->
+        <div class="pt-1 pb-3">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Design-Theme</h4>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setTheme('standard')" id="theme_btn_standard" class="p-2.5 rounded-xl text-xs font-bold border border-slate-300 bg-slate-100 text-slate-700 transition-all text-center">Standard</button>
+            <button onclick="setTheme('gs')" id="theme_btn_gs" class="p-2.5 rounded-xl text-xs font-bold border border-slate-700 bg-slate-900 text-yellow-400 transition-all text-center">GS</button>
+          </div>
+        </div>
+        <div id="install_container" class="pt-3 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Installation</h4>
           <button onclick="installPWA()" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-xl font-semibold text-indigo-700 transition-colors flex items-center justify-between shadow-sm">
             <span>📱 Web-App installieren</span>
@@ -502,19 +615,30 @@
     </div>
   </div>
 
-  <!-- BOOTSTRAPPER mit zentralem Versions-Binding -->
+  <!-- BOOTSTRAPPER mit DOMContentLoaded Absicherung -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const splashVer = document.getElementById('splash_version_text');
       if (splashVer && window.APP_CONFIG) {
         splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
       }
-      
+      const menuSub = document.getElementById('menu_version_subtitle');
+      if (menuSub && window.APP_CONFIG) {
+        menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
+      }
+
+      // Theme sofort beim Start laden
+      if (window.setTheme) {
+        const savedTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'standard';
+        window.setTheme(savedTheme);
+      }
+
       AppShell.init();
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
       if (window.DrehwinkelApp) DrehwinkelApp.init();
       if (window.TabellenApp) TabellenApp.init();
+      if (window.DrehmomentApp) DrehmomentApp.init();
       AppShell.switchApp('etagen', 'Etagenrechner');
     });
   </script>
