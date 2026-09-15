@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.82
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.83
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1982 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1983 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.82) -->
-  <script src="js/version.js?v=v1.10.82"></script>
-  <script src="js/zuschnitt.js?v=v1.10.82"></script>
-  <script src="js/etagen.js?v=v1.10.82"></script>
-  <script src="js/drehwinkel.js?v=v1.10.82"></script>
-  <script src="js/tabellen.js?v=v1.10.82"></script>
-  <script src="js/drehmoment.js?v=v1.10.82"></script>
-  <script src="js/shell.js?v=v1.10.82"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.83) -->
+  <script src="js/version.js?v=v1.10.83"></script>
+  <script src="js/zuschnitt.js?v=v1.10.83"></script>
+  <script src="js/etagen.js?v=v1.10.83"></script>
+  <script src="js/drehwinkel.js?v=v1.10.83"></script>
+  <script src="js/tabellen.js?v=v1.10.83"></script>
+  <script src="js/drehmoment.js?v=v1.10.83"></script>
+  <script src="js/shell.js?v=v1.10.83"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -122,10 +122,17 @@
       color: #ffe600 !important;
     }
     
-    /* GS: Alle Input- und Select-Felder erhalten einen gelben Rahmen (#ffe600) */
+    /* GS: Alle Input- und Select-Felder erhalten einen reinen gelben Rahmen (#ffe600) ohne Fokus-Ringe oder helle Außenränder */
     body.theme-gs input, body.theme-gs select {
       background-color: #0b1d3a !important;
       color: #ffffff !important;
+      border: 2px solid #ffe600 !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    body.theme-gs input:focus, body.theme-gs select:focus {
+      outline: none !important;
+      box-shadow: none !important;
       border: 2px solid #ffe600 !important;
     }
     body.theme-gs input::placeholder {
