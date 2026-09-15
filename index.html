@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.75
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.76
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1842 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1855 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.75) -->
-  <script src="js/version.js?v=v1.10.75"></script>
-  <script src="js/zuschnitt.js?v=v1.10.75"></script>
-  <script src="js/etagen.js?v=v1.10.75"></script>
-  <script src="js/drehwinkel.js?v=v1.10.75"></script>
-  <script src="js/tabellen.js?v=v1.10.75"></script>
-  <script src="js/drehmoment.js?v=v1.10.75"></script>
-  <script src="js/shell.js?v=v1.10.75"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.76) -->
+  <script src="js/version.js?v=v1.10.76"></script>
+  <script src="js/zuschnitt.js?v=v1.10.76"></script>
+  <script src="js/etagen.js?v=v1.10.76"></script>
+  <script src="js/drehwinkel.js?v=v1.10.76"></script>
+  <script src="js/tabellen.js?v=v1.10.76"></script>
+  <script src="js/drehmoment.js?v=v1.10.76"></script>
+  <script src="js/shell.js?v=v1.10.76"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -578,16 +578,16 @@
     </div>
   </div>
 
-  <!-- ZOOM MODAL (4x Zoom & fixer Schließen-Button unten rechts) -->
+  <!-- ZOOM MODAL (Responsive: Desktop formatfüllend, Smartphone scrollbar linksbündig) -->
   <div id="zoom_modal" class="hidden fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-2 sm:p-6" onclick="closeZoomModal()">
-    <div class="relative bg-white rounded-2xl max-w-4xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+    <div class="relative bg-white rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
       <div class="flex justify-between items-center bg-slate-100 px-4 py-2.5 border-b shrink-0">
         <h3 id="zoom_modal_title" class="font-bold text-xs sm:text-sm text-slate-700 truncate pr-4">Skizzen-Ansicht</h3>
       </div>
       
-      <!-- Scrollbarer Bereich mit mindestens 300% / 4-facher Darstellung -->
-      <div class="flex-1 overflow-auto flex items-center justify-center p-4 bg-slate-900">
-        <img id="zoom_modal_img" src="" alt="Zoom Skizze" class="min-w-[320%] sm:min-w-[220%] object-contain select-none my-auto">
+      <!-- Responsiver Scroll-Container: Mobil groß mit linksbündigem Start, Desktop formatfüllend -->
+      <div class="flex-1 overflow-auto flex justify-start sm:justify-center items-center p-4 bg-slate-900">
+        <img id="zoom_modal_img" src="" alt="Zoom Skizze" class="min-w-[280%] sm:min-w-0 sm:max-w-full sm:max-h-[75vh] object-contain select-none my-auto">
       </div>
 
       <!-- Schließen-Button fixiert unten rechts im Daumenbereich -->
