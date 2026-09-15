@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.84
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.85
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1984 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1985 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.84) -->
-  <script src="js/version.js?v=v1.10.84"></script>
-  <script src="js/zuschnitt.js?v=v1.10.84"></script>
-  <script src="js/etagen.js?v=v1.10.84"></script>
-  <script src="js/drehwinkel.js?v=v1.10.84"></script>
-  <script src="js/tabellen.js?v=v1.10.84"></script>
-  <script src="js/drehmoment.js?v=v1.10.84"></script>
-  <script src="js/shell.js?v=v1.10.84"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.85) -->
+  <script src="js/version.js?v=v1.10.85"></script>
+  <script src="js/zuschnitt.js?v=v1.10.85"></script>
+  <script src="js/etagen.js?v=v1.10.85"></script>
+  <script src="js/drehwinkel.js?v=v1.10.85"></script>
+  <script src="js/tabellen.js?v=v1.10.85"></script>
+  <script src="js/drehmoment.js?v=v1.10.85"></script>
+  <script src="js/shell.js?v=v1.10.85"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -146,13 +146,12 @@
       color: #94a3b8 !important;
     }
 
-    /* GS: Spezifische Textfarbe Schwarz für alle Ergebnisse im Etagen- und Zuschnittsrechner */
+    /* GS: Spezifische Textfarbe Schwarz für alle Ergebnisse, beibehaltung des linken farbigen Randes + zusätzlicher gelber Rahmen (#ffe600) */
     body.theme-gs #view-etagen section:nth-of-type(2) div[id^="etagen_out_"],
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge {
       color: #000000 !important;
       background-color: #f8fafc !important;
-      border-radius: 0.5rem;
-      padding: 0.25rem 0.5rem;
+      border: 2px solid #ffe600 !important;
       font-weight: 700 !important;
     }
 
