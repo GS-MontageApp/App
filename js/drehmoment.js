@@ -1,6 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL DREHMOMENTTABELLE (8.8 / 10.9 / 12.9) v1.10.69
-// Basierend auf robuster v1.10.44 Architektur[cite: 1]
+// ZANGENSCHLOSSER-APP: MODUL DREHMOMENTTABELLE (8.8 / 10.9 / 12.9) v1.10.106
 // ============================================================================
 window.DrehmomentApp = (() => {
   const STORAGE_KEY = 'zangenschlosser_drehmoment_selections_v1';
