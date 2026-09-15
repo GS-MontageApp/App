@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.87
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.88
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1987 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1988 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.87) -->
-  <script src="js/version.js?v=v1.10.87"></script>
-  <script src="js/zuschnitt.js?v=v1.10.87"></script>
-  <script src="js/etagen.js?v=v1.10.87"></script>
-  <script src="js/drehwinkel.js?v=v1.10.87"></script>
-  <script src="js/tabellen.js?v=v1.10.87"></script>
-  <script src="js/drehmoment.js?v=v1.10.87"></script>
-  <script src="js/shell.js?v=v1.10.87"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.88) -->
+  <script src="js/version.js?v=v1.10.88"></script>
+  <script src="js/zuschnitt.js?v=v1.10.88"></script>
+  <script src="js/etagen.js?v=v1.10.88"></script>
+  <script src="js/drehwinkel.js?v=v1.10.88"></script>
+  <script src="js/tabellen.js?v=v1.10.88"></script>
+  <script src="js/drehmoment.js?v=v1.10.88"></script>
+  <script src="js/shell.js?v=v1.10.88"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -146,11 +146,11 @@
       color: #94a3b8 !important;
     }
 
-    /* GS: Sämtlicher Text innerhalb der Ergebnis-Container (Titel & Werte) wird rein schwarz dargestellt */
-    body.theme-gs #view-etagen section:nth-of-type(2) div[id^="etagen_out_"] *,
+    /* GS: Erzwungene reine schwarze Textfarbe für ALLES (Beschriftungen + Werte) in den Ergebnis-Boxen */
     body.theme-gs #view-etagen section:nth-of-type(2) div[id^="etagen_out_"],
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge *,
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge {
+    body.theme-gs #view-etagen section:nth-of-type(2) div[id^="etagen_out_"] *,
+    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
+    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge * {
       color: #000000 !important;
     }
 
