@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.115
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.116
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.115 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.116 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.115) -->
-  <script src="js/version.js?v=v1.10.115"></script>
-  <script src="js/zuschnitt.js?v=v1.10.115"></script>
-  <script src="js/etagen.js?v=v1.10.115"></script>
-  <script src="js/drehwinkel.js?v=v1.10.115"></script>
-  <script src="js/tabellen.js?v=v1.10.115"></script>
-  <script src="js/drehmoment.js?v=v1.10.115"></script>
-  <script src="js/shell.js?v=v1.10.115"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.116) -->
+  <script src="js/version.js?v=v1.10.116"></script>
+  <script src="js/zuschnitt.js?v=v1.10.116"></script>
+  <script src="js/etagen.js?v=v1.10.116"></script>
+  <script src="js/drehwinkel.js?v=v1.10.116"></script>
+  <script src="js/tabellen.js?v=v1.10.116"></script>
+  <script src="js/drehmoment.js?v=v1.10.116"></script>
+  <script src="js/shell.js?v=v1.10.116"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -247,7 +247,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.115)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.116)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -547,55 +547,59 @@
           </div>
         </section>
 
-        <!-- Subview 2: EO-FORM L (Grafik oben fix zentriert [shrink-0] + Tabelle darunter als flexibler, scrollbarer Sticky-Container) -->
+        <!-- Subview 2: EO-FORM L (Grafik oben fix zentriert [shrink-0] + darunter ein in sich geschlossener Scroll-Container mit exaktem Sticky-Header) -->
         <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors overflow-hidden">
-          <!-- Grafik oben fix zentriert (schrumpft nicht) -->
+          <!-- Grafik oben fix zentriert -->
           <div class="bg-emerald-50/40 p-2.5 mb-2 rounded-xl border border-emerald-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-emerald-50/70 transition-colors z-10" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM L Technische Skizze')">
             <img src="./img/eo-form.png" alt="EO-FORM L Skizze" class="max-h-24 sm:max-h-32 object-contain select-none pointer-events-none">
           </div>
-          <!-- Tabellen-Container mit exaktem Flex-Scroll-Kontext für 100% Höhe & Sticky -->
+          <!-- Tabellen-Container mit eigenem, sauber gebundenem vertikalen & horizontalen Scroll-Kontext, damit sticky top-0 absolut greift -->
           <div class="flex-1 min-h-0 overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20 relative">
-            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
-              <thead class="sticky top-0 bg-white z-20 shadow-xs">
-                <tr class="border-b border-slate-200 text-slate-500 uppercase">
-                  <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
-                  <th class="py-2.5 px-2 bg-white">S (Wand)</th>
-                  <th class="py-2.5 px-2 bg-white">L Stahl ±0.5</th>
-                  <th class="py-2.5 px-2 bg-white">L Edelstahl ±0.5</th>
-                  <th class="py-2.5 px-2 bg-white">L₁ Stahl</th>
-                  <th class="py-2.5 px-2 bg-white">L₁ Edelstahl</th>
-                  <th class="py-2.5 px-2 bg-white">L₂</th>
-                  <th class="py-2.5 px-2 bg-white">L₃</th>
-                </tr>
-              </thead>
-              <tbody id="eo_tbody_l" class="divide-y divide-emerald-100 font-medium text-slate-700 bg-emerald-50/35"></tbody>
-            </table>
+            <div class="w-full overflow-x-auto min-h-full">
+              <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
+                <thead class="sticky top-0 bg-white z-20 shadow-xs">
+                  <tr class="border-b border-slate-200 text-slate-500 uppercase">
+                    <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
+                    <th class="py-2.5 px-2 bg-white">S (Wand)</th>
+                    <th class="py-2.5 px-2 bg-white">L Stahl ±0.5</th>
+                    <th class="py-2.5 px-2 bg-white">L Edelstahl ±0.5</th>
+                    <th class="py-2.5 px-2 bg-white">L₁ Stahl</th>
+                    <th class="py-2.5 px-2 bg-white">L₁ Edelstahl</th>
+                    <th class="py-2.5 px-2 bg-white">L₂</th>
+                    <th class="py-2.5 px-2 bg-white">L₃</th>
+                  </tr>
+                </thead>
+                <tbody id="eo_tbody_l" class="divide-y divide-emerald-100 font-medium text-slate-700 bg-emerald-50/35"></tbody>
+              </table>
+            </div>
           </div>
         </section>
 
-        <!-- Subview 3: EO-Form-S (Grafik oben fix zentriert [shrink-0] + Tabelle darunter als flexibler, scrollbarer Sticky-Container) -->
+        <!-- Subview 3: EO-Form-S (Grafik oben fix zentriert [shrink-0] + darunter ein in sich geschlossener Scroll-Container mit exaktem Sticky-Header) -->
         <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors overflow-hidden">
-          <!-- Grafik oben fix zentriert (schrumpft nicht) -->
+          <!-- Grafik oben fix zentriert -->
           <div class="bg-red-50/40 p-2.5 mb-2 rounded-xl border border-red-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-red-50/70 transition-colors z-10" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM S Technische Skizze')">
             <img src="./img/eo-form.png" alt="EO-FORM S Skizze" class="max-h-24 sm:max-h-32 object-contain select-none pointer-events-none">
           </div>
-          <!-- Tabellen-Container mit exaktem Flex-Scroll-Kontext für 100% Höhe & Sticky -->
+          <!-- Tabellen-Container mit eigenem, sauber gebundenem vertikalen & horizontalen Scroll-Kontext, damit sticky top-0 absolut greift -->
           <div class="flex-1 min-h-0 overflow-auto border border-red-100 rounded-xl bg-red-50/20 relative">
-            <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
-              <thead class="sticky top-0 bg-white z-20 shadow-xs">
-                <tr class="border-b border-slate-200 text-slate-500 uppercase">
-                  <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
-                  <th class="py-2.5 px-2 bg-white">S (Wand)</th>
-                  <th class="py-2.5 px-2 bg-white">L Stahl ±0.5</th>
-                  <th class="py-2.5 px-2 bg-white">L Edelstahl ±0.5</th>
-                  <th class="py-2.5 px-2 bg-white">L₁ Stahl</th>
-                  <th class="py-2.5 px-2 bg-white">L₁ Edelstahl</th>
-                  <th class="py-2.5 px-2 bg-white">L₂</th>
-                  <th class="py-2.5 px-2 bg-white">L₃</th>
-                </tr>
-              </thead>
-              <tbody id="eo_tbody_s" class="divide-y divide-red-100 font-medium text-slate-700 bg-emerald-50/35"></tbody>
-            </table>
+            <div class="w-full overflow-x-auto min-h-full">
+              <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
+                <thead class="sticky top-0 bg-white z-20 shadow-xs">
+                  <tr class="border-b border-slate-200 text-slate-500 uppercase">
+                    <th class="py-2.5 px-2 bg-white">Rohr-AD</th>
+                    <th class="py-2.5 px-2 bg-white">S (Wand)</th>
+                    <th class="py-2.5 px-2 bg-white">L Stahl ±0.5</th>
+                    <th class="py-2.5 px-2 bg-white">L Edelstahl ±0.5</th>
+                    <th class="py-2.5 px-2 bg-white">L₁ Stahl</th>
+                    <th class="py-2.5 px-2 bg-white">L₁ Edelstahl</th>
+                    <th class="py-2.5 px-2 bg-white">L₂</th>
+                    <th class="py-2.5 px-2 bg-white">L₃</th>
+                  </tr>
+                </thead>
+                <tbody id="eo_tbody_s" class="divide-y divide-red-100 font-medium text-slate-700 bg-emerald-50/35"></tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -611,7 +615,7 @@
                   <th class="py-2.5 px-3 bg-white">12.9 (Nm)</th>
                 </tr>
               </thead>
-              <tbody id="eo_tbody_drehmoment" class="divide-y divide-amber-100 font-medium text-slate-700 bg-amber-50/35"></tbody>
+              <tbody id="eo_tbody_drehmoment" class="divide-y divide-amber-100 font-medium text-slate-700 bg-emerald-50/35"></tbody>
             </table>
           </div>
         </section>
