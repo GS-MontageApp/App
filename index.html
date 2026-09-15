@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.64
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.65
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1630 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1645 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,16 +49,28 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.64) -->
-  <script src="js/version.js?v=v1.10.64"></script>
-  <script src="js/zuschnitt.js?v=v1.10.64"></script>
-  <script src="js/etagen.js?v=v1.10.64"></script>
-  <script src="js/drehwinkel.js?v=v1.10.64"></script>
-  <script src="js/tabellen.js?v=v1.10.64"></script>
-  <script src="js/drehmoment.js?v=v1.10.64"></script>
-  <script src="js/shell.js?v=v1.10.64"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.65) -->
+  <script src="js/version.js?v=v1.10.65"></script>
+  <script src="js/zuschnitt.js?v=v1.10.65"></script>
+  <script src="js/etagen.js?v=v1.10.65"></script>
+  <script src="js/drehwinkel.js?v=v1.10.65"></script>
+  <script src="js/tabellen.js?v=v1.10.65"></script>
+  <script src="js/drehmoment.js?v=v1.10.65"></script>
+  <script src="js/shell.js?v=v1.10.65"></script>
 
   <style>
+    /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Überschreibung potenzieller Monospace-Schriften in Zahlenfeldern für einheitlichen Look */
+    input, select, button, table {
+      font-family: inherit !important;
+    }
+
     .row-selected {
       outline: 2.5px solid #005691 !important;
       background-color: rgba(0, 86, 145, 0.16) !important;
@@ -353,12 +365,12 @@
           <div class="w-full flex items-center justify-around border-t border-slate-100 pt-1.5 px-2">
             <div class="flex flex-col items-center">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Anschluss A</span>
-              <span id="dw_out_a" class="text-base font-extrabold text-slate-400 font-mono w-16 text-center">0°</span>
+              <span id="dw_out_a" class="text-base font-extrabold text-slate-400 w-16 text-center">0°</span>
             </div>
             <div class="h-6 w-px bg-slate-200"></div>
             <div class="flex flex-col items-center">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Anschluss B</span>
-              <span id="dw_out_b" class="text-base font-extrabold text-orange-600 font-mono w-16 text-center">0°</span>
+              <span id="dw_out_b" class="text-base font-extrabold text-orange-600 w-16 text-center">0°</span>
             </div>
           </div>
         </div>
@@ -618,9 +630,8 @@
 
   <!-- BOOTSTRAPPER mit DOMContentLoaded & Tages-Splash-Logik -->
   <script>
-    // Globale Funktion zur Steuerung des Splash-Screens (1x pro Tag)
     function checkDailySplash() {
-      const today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
+      const today = new Date().toISOString().slice(0, 10);
       const lastShown = localStorage.getItem('zangenschlosser_splash_date_v1');
       const splashModal = document.getElementById('daily_splash_modal');
 
@@ -648,13 +659,11 @@
         menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
       }
 
-      // Theme sofort beim Start laden
       if (window.setTheme) {
         const savedTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'standard';
         window.setTheme(savedTheme);
       }
 
-      // Tages-Splash-Logik ausführen
       checkDailySplash();
 
       AppShell.init();
