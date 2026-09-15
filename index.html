@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.67
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.68
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1711 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1725 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.67) -->
-  <script src="js/version.js?v=v1.10.67"></script>
-  <script src="js/zuschnitt.js?v=v1.10.67"></script>
-  <script src="js/etagen.js?v=v1.10.67"></script>
-  <script src="js/drehwinkel.js?v=v1.10.67"></script>
-  <script src="js/tabellen.js?v=v1.10.67"></script>
-  <script src="js/drehmoment.js?v=v1.10.67"></script>
-  <script src="js/shell.js?v=v1.10.67"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.68) -->
+  <script src="js/version.js?v=v1.10.68"></script>
+  <script src="js/zuschnitt.js?v=v1.10.68"></script>
+  <script src="js/etagen.js?v=v1.10.68"></script>
+  <script src="js/drehwinkel.js?v=v1.10.68"></script>
+  <script src="js/tabellen.js?v=v1.10.68"></script>
+  <script src="js/drehmoment.js?v=v1.10.68"></script>
+  <script src="js/shell.js?v=v1.10.68"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -540,7 +540,7 @@
       <button onclick="switchApp('drehwinkel', 'Verdrehwinkel')" id="nav-drehwinkel" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">🔄</span><span class="text-[10px] font-semibold truncate w-full">Verdrehwinkel</span>
       </button>
-      <button onclick="switchApp('eoform', 'Tabellen | Einstecktiefe')" id="nav-eoform" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+      <button onclick="switchAppWithTablesCheck('eoform', 'Tabellen | Einstecktiefe')" id="nav-eoform" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">📋</span><span class="text-[10px] font-semibold truncate w-full">Tabellen</span>
       </button>
       <button onclick="openMehrModal()" id="nav-mehr" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
@@ -627,7 +627,7 @@
     </div>
   </div>
 
-  <!-- BOOTSTRAPPER mit DOMContentLoaded & robuster Initialisierung -->
+  <!-- BOOTSTRAPPER mit DOMContentLoaded & robustem Auto-Init beim Tab-Wechsel -->
   <script>
     function checkDailySplash() {
       const today = new Date().toISOString().slice(0, 10);
@@ -646,6 +646,17 @@
       localStorage.setItem('zangenschlosser_splash_date_v1', today);
       const splashModal = document.getElementById('daily_splash_modal');
       if (splashModal) splashModal.classList.add('hidden');
+    }
+
+    // Wrapper für den Tabellen-Wechsel, der bei Bedarf das Rendering erzwingt
+    function switchAppWithTablesCheck(viewId, title) {
+      if (window.switchApp) {
+        window.switchApp(viewId, title);
+      }
+      if (viewId === 'eoform') {
+        if (window.TabellenApp) TabellenApp.init();
+        if (window.DrehmomentApp) DrehmomentApp.init();
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -670,11 +681,11 @@
       if (window.ZuschnittApp) ZuschnittApp.init();
       if (window.DrehwinkelApp) DrehwinkelApp.init();
       
-      // Verzögerter Start für Tabellen- und Drehmoment-Module, um sicherzustellen, dass die DOM-Container bereit sind
+      // Verzögerter Initialisierungsversuch beim Start
       setTimeout(() => {
         if (window.TabellenApp) TabellenApp.init();
         if (window.DrehmomentApp) DrehmomentApp.init();
-      }, 50);
+      }, 100);
 
       AppShell.switchApp('etagen', 'Etagenrechner');
     });
