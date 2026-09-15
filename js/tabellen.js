@@ -1,6 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / PERSISTENT SELECTION) v1.10.69
-// Basierend auf robuster v1.10.44 Architektur[cite: 2]
+// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / PERSISTENT SELECTION) v1.10.106
 // ============================================================================
 window.TabellenApp = (() => {
   const STORAGE_KEY = 'zangenschlosser_table_selections_v1';
