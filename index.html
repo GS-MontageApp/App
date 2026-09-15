@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.70
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.71
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1742 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1753 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.70) -->
-  <script src="js/version.js?v=v1.10.70"></script>
-  <script src="js/zuschnitt.js?v=v1.10.70"></script>
-  <script src="js/etagen.js?v=v1.10.70"></script>
-  <script src="js/drehwinkel.js?v=v1.10.70"></script>
-  <script src="js/tabellen.js?v=v1.10.70"></script>
-  <script src="js/drehmoment.js?v=v1.10.70"></script>
-  <script src="js/shell.js?v=v1.10.70"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.71) -->
+  <script src="js/version.js?v=v1.10.71"></script>
+  <script src="js/zuschnitt.js?v=v1.10.71"></script>
+  <script src="js/etagen.js?v=v1.10.71"></script>
+  <script src="js/drehwinkel.js?v=v1.10.71"></script>
+  <script src="js/tabellen.js?v=v1.10.71"></script>
+  <script src="js/drehmoment.js?v=v1.10.71"></script>
+  <script src="js/shell.js?v=v1.10.71"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -418,13 +418,13 @@
       </section>
     </div>
 
-    <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand mit Sticky Headers) -->
+    <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock mit sauberer Scroll-Begrenzung & Sticky Header) -->
     <div id="view-eoform" class="app-view hidden flex-col w-full h-full flex-1 relative min-h-0">
       <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-24 min-h-0">
         
         <!-- Subview 1: Einstecktiefe Standard -->
         <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-y-auto border border-slate-100 rounded-xl w-full relative">
+          <div class="max-h-[55vh] sm:max-h-[62vh] min-h-0 overflow-y-auto border border-slate-100 rounded-xl w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -442,7 +442,7 @@
 
         <!-- Subview 2: EO-FORM L -->
         <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-y-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full relative">
+          <div class="max-h-[55vh] sm:max-h-[62vh] min-h-0 overflow-y-auto border border-emerald-100 rounded-xl bg-emerald-50/20 w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -463,7 +463,7 @@
 
         <!-- Subview 3: EO-Form-S -->
         <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-y-auto border border-red-100 rounded-xl bg-red-50/20 w-full relative">
+          <div class="max-h-[55vh] sm:max-h-[62vh] min-h-0 overflow-y-auto border border-red-100 rounded-xl bg-red-50/20 w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -484,7 +484,7 @@
 
         <!-- Subview 4: Drehmomente -->
         <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors">
-          <div class="flex-1 min-h-0 overflow-y-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full relative">
+          <div class="max-h-[55vh] sm:max-h-[62vh] min-h-0 overflow-y-auto border border-amber-100 rounded-xl bg-amber-50/20 w-full relative">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
                 <tr class="border-b border-slate-200 text-slate-500 uppercase">
@@ -583,7 +583,7 @@
     </div>
   </div>
 
-  <!-- TOP-MENÜ (Zahnrad-Menü: bereinigt) -->
+  <!-- TOP-MENÜ -->
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-3">
