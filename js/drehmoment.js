@@ -1,10 +1,11 @@
 /**
  * ============================================================================
- * ZANGENSCHLOSSER APP (Dr. Zange) - Modul Drehmoment (v1.10.66)
+ * ZANGENSCHLOSSER APP (Dr. Zange) - Modul Drehmoment (v1.10.68)
  * ============================================================================
  */
 
 const DrehmomentApp = (() => {
+  let isInitialized = false;
 
   const dataDrehmoment = [
     { gewinde: 'M 4', nm88: '3.0', nm109: '4.4', nm129: '5.1' },
@@ -23,6 +24,7 @@ const DrehmomentApp = (() => {
 
   function init() {
     renderDrehmomentTable();
+    isInitialized = true;
   }
 
   function renderDrehmomentTable() {
@@ -51,6 +53,7 @@ const DrehmomentApp = (() => {
   }
 
   return {
-    init
+    init,
+    get isInitialized() { return isInitialized; }
   };
 })();
