@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.89 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.90 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Version v1.10.89) -->
-  <script src="js/version.js?v=v1.10.89"></script>
-  <script src="js/zuschnitt.js?v=v1.10.89"></script>
-  <script src="js/etagen.js?v=v1.10.89"></script>
-  <script src="js/drehwinkel.js?v=v1.10.89"></script>
-  <script src="js/tabellen.js?v=v1.10.89"></script>
-  <script src="js/drehmoment.js?v=v1.10.89"></script>
-  <script src="js/shell.js?v=v1.10.89"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.90) -->
+  <script src="js/version.js?v=v1.10.90"></script>
+  <script src="js/zuschnitt.js?v=v1.10.90"></script>
+  <script src="js/etagen.js?v=v1.10.90"></script>
+  <script src="js/drehwinkel.js?v=v1.10.90"></script>
+  <script src="js/tabellen.js?v=v1.10.90"></script>
+  <script src="js/drehmoment.js?v=v1.10.90"></script>
+  <script src="js/shell.js?v=v1.10.90"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -146,6 +146,14 @@
       color: #94a3b8 !important;
     }
 
+    /* GS: Präzise Überschreibung für sämtliche Ergebnisfelder im GS-Style gemäß Vorgabe */
+    body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"],
+    body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"],
+    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge {
+      border: 3px solid #ffe600 !important;
+      border-left-width: 12px !important;
+    }
+
     /* GS: Absolut kompromisslose Erzwingung von schwarzem Text für sämtliche Inhalte in den Ergebnis-Boxen (Etagen & Zuschnitt) */
     body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"],
     body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"] *,
@@ -174,7 +182,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.89)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.90)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -242,29 +250,29 @@
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 transition-colors">
         <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
         <div class="space-y-3">
-          <!-- NACHZIEHLÄNGE (NZ) - Mit gelbem Akzentrand und 2px umlaufendem Rahmen (border-2) -->
-          <div class="p-4 bg-yellow-50/60 rounded-xl border-2 border-yellow-300 border-l-4 border-l-yellow-500 shadow-sm">
+          <!-- NACHZIEHLÄNGE (NZ) -->
+          <div class="p-4 bg-yellow-50/60 rounded-xl border-[3px] border-yellow-300 border-l-[12px] border-l-yellow-500 shadow-sm">
             <div class="text-xs font-bold text-yellow-800 uppercase tracking-wider">Nachziehlänge (NZ)</div>
             <div id="etagen_out_t" class="text-xl font-bold text-yellow-950 mt-0.5">0 mm</div>
           </div>
 
-          <div class="p-4 bg-red-50/50 rounded-xl border-l-4 border-red-500">
+          <div class="p-4 bg-red-50/50 rounded-xl border-[3px] border-red-300 border-l-[12px] border-l-red-500 shadow-sm">
             <div class="text-xs font-semibold text-red-800 uppercase tracking-wider">Kombinierter Raumversatz (C)</div>
             <div id="etagen_out_c" class="text-xl font-bold text-red-950 mt-0.5">0 mm</div>
           </div>
-          <div class="p-4 bg-orange-50 rounded-xl border-l-4 border-orange-500 shadow-sm">
+          <div class="p-4 bg-orange-50 rounded-xl border-[3px] border-orange-300 border-l-[12px] border-l-orange-500 shadow-sm">
             <div class="text-xs font-bold text-orange-800 uppercase tracking-wider">Schräglänge (T)</div>
             <div id="etagen_out_travel" class="text-xl font-bold text-orange-950 mt-0.5">0 mm</div>
           </div>
-          <div class="p-4 bg-sky-50 rounded-xl border-l-4 border-sky-500 shadow-sm">
+          <div class="p-4 bg-sky-50 rounded-xl border-[3px] border-sky-300 border-l-[12px] border-l-sky-500 shadow-sm">
             <div class="text-xs font-bold text-sky-800 uppercase tracking-wider">Axialer Versatz (R)</div>
             <div id="etagen_out_run" class="text-xl font-bold text-sky-950 mt-0.5">0 mm</div>
           </div>
-          <div class="p-4 bg-purple-50/50 rounded-xl border-l-4 border-purple-500">
+          <div class="p-4 bg-purple-50/50 rounded-xl border-[3px] border-purple-300 border-l-[12px] border-l-purple-500 shadow-sm">
             <div class="text-xs font-semibold text-purple-800 uppercase tracking-wider">Verdrehwinkel für die Biegung</div>
             <div id="etagen_out_f" class="text-xl font-bold text-purple-950 mt-0.5">0 °</div>
           </div>
-          <div class="p-4 bg-emerald-50/50 rounded-xl border-l-4 border-emerald-500">
+          <div class="p-4 bg-emerald-50/50 rounded-xl border-[3px] border-emerald-300 border-l-[12px] border-l-emerald-500 shadow-sm">
             <div class="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Anreisumfangmaß</div>
             <div id="etagen_out_anreisumfang" class="text-xl font-bold text-emerald-950 mt-0.5">0 mm</div>
           </div>
@@ -360,9 +368,9 @@
 
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-2 border-2 border-red-500 transition-colors">
         <h2 id="zuschnitt_out_titel" class="text-xs font-semibold text-red-600 uppercase tracking-wider border-b border-red-200 pb-1.5">Ergebnis &ndash; <i>Parameter wählen</i></h2>
-        <div class="p-3 bg-red-50 rounded-xl border-l-4 border-red-600 shadow-sm space-y-0.5">
+        <div id="zuschnitt_out_gesamtlänge" class="p-3 bg-red-50 rounded-xl border-[3px] border-red-300 border-l-[12px] border-l-red-600 shadow-sm space-y-0.5">
           <div class="text-[10px] font-bold text-red-800 uppercase tracking-wider">Gesamtzuschnittlänge</div>
-          <div id="zuschnitt_out_gesamtlänge" class="text-2xl font-bold text-red-950">0 mm</div>
+          <div class="text-2xl font-bold text-red-950">0 mm</div>
         </div>
         <div class="grid grid-cols-2 gap-2 text-xs text-slate-600">
           <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
