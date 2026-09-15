@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.95
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.96
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.95 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.96 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.95) -->
-  <script src="js/version.js?v=v1.10.95"></script>
-  <script src="js/zuschnitt.js?v=v1.10.95"></script>
-  <script src="js/etagen.js?v=v1.10.95"></script>
-  <script src="js/drehwinkel.js?v=v1.10.95"></script>
-  <script src="js/tabellen.js?v=v1.10.95"></script>
-  <script src="js/drehmoment.js?v=v1.10.95"></script>
-  <script src="js/shell.js?v=v1.10.95"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.96) -->
+  <script src="js/version.js?v=v1.10.96"></script>
+  <script src="js/zuschnitt.js?v=v1.10.96"></script>
+  <script src="js/etagen.js?v=v1.10.96"></script>
+  <script src="js/drehwinkel.js?v=v1.10.96"></script>
+  <script src="js/tabellen.js?v=v1.10.96"></script>
+  <script src="js/drehmoment.js?v=v1.10.96"></script>
+  <script src="js/shell.js?v=v1.10.96"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -146,13 +146,13 @@
       color: #94a3b8 !important;
     }
 
-    /* GS: Präzise Überschreibung für sämtliche Ergebnisfelder im GS-Style mit 2.5px Rahmenstärke */
+    /* GS: Präzise Überschreibung für sämtliche Ergebnisfelder im GS-Style mit 2.5px Rahmenstärke und Farbton #1D375B */
     body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"],
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"],
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge {
       border: 2.5px solid #ffe600 !important;
       border-left-width: 12px !important;
-      background-color: #f1f5f9 !important; /* Einheitlicher hellgrauer Hintergrund für alle Ergebnisboxen */
+      background-color: #1D375B !important;
     }
 
     /* GS: Spezifische Akzentbalken-Farben für die Etagen-Ergebnisse C, T, R gemäß 3D-Skizze */
@@ -170,7 +170,7 @@
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div.grid div.p-2 {
       border-left-color: #ef4444 !important;
-      background-color: #f1f5f9 !important;
+      background-color: #1D375B !important;
     }
 
     /* GS: Absolut kompromisslose Erzwingung von schwarzem Text für sämtliche Inhalte in den Ergebnis-Boxen (Etagen & Zuschnitt) */
@@ -201,7 +201,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.95)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.96)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
