@@ -1,245 +1,175 @@
-// ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL TABELLEN (DIN / EO-FORM / PERSISTENT SELECTION) v1.10.44
-// ============================================================================
-window.TabellenApp = (() => {
-  const STORAGE_KEY = 'zangenschlosser_table_selections_v1';
+/**
+ * ============================================================================
+ * ZANGENSCHLOSSER APP (Dr. Zange) - Modul Tabellen (v1.10.66)
+ * ============================================================================
+ */
 
-  const dinData = [
-    { type: 'Leicht (L)', od: '6L', l1: '7,0 mm', nut: 'M12x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '8L', l1: '7,0 mm', nut: 'M14x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '10L', l1: '7,5 mm', nut: 'M16x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '12L', l1: '7,5 mm', nut: 'M18x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '15L', l1: '10,0 mm', nut: 'M22x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '18L', l1: '10,0 mm', nut: 'M26x1,5', pn: '315 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '22L', l1: '11,5 mm', nut: 'M30x2', pn: '160 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '28L', l1: '11,5 mm', nut: 'M36x2', pn: '160 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '35L', l1: '14,0 mm', nut: 'M45x2', pn: '160 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Leicht (L)', od: '42L', l1: '14,0 mm', nut: 'M52x2', pn: '160 bar', cls: 'bg-emerald-50/70' },
-    { type: 'Schwer (S)', od: '6S', l1: '7,0 mm', nut: 'M14x1,5', pn: '630 bar*', cls: 'bg-red-50/70 group-start-s', bold: true },
-    { type: 'Schwer (S)', od: '8S', l1: '7,0 mm', nut: 'M16x1,5', pn: '630 bar*', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '10S', l1: '7,5 mm', nut: 'M18x1,5', pn: '630 bar*', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '12S', l1: '7,5 mm', nut: 'M20x1,5', pn: '630 bar*', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '14S', l1: '7,5 mm', nut: 'M22x1,5', pn: '630 bar*', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '16S', l1: '8,5 mm', nut: 'M24x1,5', pn: '400 bar', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '20S', l1: '10,5 mm', nut: 'M30x2', pn: '400 bar', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '25S', l1: '12,0 mm', nut: 'M36x2', pn: '400 bar', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '30S', l1: '13,5 mm', nut: 'M42x2', pn: '250 bar', cls: 'bg-red-50/70', bold: true },
-    { type: 'Schwer (S)', od: '38S', l1: '16,0 mm', nut: 'M52x2', pn: '250 bar', cls: 'bg-red-50/70', bold: true }
+const TabellenApp = (() => {
+
+  const dataDin = [
+    { baureihe: 'L', rohr: '6', einsteck: '7.0', mutter: 'M 12 x 1.5', pn: '315' },
+    { baureihe: 'L', rohr: '8', einsteck: '7.5', mutter: 'M 14 x 1.5', pn: '315' },
+    { baureihe: 'L', rohr: '10', einsteck: '7.5', mutter: 'M 16 x 1.5', pn: '315' },
+    { baureihe: 'L', rohr: '12', einsteck: '7.5', mutter: 'M 18 x 1.5', pn: '315' },
+    { baureihe: 'L', rohr: '15', einsteck: '8.5', mutter: 'M 22 x 1.5', pn: '315' },
+    { baureihe: 'L', rohr: '18', einsteck: '9.5', mutter: 'M 26 x 1.5', pn: '315' },
+    { baureihe: 'L', rohr: '22', einsteck: '11.0', mutter: 'M 30 x 2', pn: '160' },
+    { baureihe: 'L', rohr: '28', einsteck: '11.5', mutter: 'M 36 x 2', pn: '160' },
+    { baureihe: 'L', rohr: '35', einsteck: '13.5', mutter: 'M 45 x 2', pn: '160' },
+    { baureihe: 'L', rohr: '42', einsteck: '14.5', mutter: 'M 52 x 2', pn: '160' },
+
+    { baureihe: 'S', rohr: '6', einsteck: '7.0', mutter: 'M 14 x 1.5', pn: '630' },
+    { baureihe: 'S', rohr: '8', einsteck: '7.5', mutter: 'M 16 x 1.5', pn: '630' },
+    { baureihe: 'S', rohr: '10', einsteck: '7.5', mutter: 'M 18 x 1.5', pn: '630' },
+    { baureihe: 'S', rohr: '12', einsteck: '7.5', mutter: 'M 20 x 1.5', pn: '630' },
+    { baureihe: 'S', rohr: '14', einsteck: '9.0', mutter: 'M 22 x 1.5', pn: '630' },
+    { baureihe: 'S', rohr: '16', einsteck: '9.5', mutter: 'M 24 x 1.5', pn: '400' },
+    { baureihe: 'S', rohr: '20', einsteck: '11.5', mutter: 'M 30 x 2', pn: '400' },
+    { baureihe: 'S', rohr: '25', einsteck: '13.0', mutter: 'M 36 x 2', pn: '400' },
+    { baureihe: 'S', rohr: '30', einsteck: '14.5', mutter: 'M 42 x 2', pn: '400' },
+    { baureihe: 'S', rohr: '38', einsteck: '16.0', mutter: 'M 52 x 2', pn: '315' }
   ];
 
-  const eoFormLData = [
-    { od: '6L', s: '1.0', lStahl: '6.0', lEdel: '6.0', l1Stahl: '13.0', l1Edel: '13.0', l2: '90', l3: '63', group: 'group-start-l' },
-    { od: '6L', s: '1.5', lStahl: '6.0', lEdel: '6.0', l1Stahl: '13.0', l1Edel: '13.0', l2: '', l3: '' },
-    { od: '6L', s: '2.0', lStahl: '5.5', lEdel: '—', l1Stahl: '12.5', l1Edel: '—', l2: '', l3: '' },
-    { od: '8L', s: '1.0', lStahl: '5.5', lEdel: '5.5', l1Stahl: '12.5', l1Edel: '12.5', l2: '92', l3: '65', group: 'group-start-l' },
-    { od: '8L', s: '1.5', lStahl: '5.5', lEdel: '5.5', l1Stahl: '12.5', l1Edel: '12.5', l2: '', l3: '' },
-    { od: '8L', s: '2.0', lStahl: '5.0', lEdel: '—', l1Stahl: '12.0', l1Edel: '—', l2: '', l3: '' },
-    { od: '8L', s: '2.5', lStahl: '4.5', lEdel: '—', l1Stahl: '11.5', l1Edel: '—', l2: '', l3: '' },
-    { od: '10L', s: '1.0', lStahl: '5.5', lEdel: '5.5', l1Stahl: '12.5', l1Edel: '12.5', l2: '95', l3: '68', group: 'group-start-l' },
-    { od: '10L', s: '1.5', lStahl: '5.0', lEdel: '6.0', l1Stahl: '12.0', l1Edel: '13.0', l2: '', l3: '' },
-    { od: '10L', s: '2.0', lStahl: '5.0', lEdel: '6.0', l1Stahl: '12.0', l1Edel: '13.0', l2: '', l3: '' },
-    { od: '12L', s: '1.0', lStahl: '4.5', lEdel: '5.0', l1Stahl: '11.5', l1Edel: '12.0', l2: '95', l3: '70', group: 'group-start-l' },
-    { od: '12L', s: '1.5', lStahl: '5.0', lEdel: '5.5', l1Stahl: '12.0', l1Edel: '12.5', l2: '', l3: '' },
-    { od: '12L', s: '2.0', lStahl: '5.0', lEdel: '5.5', l1Stahl: '12.0', l1Edel: '12.5', l2: '', l3: '' },
-    { od: '15L', s: '1.0', lStahl: '5.0', lEdel: '6.5', l1Stahl: '12.0', l1Edel: '13.5', l2: '102', l3: '75', group: 'group-start-l' },
-    { od: '15L', s: '1.5', lStahl: '5.0', lEdel: '6.5', l1Stahl: '12.0', l1Edel: '13.5', l2: '', l3: '' },
-    { od: '15L', s: '2.0', lStahl: '5.0', lEdel: '6.0', l1Stahl: '12.0', l1Edel: '13.0', l2: '', l3: '' },
-    { od: '15L', s: '2.5', lStahl: '5.0', lEdel: '—', l1Stahl: '12.0', l1Edel: '—', l2: '', l3: '' },
-    { od: '18L', s: '1.5', lStahl: '5.5', lEdel: '6.0', l1Stahl: '13.0', l1Edel: '13.5', l2: '110', l3: '80', group: 'group-start-l' },
-    { od: '18L', s: '2.0', lStahl: '5.5', lEdel: '6.5', l1Stahl: '13.0', l1Edel: '14.0', l2: '', l3: '' },
-    { od: '18L', s: '2.5', lStahl: '6.0', lEdel: '—', l1Stahl: '14.0', l1Edel: '—', l2: '', l3: '' },
-    { od: '18L', s: '3.0', lStahl: '6.0', lEdel: '6.5', l1Stahl: '14.0', l1Edel: '14.0', l2: '', l3: '' },
-    { od: '22L', s: '1.5', lStahl: '6.0', lEdel: '6.0', l1Stahl: '13.5', l1Edel: '13.5', l2: '120', l3: '90', group: 'group-start-l' },
-    { od: '22L', s: '2.0', lStahl: '6.5', lEdel: '7.0', l1Stahl: '14.0', l1Edel: '14.5', l2: '', l3: '' },
-    { od: '22L', s: '2.5', lStahl: '6.5', lEdel: '7.0', l1Stahl: '14.0', l1Edel: '14.5', l2: '', l3: '' },
-    { od: '22L', s: '3.0', lStahl: '7.0', lEdel: '7.5', l1Stahl: '14.5', l1Edel: '15.0', l2: '', l3: '' },
-    { od: '28L', s: '1.5', lStahl: '5.5', lEdel: '6.0', l1Stahl: '13.0', l1Edel: '13.5', l2: '140', l3: '98', group: 'group-start-l' },
-    { od: '28L', s: '2.0', lStahl: '5.5', lEdel: '7.0', l1Stahl: '13.0', l1Edel: '14.5', l2: '', l3: '' },
-    { od: '28L', s: '2.5', lStahl: '7.0', lEdel: '7.5', l1Stahl: '14.5', l1Edel: '15.0', l2: '', l3: '' },
-    { od: '28L', s: '3.0', lStahl: '7.0', lEdel: '—', l1Stahl: '14.5', l1Edel: '—', l2: '', l3: '' },
-    { od: '28L', s: '4.0', lStahl: '6.5', lEdel: '—', l1Stahl: '14.0', l1Edel: '—', l2: '', l3: '' },
-    { od: '35L', s: '2.0', lStahl: '7.0', lEdel: '8.5', l1Stahl: '17.5', l1Edel: '19.0', l2: '170', l3: '115', group: 'group-start-l' },
-    { od: '35L', s: '2.5', lStahl: '7.5', lEdel: '9.5', l1Stahl: '18.0', l1Edel: '20.0', l2: '', l3: '' },
-    { od: '35L', s: '3.0', lStahl: '8.5', lEdel: '10.5', l1Stahl: '19.0', l1Edel: '21.0', l2: '', l3: '' },
-    { od: '42L', s: '2.0', lStahl: '7.5', lEdel: '7.5', l1Stahl: '18.5', l1Edel: '18.5', l2: '190', l3: '125', group: 'group-start-l' },
-    { od: '42L', s: '3.0', lStahl: '9.0', lEdel: '10.5', l1Stahl: '20.0', l1Edel: '21.5', l2: '', l3: '' },
-    { od: '42L', s: '4.0', lStahl: '9.0', lEdel: '10.5', l1Stahl: '20.0', l1Edel: '21.5', l2: '', l3: '' },
-    { od: '42L', s: '5.0', lStahl: '10.0', lEdel: '—', l1Stahl: '21.0', l1Edel: '—', l2: '', l3: '' }
+  const dataL = [
+    { ad: '6', wand: '1.0', lStahl: '18.0', lEdel: '18.5', l1Stahl: '7.0', l1Edel: '7.5', l2: '27.0', l3: '33.0' },
+    { ad: '8', wand: '1.0', lStahl: '18.5', lEdel: '19.0', l1Stahl: '7.5', l1Edel: '8.0', l2: '27.5', l3: '34.0' },
+    { ad: '10', wand: '1.25', lStahl: '18.5', lEdel: '19.0', l1Stahl: '7.5', l1Edel: '8.0', l2: '28.0', l3: '35.0' },
+    { ad: '12', wand: '1.5', lStahl: '18.5', lEdel: '19.5', l1Stahl: '7.5', l1Edel: '8.5', l2: '29.0', l3: '36.0' },
+    { ad: '15', wand: '1.5', lStahl: '21.0', lEdel: '21.5', l1Stahl: '8.5', l1Edel: '9.0', l2: '32.5', l3: '40.0' },
+    { ad: '18', wand: '1.5', lStahl: '22.5', lEdel: '23.0', l1Stahl: '9.5', l1Edel: '10.0', l2: '35.5', l3: '43.0' },
+    { ad: '22', wand: '2.0', lStahl: '25.0', lEdel: '26.0', l1Stahl: '11.0', l1Edel: '12.0', l2: '38.5', l3: '48.0' },
+    { ad: '28', wand: '2.0', lStahl: '26.0', lEdel: '27.0', l1Stahl: '11.5', l1Edel: '12.5', l2: '41.5', l3: '51.0' },
+    { ad: '35', wand: '2.5', lStahl: '29.5', lEdel: '30.5', l1Stahl: '13.5', l1Edel: '14.5', l2: '49.0', l3: '60.0' },
+    { ad: '42', wand: '3.0', lStahl: '32.5', lEdel: '33.5', l1Stahl: '14.5', l1Edel: '15.5', l2: '53.0', l3: '64.0' }
   ];
 
-  const eoFormSData = [
-    { od: '6S', s: '1.0', lStahl: '6.0', lEdel: '6.0', l1Stahl: '13.0', l1Edel: '13.0', l2: '92', l3: '65', group: 'group-start-s' },
-    { od: '6S', s: '1.5', lStahl: '6.0', lEdel: '6.0', l1Stahl: '13.0', l1Edel: '13.0', l2: '', l3: '' },
-    { od: '6S', s: '2.0', lStahl: '5.5', lEdel: '—', l1Stahl: '12.5', l1Edel: '—', l2: '', l3: '' },
-    { od: '8S', s: '1.0', lStahl: '5.5', lEdel: '5.5', l1Stahl: '12.5', l1Edel: '12.5', l2: '92', l3: '68', group: 'group-start-s' },
-    { od: '8S', s: '1.5', lStahl: '5.5', lEdel: '5.5', l1Stahl: '12.5', l1Edel: '12.5', l2: '', l3: '' },
-    { od: '8S', s: '2.0', lStahl: '5.0', lEdel: '—', l1Stahl: '12.0', l1Edel: '—', l2: '', l3: '' },
-    { od: '10S', s: '1.5', lStahl: '5.0', lEdel: '6.0', l1Stahl: '12.0', l1Edel: '13.5', l2: '100', l3: '70', group: 'group-start-s' },
-    { od: '10S', s: '2.0', lStahl: '5.0', lEdel: '6.0', l1Stahl: '12.0', l1Edel: '13.5', l2: '', l3: '' },
-    { od: '12S', s: '1.5', lStahl: '5.0', lEdel: '6.5', l1Stahl: '12.5', l1Edel: '14.0', l2: '100', l3: '72', group: 'group-start-s' },
-    { od: '12S', s: '2.0', lStahl: '5.0', lEdel: '6.0', l1Stahl: '12.5', l1Edel: '13.5', l2: '', l3: '' },
-    { od: '12S', s: '2.5', lStahl: '5.0', lEdel: '6.0', l1Stahl: '12.5', l1Edel: '13.5', l2: '', l3: '' },
-    { od: '12S', s: '3.0', lStahl: '4.5', lEdel: '4.5', l1Stahl: '12.0', l1Edel: '12.0', l2: '', l3: '' },
-    { od: '16S', s: '2.0', lStahl: '5.5', lEdel: '6.5', l1Stahl: '13.5', l1Edel: '15.0', l2: '135', l3: '98', group: 'group-start-s' },
-    { od: '16S', s: '2.5', lStahl: '5.5', lEdel: '6.5', l1Stahl: '13.5', l1Edel: '15.0', l2: '', l3: '' },
-    { od: '16S', s: '3.0', lStahl: '5.0', lEdel: '6.5', l1Stahl: '13.0', l1Edel: '15.0', l2: '', l3: '' },
-    { od: '20S', s: '2.0', lStahl: '7.0', lEdel: '7.0', l1Stahl: '17.5', l1Edel: '18.5', l2: '155', l3: '112', group: 'group-start-s' },
-    { od: '20S', s: '2.5', lStahl: '7.0', lEdel: '8.0', l1Stahl: '17.5', l1Edel: '18.5', l2: '', l3: '' },
-    { od: '20S', s: '3.0', lStahl: '7.0', lEdel: '8.0', l1Stahl: '17.5', l1Edel: '18.5', l2: '', l3: '' },
-    { od: '20S', s: '3.5', lStahl: '7.0', lEdel: '—', l1Stahl: '17.5', l1Edel: '—', l2: '', l3: '' },
-    { od: '25S', s: '2.0', lStahl: '8.5', lEdel: '8.5', l1Stahl: '20.5', l1Edel: '20.5', l2: '140', l3: '98', group: 'group-start-s' },
-    { od: '25S', s: '2.5', lStahl: '8.5', lEdel: '9.0', l1Stahl: '20.5', l1Edel: '21.0', l2: '', l3: '' },
-    { od: '25S', s: '3.0', lStahl: '8.0', lEdel: '9.5', l1Stahl: '20.0', l1Edel: '21.5', l2: '', l3: '' },
-    { od: '25S', s: '4.0', lStahl: '8.5', lEdel: '9.5', l1Stahl: '20.5', l1Edel: '21.5', l2: '', l3: '' },
-    { od: '30S', s: '3.0', lStahl: '8.5', lEdel: '9.5', l1Stahl: '22.0', l1Edel: '23.0', l2: '165', l3: '122', group: 'group-start-s' },
-    { od: '30S', s: '4.0', lStahl: '9.5', lEdel: '10.0', l1Stahl: '23.0', l1Edel: '23.5', l2: '', l3: '' },
-    { od: '30S', s: '5.0', lStahl: '8.5', lEdel: '9.0', l1Stahl: '22.0', l1Edel: '22.5', l2: '', l3: '' },
-    { od: '38S', s: '3.0', lStahl: '10.0', lEdel: '9.5', l1Stahl: '26.0', l1Edel: '25.5', l2: '190', l3: '135', group: 'group-start-s' },
-    { od: '38S', s: '4.0', lStahl: '10.0', lEdel: '11.0', l1Stahl: '26.0', l1Edel: '27.0', l2: '', l3: '' },
-    { od: '38S', s: '5.0', lStahl: '11.0', lEdel: '12.5', l1Stahl: '27.0', l1Edel: '28.5', l2: '', l3: '' },
-    { od: '38S', s: '6.0', lStahl: '11.5', lEdel: '12.5', l1Stahl: '27.5', l1Edel: '28.5', l2: '', l3: '' },
-    { od: '38S', s: '7.0', lStahl: '11.5', lEdel: '12.5', l1Stahl: '27.5', l1Edel: '28.5', l2: '', l3: '' }
+  const dataS = [
+    { ad: '6', wand: '1.5', lStahl: '18.0', lEdel: '18.5', l1Stahl: '7.0', l1Edel: '7.5', l2: '27.0', l3: '33.0' },
+    { ad: '8', wand: '1.5', lStahl: '18.5', lEdel: '19.0', l1Stahl: '7.5', l1Edel: '8.0', l2: '27.5', l3: '34.0' },
+    { ad: '10', wand: '1.5', lStahl: '18.5', lEdel: '19.0', l1Stahl: '7.5', l1Edel: '8.0', l2: '28.0', l3: '35.0' },
+    { ad: '12', wand: '2.0', lStahl: '18.5', lEdel: '19.5', l1Stahl: '7.5', l1Edel: '8.5', l2: '29.5', l3: '37.0' },
+    { ad: '14', wand: '2.5', lStahl: '21.5', lEdel: '22.5', l1Stahl: '9.0', l1Edel: '10.0', l2: '33.5', l3: '42.0' },
+    { ad: '16', wand: '2.5', lStahl: '22.5', lEdel: '23.5', l1Stahl: '9.5', l1Edel: '10.5', l2: '34.5', l3: '43.0' },
+    { ad: '20', wand: '3.0', lStahl: '26.5', lEdel: '27.5', l1Stahl: '11.5', l1Edel: '12.5', l2: '41.5', l3: '52.0' },
+    { ad: '25', wand: '4.0', lStahl: '30.0', lEdel: '31.5', l1Stahl: '13.0', l1Edel: '14.5', l2: '47.0', l3: '59.0' },
+    { ad: '30', wand: '4.0', lStahl: '33.5', lEdel: '35.0', l1Stahl: '14.5', l1Edel: '16.0', l2: '51.5', l3: '64.0' },
+    { ad: '38', wand: '5.0', lStahl: '38.0', lEdel: '40.0', l1Stahl: '16.0', l1Edel: '18.0', l2: '58.5', l3: '73.0' }
   ];
 
-  function getStoredSelections() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    } catch {
-      return {};
-    }
+  function init() {
+    renderDinTable();
+    renderLTable();
+    renderSTable();
   }
 
-  function saveStoredSelection(tableKey, rowIndex) {
-    const sels = getStoredSelections();
-    sels[tableKey] = rowIndex;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sels));
-  }
-
-  function applyStoredSelectionsFor(tableKey) {
-    const tbody = document.getElementById(tableKey);
+  function renderDinTable() {
+    const tbody = document.getElementById('eo_tbody_din');
     if (!tbody) return;
-    const sels = getStoredSelections();
-    const storedIndex = sels[tableKey];
-    if (storedIndex !== undefined) {
-      const rows = tbody.querySelectorAll('tr');
-      rows.forEach(r => r.classList.remove('row-selected'));
-      if (rows[storedIndex]) {
-        rows[storedIndex].classList.add('row-selected');
-      }
-    }
-  }
+    tbody.innerHTML = '';
 
-  function applyAllStoredSelections() {
-    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s'].forEach(key => applyStoredSelectionsFor(key));
-  }
-
-  function renderTables() {
-    const dinTbody = document.getElementById('eo_tbody_din');
-    if (dinTbody) {
-      dinTbody.innerHTML = dinData.map(r => `
-        <tr class="${r.cls || ''}">
-          <td class="py-2.5 px-3 ${r.bold ? 'font-bold text-slate-800' : ''}">${r.type}</td>
-          <td class="py-2.5 px-3 font-bold ${r.od.endsWith('S') ? 'text-indigo-700' : ''}">${r.od}</td>
-          <td class="py-2.5 px-3 font-mono">${r.l1}</td>
-          <td class="py-2.5 px-3">${r.nut}</td>
-          <td class="py-2.5 px-3">${r.pn}</td>
-        </tr>
-      `).join('');
-    }
-
-    const lTbody = document.getElementById('eo_tbody_l');
-    if (lTbody) {
-      lTbody.innerHTML = eoFormLData.map(r => `
-        <tr class="bg-emerald-50/50 ${r.group || ''}">
-          <td class="py-2 px-2 font-bold">${r.od}</td>
-          <td class="py-2 px-2">${r.s}</td>
-          <td class="py-2 px-2">${r.lStahl}</td>
-          <td class="py-2 px-2">${r.lEdel}</td>
-          <td class="py-2 px-2">${r.l1Stahl}</td>
-          <td class="py-2 px-2">${r.l1Edel}</td>
-          <td class="py-2 px-2">${r.l2 || ''}</td>
-          <td class="py-2 px-2">${r.l3 || ''}</td>
-        </tr>
-      `).join('');
-    }
-
-    const sTbody = document.getElementById('eo_tbody_s');
-    if (sTbody) {
-      sTbody.innerHTML = eoFormSData.map(r => `
-        <tr class="bg-red-50/50 ${r.group || ''}">
-          <td class="py-2 px-2 font-bold">${r.od}</td>
-          <td class="py-2 px-2">${r.s}</td>
-          <td class="py-2 px-2">${r.lStahl}</td>
-          <td class="py-2 px-2">${r.lEdel}</td>
-          <td class="py-2 px-2">${r.l1Stahl}</td>
-          <td class="py-2 px-2">${r.l1Edel}</td>
-          <td class="py-2 px-2">${r.l2 || ''}</td>
-          <td class="py-2 px-2">${r.l3 || ''}</td>
-        </tr>
-      `).join('');
-    }
-
-    applyAllStoredSelections();
-  }
-
-  function bindPersistentTable(tableKey) {
-    const tbody = document.getElementById(tableKey);
-    if (!tbody || tbody.dataset.persistentBound) return;
-    tbody.dataset.persistentBound = 'true';
-    tbody.style.cursor = 'pointer';
-
-    tbody.addEventListener('click', (e) => {
-      const row = e.target.closest('tr');
-      if (!row || !tbody.contains(row)) return;
-
-      tbody.querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
-      row.classList.add('row-selected');
-
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      const index = rows.indexOf(row);
-      saveStoredSelection(tableKey, index);
+    dataDin.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-slate-50 cursor-pointer transition-colors';
+      tr.innerHTML = `
+        <td class="py-2.5 px-3">${row.baureihe}</td>
+        <td class="py-2.5 px-3 font-semibold">${row.rohr} mm</td>
+        <td class="py-2.5 px-3 text-indigo-600 font-bold">${row.einsteck} mm</td>
+        <td class="py-2.5 px-3 text-slate-500">${row.mutter}</td>
+        <td class="py-2.5 px-3 text-slate-500">${row.pn} bar</td>
+      `;
+      tr.onclick = () => selectRow(tbody, tr);
+      if (idx === 0) selectRow(tbody, tr);
+      tbody.appendChild(tr);
     });
-
-    applyStoredSelectionsFor(tableKey);
   }
 
-  function initTableInteractions() {
-    ['eo_tbody_din', 'eo_tbody_l', 'eo_tbody_s'].forEach(bindPersistentTable);
+  function renderLTable() {
+    const tbody = document.getElementById('eo_tbody_l');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    dataL.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-emerald-100/40 cursor-pointer transition-colors';
+      tr.innerHTML = `
+        <td class="py-2.5 px-2 font-bold">${row.ad} mm</td>
+        <td class="py-2.5 px-2 text-slate-600">${row.wand}</td>
+        <td class="py-2.5 px-2 font-semibold text-emerald-700">${row.lStahl}</td>
+        <td class="py-2.5 px-2 text-slate-600">${row.lEdel}</td>
+        <td class="py-2.5 px-2">${row.l1Stahl}</td>
+        <td class="py-2.5 px-2 text-slate-600">${row.l1Edel}</td>
+        <td class="py-2.5 px-2">${row.l2}</td>
+        <td class="py-2.5 px-2">${row.l3}</td>
+      `;
+      tr.onclick = () => selectRow(tbody, tr);
+      if (idx === 0) selectRow(tbody, tr);
+      tbody.appendChild(tr);
+    });
   }
 
-  function switchEoSub(subKey) {
+  function renderSTable() {
+    const tbody = document.getElementById('eo_tbody_s');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    dataS.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-red-100/40 cursor-pointer transition-colors';
+      tr.innerHTML = `
+        <td class="py-2.5 px-2 font-bold">${row.ad} mm</td>
+        <td class="py-2.5 px-2 text-slate-600">${row.wand}</td>
+        <td class="py-2.5 px-2 font-semibold text-red-700">${row.lStahl}</td>
+        <td class="py-2.5 px-2 text-slate-600">${row.lEdel}</td>
+        <td class="py-2.5 px-2">${row.l1Stahl}</td>
+        <td class="py-2.5 px-2 text-slate-600">${row.l1Edel}</td>
+        <td class="py-2.5 px-2">${row.l2}</td>
+        <td class="py-2.5 px-2">${row.l3}</td>
+      `;
+      tr.onclick = () => selectRow(tbody, tr);
+      if (idx === 0) selectRow(tbody, tr);
+      tbody.appendChild(tr);
+    });
+  }
+
+  function selectRow(tbody, tr) {
+    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('row-selected'));
+    tr.classList.add('row-selected');
+  }
+
+  function switchEoSub(subId) {
     document.querySelectorAll('.eo-sub-section').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('#view-eoform section button').forEach(btn => {
-      btn.classList.remove('bg-[#005691]', 'text-white', 'shadow-sm');
-      btn.classList.add('text-slate-600', 'hover:text-slate-900');
-    });
-
-    const targetSub = document.getElementById('eo_sub_' + subKey);
-    if (targetSub) targetSub.classList.remove('hidden');
-
-    const activeBtn = document.getElementById('eo_tab_' + subKey);
-    if (activeBtn) {
-      activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900');
-      activeBtn.classList.add('bg-[#005691]', 'text-white', 'shadow-sm');
+    const target = document.getElementById(`eo_sub_${subId}`);
+    if (target) {
+      target.classList.remove('hidden');
+      target.classList.add('flex');
     }
+
+    ['din', 'l', 's', 'drehmoment'].forEach(id => {
+      const btn = document.getElementById(`eo_tab_${id}`);
+      if (!btn) return;
+      if (id === subId) {
+        btn.className = 'flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm';
+      } else {
+        btn.className = 'flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition-all';
+      }
+    });
 
     const headerTitle = document.getElementById('header-title');
     if (headerTitle) {
-      let subName = 'Einstecktiefe';
-      if (subKey === 'l') subName = 'EO-FORM L';
-      if (subKey === 's') subName = 'EO-FORM S';
-      if (subKey === 'drehmoment') subName = 'Drehmoment';
-      headerTitle.textContent = `Tabellen | ${subName}`;
+      const titles = {
+        din: 'Tabellen | Einstecktiefe',
+        l: 'Tabellen | EO-FORM L',
+        s: 'Tabellen | EO-FORM S',
+        drehmoment: 'Tabellen | Drehmoment'
+      };
+      headerTitle.textContent = titles[subId] || 'Tabellen';
     }
   }
 
-  function init() {
-    renderTables();
-    initTableInteractions();
-    switchEoSub('din');
-  }
-
-  return { init, switchEoSub, bindPersistentTable };
+  return {
+    init,
+    switchEoSub
+  };
 })();
 
-window.switchEoSub = (subKey) => window.TabellenApp.switchEoSub(subKey);
+function switchEoSub(id) { TabellenApp.switchEoSub(id); }
