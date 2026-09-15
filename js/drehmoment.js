@@ -1,88 +1,56 @@
-// ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL DREHMOMENTTABELLE (8.8 / 10.9 / 12.9) v1.10.44
-// ============================================================================
-window.DrehmomentApp = (() => {
-  const STORAGE_KEY = 'zangenschlosser_drehmoment_selections_v1';
+/**
+ * ============================================================================
+ * ZANGENSCHLOSSER APP (Dr. Zange) - Modul Drehmoment (v1.10.66)
+ * ============================================================================
+ */
 
-  const drehmomentData = [
-    { gewinde: 'M3', m88: '1,4 Nm', m109: '2,0 Nm', m129: '2,4 Nm' },
-    { gewinde: 'M4', m88: '3,3 Nm', m109: '4,8 Nm', m129: '5,6 Nm' },
-    { gewinde: 'M5', m88: '6,5 Nm', m109: '9,5 Nm', m129: '11,2 Nm' },
-    { gewinde: 'M6', m88: '11,3 Nm', m109: '16,5 Nm', m129: '19,3 Nm' },
-    { gewinde: 'M8', m88: '27,3 Nm', m109: '40,1 Nm', m129: '46,9 Nm' },
-    { gewinde: 'M10', m88: '54 Nm', m109: '79 Nm', m129: '93 Nm' },
-    { gewinde: 'M12', m88: '93 Nm', m109: '137 Nm', m129: '160 Nm' },
-    { gewinde: 'M14', m88: '148 Nm', m109: '218 Nm', m129: '255 Nm' },
-    { gewinde: 'M16', m88: '230 Nm', m109: '338 Nm', m129: '395 Nm' },
-    { gewinde: 'M18', m88: '329 Nm', m109: '469 Nm', m129: '549 Nm' },
-    { gewinde: 'M20', m88: '464 Nm', m109: '661 Nm', m129: '773 Nm' },
-    { gewinde: 'M24', m88: '798 Nm', m109: '1.136 Nm', m129: '1.329 Nm' }
+const DrehmomentApp = (() => {
+
+  const dataDrehmoment = [
+    { gewinde: 'M 4', nm88: '3.0', nm109: '4.4', nm129: '5.1' },
+    { gewinde: 'M 5', nm88: '5.9', nm109: '8.7', nm129: '10.0' },
+    { gewinde: 'M 6', nm88: '10.1', nm109: '15.0', nm129: '17.6' },
+    { gewinde: 'M 8', nm88: '24.6', nm109: '36.5', nm129: '43.0' },
+    { gewinde: 'M 10', nm88: '48.0', nm109: '72.0', nm129: '84.0' },
+    { gewinde: 'M 12', nm88: '84.0', nm109: '123.0', nm129: '145.0' },
+    { gewinde: 'M 14', nm88: '133.0', nm109: '195.0', nm129: '230.0' },
+    { gewinde: 'M 16', nm88: '200.0', nm109: '300.0', nm129: '355.0' },
+    { gewinde: 'M 18', nm88: '275.0', nm109: '395.0', nm129: '460.0' },
+    { gewinde: 'M 20', nm88: '390.0', nm109: '560.0', nm129: '650.0' },
+    { gewinde: 'M 22', nm88: '530.0', nm109: '760.0', nm129: '880.0' },
+    { gewinde: 'M 24', nm88: '670.0', nm109: '960.0', nm129: '1120.0' }
   ];
 
-  function getStoredSelection() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY));
-    } catch {
-      return null;
-    }
-  }
-
-  function saveStoredSelection(rowIndex) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(rowIndex));
-  }
-
-  function applyStoredSelection() {
-    const tbody = document.getElementById('eo_tbody_drehmoment');
-    if (!tbody) return;
-    const storedIndex = getStoredSelection();
-    if (storedIndex !== null && storedIndex !== undefined) {
-      const rows = tbody.querySelectorAll('tr');
-      rows.forEach(r => r.classList.remove('row-selected'));
-      if (rows[storedIndex]) {
-        rows[storedIndex].classList.add('row-selected');
-      }
-    }
-  }
-
-  function renderTable() {
-    const tbody = document.getElementById('eo_tbody_drehmoment');
-    if (!tbody) return;
-    tbody.innerHTML = drehmomentData.map(r => `
-      <tr class="bg-amber-50/50">
-        <td class="py-2.5 px-3 font-bold">${r.gewinde}</td>
-        <td class="py-2.5 px-3 font-mono">${r.m88}</td>
-        <td class="py-2.5 px-3 font-mono">${r.m109}</td>
-        <td class="py-2.5 px-3 font-mono">${r.m129}</td>
-      </tr>
-    `).join('');
-    applyStoredSelection();
-  }
-
-  function initInteractions() {
-    const tbody = document.getElementById('eo_tbody_drehmoment');
-    if (!tbody || tbody.dataset.persistentBound) return;
-    tbody.dataset.persistentBound = 'true';
-    tbody.style.cursor = 'pointer';
-
-    tbody.addEventListener('click', (e) => {
-      const row = e.target.closest('tr');
-      if (!row || !tbody.contains(row)) return;
-
-      tbody.querySelectorAll('tr.row-selected').forEach(r => r.classList.remove('row-selected'));
-      row.classList.add('row-selected');
-
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      const index = rows.indexOf(row);
-      saveStoredSelection(index);
-    });
-
-    applyStoredSelection();
-  }
-
   function init() {
-    renderTable();
-    initInteractions();
+    renderDrehmomentTable();
   }
 
-  return { init };
+  function renderDrehmomentTable() {
+    const tbody = document.getElementById('eo_tbody_drehmoment');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    dataDrehmoment.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-amber-100/40 cursor-pointer transition-colors';
+      tr.innerHTML = `
+        <td class="py-2.5 px-3 font-bold">${row.gewinde}</td>
+        <td class="py-2.5 px-3 text-amber-800 font-semibold">${row.nm88}</td>
+        <td class="py-2.5 px-3 text-slate-700">${row.nm109}</td>
+        <td class="py-2.5 px-3 text-slate-700">${row.nm129}</td>
+      `;
+      tr.onclick = () => selectRow(tbody, tr);
+      if (idx === 0) selectRow(tbody, tr);
+      tbody.appendChild(tr);
+    });
+  }
+
+  function selectRow(tbody, tr) {
+    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('row-selected'));
+    tr.classList.add('row-selected');
+  }
+
+  return {
+    init
+  };
 })();
