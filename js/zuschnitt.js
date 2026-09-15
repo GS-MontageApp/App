@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -165,12 +165,12 @@ window.ZuschnittApp = (() => {
     const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
     const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
     const titelEl = document.getElementById('zuschnitt_out_titel');
-    const gesamtEl = document.getElementById('zuschnitt_out_gesamtlänge');
+    const gesamtValEl = document.getElementById('zuschnitt_out_gesamtlänge_wert');
     const biegeEl = document.getElementById('zuschnitt_out_biegeradius');
     const summeEl = document.getElementById('zuschnitt_out_summeschenkel');
 
     if (!dVal || !rVal) {
-      if (gesamtEl) gesamtEl.textContent = "0 mm";
+      if (gesamtValEl) gesamtValEl.textContent = "0 mm";
       if (titelEl) titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
       if (biegeEl) biegeEl.textContent = "-";
       if (summeEl) summeEl.textContent = "0 mm";
@@ -204,7 +204,7 @@ window.ZuschnittApp = (() => {
     });
 
     let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
-    if (gesamtEl) gesamtEl.textContent = Math.round(gesamtlänge).toLocaleString('de-DE') + ' mm';
+    if (gesamtValEl) gesamtValEl.textContent = Math.round(gesamtlänge).toLocaleString('de-DE') + ' mm';
     if (biegeEl) biegeEl.textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
     if (summeEl) summeEl.textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
   }
