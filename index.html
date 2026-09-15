@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.63
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.64
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1622 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1630 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module -->
-  <script src="js/version.js?v=v1.10.63"></script>
-  <script src="js/zuschnitt.js?v=v1.10.63"></script>
-  <script src="js/etagen.js?v=v1.10.63"></script>
-  <script src="js/drehwinkel.js?v=v1.10.63"></script>
-  <script src="js/tabellen.js?v=v1.10.63"></script>
-  <script src="js/drehmoment.js?v=v1.10.63"></script>
-  <script src="js/shell.js?v=v1.10.63"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.64) -->
+  <script src="js/version.js?v=v1.10.64"></script>
+  <script src="js/zuschnitt.js?v=v1.10.64"></script>
+  <script src="js/etagen.js?v=v1.10.64"></script>
+  <script src="js/drehwinkel.js?v=v1.10.64"></script>
+  <script src="js/tabellen.js?v=v1.10.64"></script>
+  <script src="js/drehmoment.js?v=v1.10.64"></script>
+  <script src="js/shell.js?v=v1.10.64"></script>
 
   <style>
     .row-selected {
@@ -625,10 +625,8 @@
       const splashModal = document.getElementById('daily_splash_modal');
 
       if (lastShown !== today) {
-        // Noch nicht heute angezeigt -> anzeigen
         if (splashModal) splashModal.classList.remove('hidden');
       } else {
-        // Heute bereits gezeigt -> versteckt lassen
         if (splashModal) splashModal.classList.add('hidden');
       }
     }
