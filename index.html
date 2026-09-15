@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.79
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.80
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">1935 Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">1948 Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.79) -->
-  <script src="js/version.js?v=v1.10.79"></script>
-  <script src="js/zuschnitt.js?v=v1.10.79"></script>
-  <script src="js/etagen.js?v=v1.10.79"></script>
-  <script src="js/drehwinkel.js?v=v1.10.79"></script>
-  <script src="js/tabellen.js?v=v1.10.79"></script>
-  <script src="js/drehmoment.js?v=v1.10.79"></script>
-  <script src="js/shell.js?v=v1.10.79"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.80) -->
+  <script src="js/version.js?v=v1.10.80"></script>
+  <script src="js/zuschnitt.js?v=v1.10.80"></script>
+  <script src="js/etagen.js?v=v1.10.80"></script>
+  <script src="js/drehwinkel.js?v=v1.10.80"></script>
+  <script src="js/tabellen.js?v=v1.10.80"></script>
+  <script src="js/drehmoment.js?v=v1.10.80"></script>
+  <script src="js/shell.js?v=v1.10.80"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -578,18 +578,18 @@
     </div>
   </div>
 
-  <!-- ZOOM MODAL (Mit linker/rechter Pfeil-Anheftung und rotem Hinweistext in der Mitte) -->
+  <!-- ZOOM MODAL (Mit linker/rechter Pfeil-Anheftung und doppelt so großem, fettem roten Hinweistext) -->
   <div id="zoom_modal" class="hidden fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-2 sm:p-6" onclick="closeZoomModal()">
     <div class="relative bg-white rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
-      <div class="bg-slate-100 px-4 py-2.5 border-b shrink-0 space-y-1">
+      <div class="bg-slate-100 px-4 py-3 border-b shrink-0 space-y-1.5">
         <div class="flex justify-between items-center">
           <h3 id="zoom_modal_title" class="font-bold text-xs sm:text-sm text-slate-700 truncate pr-4">Skizzen-Ansicht</h3>
         </div>
-        <!-- Untere Zeile im Header: Linker Pfeil links, roter Text Mitte, rechter Pfeil rechts -->
-        <div class="flex justify-between items-center text-xs font-semibold pt-0.5">
-          <span class="text-slate-500 text-sm font-bold">&larr;</span>
-          <span class="text-red-600 uppercase tracking-wider text-[11px]">seitlich scrollen</span>
-          <span class="text-slate-500 text-sm font-bold">&rarr;</span>
+        <!-- Untere Zeile im Header: Linker Pfeil links, roter Text (doppelt so groß & fett) Mitte, rechter Pfeil rechts -->
+        <div class="flex justify-between items-center pt-0.5">
+          <span class="text-slate-500 text-base font-bold">&larr;</span>
+          <span class="text-red-600 uppercase tracking-wider text-base font-bold">seitlich scrollen</span>
+          <span class="text-slate-500 text-base font-bold">&rarr;</span>
         </div>
       </div>
       
