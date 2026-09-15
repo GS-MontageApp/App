@@ -8,7 +8,7 @@
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">15:26 - Zangenschlosser App (Dr. Zange)</title>
+  <title id="page-title">15:34 - Zangenschlosser App (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -23,6 +23,11 @@
   <script src="js/shell.js"></script>
   
   <style>
+    /* Einheitliche Sans-Serif-Typografie (Industriestandard) */
+    body, table, th, td, input, button, select, textarea, .list-title, h1, h2, h3, h4, h5, h6 {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    }
+
     .row-selected {
       outline: 2.5px solid #005691 !important;
       background-color: rgba(0, 86, 145, 0.16) !important;
@@ -35,16 +40,19 @@
     .group-start-s td {
       border-top: 2px solid #f87171 !important;
     }
-  </style>
 
-  <style>
-    /* Punkt 1: Einheitliche Sans-Serif-Typografie (Industriestandard) */
-    body, table, th, td, input, button, select, textarea, .list-title, h1, h2, h3, h4, h5, h6 {
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    /* Gustav Schmidt (GS) Design-Modus */
+    body.gs-design input, body.gs-design select, body.gs-design textarea {
+      border: 2px solid #eab308 !important; /* Gelber Rahmen */
+      background-color: #fefce8 !important; /* Leicht gelblicher Hintergrund */
+      color: #000000 !important; /* Schwarze Schrift für Ergebnisse/Eingaben */
+    }
+    body.gs-design {
+      --gs-accent: #eab308;
     }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col m-0 p-0">
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col m-0 p-0" id="app_body">
 
   <!-- Header oben -->
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0">
@@ -322,10 +330,9 @@
       </section>
     </div>
 
-    <!-- MODUL 4: TABELLEN (Fixiertes Daumen-Dock am unteren Rand) -->
+    <!-- MODUL 4: TABELLEN -->
     <div id="view-eoform" class="app-view hidden space-y-4 flex-1 relative">
       <div class="space-y-4 pb-28">
-        <!-- Subview 1: Einstecktiefe Standard -->
         <section id="eo_sub_din" class="eo-sub-section bg-white p-5 rounded-2xl shadow-sm space-y-4">
           <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Grundmaße & Einstecktiefe (DIN 2353 / ISO 8434-1)</h2>
           <div class="overflow-x-auto max-h-[55vh]">
@@ -344,7 +351,6 @@
           </div>
         </section>
 
-        <!-- Subview 2: EO-FORM L -->
         <section id="eo_sub_l" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
           <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form L Umformwerte</h2>
           <div class="overflow-x-auto max-h-[55vh]">
@@ -366,7 +372,6 @@
           </div>
         </section>
 
-        <!-- Subview 3: EO-Form-S -->
         <section id="eo_sub_s" class="eo-sub-section hidden bg-white p-5 rounded-2xl shadow-sm space-y-4">
           <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Parker EO2-FORM | EO-Form-S Umformwerte</h2>
           <div class="overflow-x-auto max-h-[55vh]">
@@ -389,7 +394,6 @@
         </section>
       </div>
 
-      <!-- FIXIERTES DAUMEN-DOCK ÜBER DER TAB-BAR -->
       <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
         <div class="bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto">
           <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2.5 px-1 rounded-xl text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
@@ -399,14 +403,40 @@
       </section>
     </div>
 
-    <!-- Platzhalter Mehr-Module -->
-    <div id="view-foobar2" class="app-view hidden space-y-4 flex-1">
-      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
-        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 2 (Mehr-Menü)</h2>
-        <div class="py-4 text-4xl">🚧</div>
-        <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 2</h3>
+    <!-- MODUL 5: DREHMOMENT -->
+    <div id="view-drehmoment" class="app-view hidden space-y-4 flex-1">
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Anzugsdrehmomente (Hydraulik & Rohrverschraubung)</h2>
+        <div class="space-y-3 text-sm text-slate-700">
+          <p class="text-xs text-slate-500">Richtwerte für Rohrfittings und Überwurfmuttern nach Montageanleitung (DIN / ISO).</p>
+          <div class="overflow-x-auto max-h-[55vh]">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="sticky top-0 bg-white z-10 shadow-xs">
+                <tr class="border-b border-slate-200 text-slate-500 uppercase">
+                  <th class="py-2.5 px-2 bg-white">Baureihe / Rohr-Ø</th>
+                  <th class="py-2.5 px-2 bg-white">Gewinde</th>
+                  <th class="py-2.5 px-2 bg-white">Drehmoment (ca.)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 font-medium">
+                <tr><td class="py-2.5 px-2 font-bold">6L / 6S</td><td class="py-2.5 px-2">M12x1,5 / M14x1,5</td><td class="py-2.5 px-2">20 - 25 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">8L / 8S</td><td class="py-2.5 px-2">M14x1,5 / M16x1,5</td><td class="py-2.5 px-2">25 - 35 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">10L / 10S</td><td class="py-2.5 px-2">M16x1,5 / M18x1,5</td><td class="py-2.5 px-2">40 - 50 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">12L / 12S</td><td class="py-2.5 px-2">M18x1,5 / M20x1,5</td><td class="py-2.5 px-2">50 - 60 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">15L / 14S</td><td class="py-2.5 px-2">M22x1,5</td><td class="py-2.5 px-2">70 - 80 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">18L / 16S</td><td class="py-2.5 px-2">M26x1,5 / M24x1,5</td><td class="py-2.5 px-2">80 - 100 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">22L / 20S</td><td class="py-2.5 px-2">M30x2</td><td class="py-2.5 px-2">120 - 140 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">28L / 25S</td><td class="py-2.5 px-2">M36x2</td><td class="py-2.5 px-2">180 - 200 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">35L / 30S</td><td class="py-2.5 px-2">M42x2 / M45x2</td><td class="py-2.5 px-2">220 - 250 Nm</td></tr>
+                <tr><td class="py-2.5 px-2 font-bold">42L / 38S</td><td class="py-2.5 px-2">M52x2</td><td class="py-2.5 px-2">280 - 320 Nm</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
     </div>
+
+    <!-- Platzhalter Mehr-Modul -->
     <div id="view-foobar3" class="app-view hidden space-y-4 flex-1">
       <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 3 (Mehr-Menü)</h2>
@@ -446,8 +476,8 @@
         <button onclick="closeMehrModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
       <div class="space-y-2">
-        <button onclick="selectMehrItem('foobar2', 'Foobar 2')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-          <span>📌 Foobar 2</span><span class="text-slate-400">&rsaquo;</span>
+        <button onclick="selectMehrItem('drehmoment', 'Drehmoment')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
+          <span>🔧 Drehmoment</span><span class="text-slate-400">&rsaquo;</span>
         </button>
         <button onclick="selectMehrItem('foobar3', 'Foobar 3')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
           <span>📌 Foobar 3</span><span class="text-slate-400">&rsaquo;</span>
@@ -476,7 +506,15 @@
         <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
       <div class="overflow-y-auto space-y-3 pr-1 text-sm text-slate-600 flex-1 divide-y divide-slate-100">
-        <div id="install_container" class="pt-1 pb-3">
+        <!-- GS-Design Umschalter -->
+        <div class="pt-1 pb-3">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Design-Modus</h4>
+          <div class="flex items-center justify-between p-3 bg-amber-50 rounded-xl border border-amber-200">
+            <span class="font-semibold text-amber-900 text-xs">Gustav Schmidt (GS) Design</span>
+            <button onclick="toggleGsDesign()" id="gs_toggle_btn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 transition-colors">Aktivieren</button>
+          </div>
+        </div>
+        <div id="install_container" class="pt-3 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Installation</h4>
           <button onclick="installPWA()" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-xl font-semibold text-indigo-700 transition-colors flex items-center justify-between shadow-sm">
             <span>📱 Web-App installieren</span>
@@ -493,21 +531,6 @@
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Support</h4>
           <button onclick="openSubModal('contact')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
             <span>✉️ Kontakt & Feedback</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-        </div>
-        <div class="pt-3 pb-2 space-y-2">
-          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Projekthistorie & Logbücher</h4>
-          <button onclick="openSubModal('logbook-master')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Zangenschlosser App</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-          <button onclick="openSubModal('logbook-etagen')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Etagenrechner</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-          <button onclick="openSubModal('logbook-zuschnitt')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors flex items-center justify-between">
-            <span>📜 Logbuch: Zuschnittsrechner</span><span class="text-slate-400">&rsaquo;</span>
-          </button>
-          <button onclick="openSubModal('logbook-drehwinkel')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-xl font-semibold text-slate-700 transition-colors fiend items-center justify-between">
-            <span>📜 Logbuch: Verdrehwinkel</span><span class="text-slate-400">&rsaquo;</span>
           </button>
         </div>
       </div>
@@ -530,12 +553,38 @@
     </div>
   </div>
 
-  <!-- BOOTSTRAPPER mit zentralem Versions-Binding -->
+  <!-- Bootstrapper & GS-Design Logik -->
   <script>
+    function toggleGsDesign() {
+      const body = document.getElementById('app_body');
+      const btn = document.getElementById('gs_toggle_btn');
+      body.classList.toggle('gs-design');
+      const isActive = body.classList.contains('gs-design');
+      if (isActive) {
+        btn.textContent = 'Aktiviert';
+        btn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-white transition-colors';
+        localStorage.setItem('gs_design_active', 'true');
+      } else {
+        btn.textContent = 'Aktivieren';
+        btn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 transition-colors';
+        localStorage.setItem('gs_design_active', 'false');
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       const splashVer = document.getElementById('splash_version_text');
       if (splashVer && window.APP_CONFIG) {
         splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
+      }
+
+      // GS-Design aus LocalStorage wiederherstellen
+      if (localStorage.getItem('gs_design_active') === 'true') {
+        document.getElementById('app_body').classList.add('gs-design');
+        const btn = document.getElementById('gs_toggle_btn');
+        if (btn) {
+          btn.textContent = 'Aktiviert';
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-white transition-colors';
+        }
       }
       
       AppShell.init();
