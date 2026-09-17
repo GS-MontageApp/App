@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.119
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.120
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.119 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.120 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.119) -->
-  <script src="js/version.js?v=v1.10.119"></script>
-  <script src="js/zuschnitt.js?v=v1.10.119"></script>
-  <script src="js/etagen.js?v=v1.10.119"></script>
-  <script src="js/drehwinkel.js?v=v1.10.119"></script>
-  <script src="js/tabellen.js?v=v1.10.119"></script>
-  <script src="js/drehmoment.js?v=v1.10.119"></script>
-  <script src="js/shell.js?v=v1.10.119"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.120) -->
+  <script src="js/version.js?v=v1.10.120"></script>
+  <script src="js/zuschnitt.js?v=v1.10.120"></script>
+  <script src="js/etagen.js?v=v1.10.120"></script>
+  <script src="js/drehwinkel.js?v=v1.10.120"></script>
+  <script src="js/tabellen.js?v=v1.10.120"></script>
+  <script src="js/drehmoment.js?v=v1.10.120"></script>
+  <script src="js/shell.js?v=v1.10.120"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -237,7 +237,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.119)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.120)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -362,13 +362,13 @@
           <div id="zuschnitt_base_group" class="flex items-stretch gap-2">
             <div class="flex-1 space-y-3">
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 1" data-type="schenkel" data-index="0" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 1 (Freies Maß)" data-type="schenkel" data-index="0" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
                 <input type="text" placeholder="Biegewinkel 1" data-type="winkel" data-index="0" inputmode="decimal" min="1" max="180" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 2" data-type="schenkel" data-index="1" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 2 (Freies Maß)" data-type="schenkel" data-index="1" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_base" title="Basis-Kette löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -382,7 +382,7 @@
                 <input type="text" placeholder="Biegewinkel 2" data-type="winkel" data-index="1" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 3" data-type="schenkel" data-index="2" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 3 (Freies Maß)" data-type="schenkel" data-index="2" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_1" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -396,7 +396,7 @@
                 <input type="text" placeholder="Biegewinkel 3" data-type="winkel" data-index="2" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 4" data-type="schenkel" data-index="3" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 4 (Freies Maß)" data-type="schenkel" data-index="3" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_2" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -410,7 +410,7 @@
                 <input type="text" placeholder="Biegewinkel 4" data-type="winkel" data-index="3" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 5" data-type="schenkel" data-index="4" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 5 (Freies Maß)" data-type="schenkel" data-index="4" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_3" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -424,7 +424,7 @@
         <h2 id="zuschnitt_out_titel" class="text-xs font-semibold text-red-600 uppercase tracking-wider border-b border-red-200 pb-1.5">Ergebnis &ndash; <i>Parameter wählen</i></h2>
         
         <div id="zuschnitt_out_gesamtlänge" class="p-3 bg-red-50 rounded-xl border-[2.5px] border-red-300 border-l-[12px] border-l-red-500 shadow-sm flex flex-col">
-          <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Gesamtzuschnittlänge</span>
+          <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Gesamtzuschnittlänge (Freie Schenkel + Bogenmaße)</span>
           <span id="zuschnitt_out_gesamtlänge_wert" class="text-2xl font-bold text-slate-700 mt-0.5">0 mm</span>
         </div>
 
@@ -434,7 +434,7 @@
             <span id="zuschnitt_out_biegeradius" class="font-bold text-slate-700 text-sm mt-0.5">-</span>
           </div>
           <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 border-l-[12px] border-l-red-500 flex flex-col">
-            <span class="text-[10px] font-semibold text-slate-400">Summe Schenkel:</span>
+            <span class="text-[10px] font-semibold text-slate-400">Summe freie Schenkel:</span>
             <span id="zuschnitt_out_summeschenkel" class="font-bold text-slate-700 text-sm mt-0.5">0 mm</span>
           </div>
         </div>
