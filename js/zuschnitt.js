@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.119)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -198,7 +198,14 @@ window.ZuschnittApp = (() => {
       if (alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
-        totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
+        
+        // Stabiles Handling für 180° Biegungen (verhindert tan(90°) = unendlich)
+        if (alpha >= 180) {
+          totalCutback += (2 * rBiege);
+        } else {
+          totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
+        }
+        
         totalBogenMaß += angleRad * rBiege;
       }
     });
