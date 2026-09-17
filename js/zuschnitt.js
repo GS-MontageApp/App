@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.119)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.120)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -189,7 +189,7 @@ window.ZuschnittApp = (() => {
       sumSchenkel += v;
     });
 
-    let totalCutback = 0, totalBogenMaß = 0;
+    let totalBogenMaß = 0;
     const rBiege = parseFloat(dVal) * parseFloat(rVal);
 
     winkelInputs.forEach((inp, idx) => {
@@ -199,18 +199,12 @@ window.ZuschnittApp = (() => {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
         
-        // Stabiles Handling für 180° Biegungen (verhindert tan(90°) = unendlich)
-        if (alpha >= 180) {
-          totalCutback += (2 * rBiege);
-        } else {
-          totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
-        }
-        
+        // Da freie Schenkel (Tangentenmaße) gemessen werden, addieren wir das Bogenmaß direkt zur Schenkelsumme
         totalBogenMaß += angleRad * rBiege;
       }
     });
 
-    let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
+    let gesamtlänge = sumSchenkel + totalBogenMaß;
     if (gesamtValEl) gesamtValEl.textContent = Math.round(gesamtlänge).toLocaleString('de-DE') + ' mm';
     if (biegeEl) biegeEl.textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
     if (summeEl) summeEl.textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
