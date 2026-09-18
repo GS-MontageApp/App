@@ -1,233 +1,213 @@
-/**
- * ================================================================================
- * ZANGENSCHLOSSER APP (Dr. Zange) - Modul: Zuschnittsrechner (zuschnitt.js)
- * Version: v1.10.122
- * 
- * Beschreibung:
- * Berechnet die Gesamtzuschnittlänge von Rohren basierend auf der verifizierten
- * Cutback-Methode (Schnittpunktmaß / Apex-to-Apex mit Tangens-Rückzügen) und 
- * den echten Bogenmaßen an der neutralen Faser für millimetergenaue Praxisergebnisse.
- * ================================================================================
- */
+// ============================================================================
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
+// ============================================================================
+window.ZuschnittApp = (() => {
+  function init() {
+    const dEl = document.getElementById('zuschnitt_durchmesser');
+    const rEl = document.getElementById('zuschnitt_rfaktor');
+    if (!dEl || !rEl) return;
 
-const ZuschnittApp = (function() {
-    'use strict';
+    dEl.addEventListener('change', function() {
+      this.classList.remove('bg-amber-50', 'border-amber-300');
+      this.classList.add('bg-slate-50', 'border-slate-300');
+      checkParameters();
+    });
 
-    function init() {
-        console.log('[ZuschnittApp] Initialisiere Zuschnittsrechner (Cutback-Logik aktiv)...');
-        setupEventListeners();
+    rEl.addEventListener('change', function() {
+      this.classList.remove('bg-amber-50', 'border-amber-300');
+      this.classList.add('bg-slate-50', 'border-slate-300');
+      checkParameters();
+    });
+
+    const clearBaseBtn = document.getElementById('zuschnitt_clear_base');
+    if (clearBaseBtn) clearBaseBtn.addEventListener('click', clearBaseGroup);
+    
+    const clear1 = document.getElementById('zuschnitt_clear_1');
+    const clear2 = document.getElementById('zuschnitt_clear_2');
+    const clear3 = document.getElementById('zuschnitt_clear_3');
+    if (clear1) clear1.addEventListener('click', () => clearPair(1));
+    if (clear2) clear2.addEventListener('click', () => clearPair(2));
+    if (clear3) clear3.addEventListener('click', () => clearPair(3));
+
+    const allInputs = Array.from(document.querySelectorAll('#view-zuschnitt input[type="text"]'));
+    allInputs.forEach((input) => {
+      input.addEventListener('focus', function() {
+        if (this.hasAttribute('disabled')) return;
+        this.value = this.value.replace(' mm', '').replace(' Grad', '');
+        setTimeout(() => { 
+          this.setSelectionRange(0, 9999); 
+          const myWrapper = this.closest('.input-wrapper, div[id^="zuschnitt_pair_"], div[id="zuschnitt_base_group"]');
+          if (myWrapper) myWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      });
+
+      input.addEventListener('blur', function() {
+        if (this.hasAttribute('disabled')) return;
+        const type = this.getAttribute('data-type');
+        let val = getCleanVal(this.value);
+        if (val !== '') {
+          if (type === 'schenkel') this.value = val + ' mm';
+          if (type === 'winkel') {
+            let num = Math.min(Math.max(parseFloat(val) || 0, 1), 180);
+            this.value = num + ' Grad';
+          }
+        }
+      });
+
+      input.addEventListener('input', () => {
+        updateVisibility();
         calculateZuschnitt();
+      });
+
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.blur();
+          const visibleInputs = Array.from(document.querySelectorAll('#view-zuschnitt input[type="text"]')).filter(inp => !inp.hasAttribute('disabled') && !inp.closest('.hidden'));
+          const currentIndex = visibleInputs.indexOf(this);
+          if (currentIndex !== -1 && currentIndex + 1 < visibleInputs.length) {
+            visibleInputs[currentIndex + 1].focus();
+          }
+        }
+      });
+    });
+
+    checkParameters();
+  }
+
+  function checkParameters() {
+    const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
+    const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
+    const baseInputs = document.querySelectorAll('#zuschnitt_base_group input[type="text"]');
+
+    if (dVal && rVal) {
+      baseInputs.forEach(inp => {
+        inp.removeAttribute('disabled');
+        inp.classList.remove('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
+        const type = inp.getAttribute('data-type');
+        if (type === 'schenkel') inp.classList.add('bg-sky-50', 'border-sky-200');
+        if (type === 'winkel') inp.classList.add('bg-emerald-50', 'border-emerald-200');
+      });
+    } else {
+      baseInputs.forEach(inp => {
+        inp.setAttribute('disabled', 'true');
+        inp.className = 'w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors';
+        inp.value = '';
+      });
+    }
+    updateVisibility();
+    calculateZuschnitt();
+  }
+
+  function updateVisibility() {
+    const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
+    const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
+    const pair1 = document.getElementById('zuschnitt_pair_1');
+    const pair2 = document.getElementById('zuschnitt_pair_2');
+    const pair3 = document.getElementById('zuschnitt_pair_3');
+
+    if (!dVal || !rVal || !pair1 || !pair2 || !pair3) {
+      if (pair1) pair1.classList.add('hidden');
+      if (pair2) pair2.classList.add('hidden');
+      if (pair3) pair3.classList.add('hidden');
+      return;
     }
 
-    function setupEventListeners() {
-        const durchmesserEl = document.getElementById('zuschnitt_durchmesser');
-        const rfaktorEl = document.getElementById('zuschnitt_rfaktor');
-        
-        if (durchmesserEl) durchmesserEl.addEventListener('change', calculateZuschnitt);
-        if (rfaktorEl) rfaktorEl.addEventListener('change', calculateZuschnitt);
+    const s2El = document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="1"]');
+    const w1El = document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="0"]');
+    const s2Val = getCleanVal(s2El?.value);
+    const w1Val = getCleanVal(w1El?.value);
 
-        // Event-Listener für alle Schenkel- und Winkeleingaben
-        const inputs = document.querySelectorAll('#view-zuschnitt input[data-type]');
-        inputs.forEach(input => {
-            input.addEventListener('input', () => {
-                validateAndChainInputs();
-                calculateZuschnitt();
-            });
-        });
+    if (s2Val !== '' && w1Val !== '') pair1.classList.remove('hidden');
+    else { pair1.classList.add('hidden'); pair2.classList.add('hidden'); pair3.classList.add('hidden'); return; }
 
-        // Lösch-Buttons der Kette
-        const clearBase = document.getElementById('zuschnitt_clear_base');
-        if (clearBase) {
-            clearBase.addEventListener('click', () => {
-                resetChainFrom(0);
-            });
-        }
+    const w2Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="1"]')?.value);
+    const s3Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="2"]')?.value);
+    if (w2Val !== '' && s3Val !== '') pair2.classList.remove('hidden');
+    else { pair2.classList.add('hidden'); pair3.classList.add('hidden'); return; }
 
-        for (let i = 1; i <= 3; i++) {
-            const clearBtn = document.getElementById(`zuschnitt_clear_${i}`);
-            if (clearBtn) {
-                clearBtn.addEventListener('click', () => {
-                    resetChainFrom(i);
-                });
-            }
-        }
+    const w3Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="2"]')?.value);
+    const s4Val = getCleanVal(document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="3"]')?.value);
+    if (w3Val !== '' && s4Val !== '') pair3.classList.remove('hidden');
+    else pair3.classList.add('hidden');
+  }
+
+  function clearBaseGroup() {
+    const s0 = document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="0"]');
+    const w0 = document.querySelector('#view-zuschnitt input[data-type="winkel"][data-index="0"]');
+    const s1 = document.querySelector('#view-zuschnitt input[data-type="schenkel"][data-index="1"]');
+    if (s0) s0.value = '';
+    if (w0) w0.value = '';
+    if (s1) s1.value = '';
+    clearPair(1);
+  }
+
+  function clearPair(pairNum) {
+    const startIndex = pairNum === 1 ? 1 : (pairNum === 2 ? 2 : 3);
+    const schenkelIdx = pairNum === 1 ? 2 : (pairNum === 2 ? 3 : 4);
+    
+    document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]').forEach((inp, idx) => {
+      if (idx >= startIndex) inp.value = '';
+    });
+    document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]').forEach((inp, idx) => {
+      if (idx >= schenkelIdx) inp.value = '';
+    });
+    updateVisibility();
+    calculateZuschnitt();
+  }
+
+  function getCleanVal(str) {
+    if (!str) return '';
+    return str.replace(' mm', '').replace(' Grad', '').replace(',', '.').trim();
+  }
+
+  function calculateZuschnitt() {
+    const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
+    const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
+    const titelEl = document.getElementById('zuschnitt_out_titel');
+    const gesamtValEl = document.getElementById('zuschnitt_out_gesamtlänge_wert');
+    const biegeEl = document.getElementById('zuschnitt_out_biegeradius');
+    const summeEl = document.getElementById('zuschnitt_out_summeschenkel');
+
+    if (!dVal || !rVal) {
+      if (gesamtValEl) gesamtValEl.textContent = "0 mm";
+      if (titelEl) titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
+      if (biegeEl) biegeEl.textContent = "-";
+      if (summeEl) summeEl.textContent = "0 mm";
+      return;
+    } else {
+      if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
     }
 
-    // Steuert die dynamische Freigabe der Folge-Eingabefelder (Kettenlogik)
-    function validateAndChainInputs() {
-        const dInput = document.getElementById('zuschnitt_durchmesser');
-        const rInput = document.getElementById('zuschnitt_rfaktor');
-        const isGlobalValid = dInput && dInput.value && rInput && rInput.value;
+    const schenkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]');
+    const winkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]');
 
-        // Basis-Gruppe freigeben, wenn globale Parameter gewählt sind
-        const baseSchenkel1 = document.querySelector('#zuschnitt_base_group input[data-type="schenkel"][data-index="0"]');
-        const baseWinkel1 = document.querySelector('#zuschnitt_base_group input[data-type="winkel"][data-index="0"]');
-        const baseSchenkel2 = document.querySelector('#zuschnitt_base_group input[data-type="schenkel"][data-index="1"]');
+    let sumSchenkel = 0, schenkelVals = [];
+    schenkelInputs.forEach((inp) => {
+      const v = parseFloat(getCleanVal(inp.value)) || 0;
+      schenkelVals.push(v);
+      sumSchenkel += v;
+    });
 
-        if (baseSchenkel1) setInputState(baseSchenkel1, isGlobalValid);
-        if (baseWinkel1) setInputState(baseWinkel1, isGlobalValid);
+    let totalCutback = 0, totalBogenMaß = 0;
+    const rBiege = parseFloat(dVal) * parseFloat(rVal);
 
-        // Kette prüfen und freischalten
-        let pair1 = document.getElementById('zuschnitt_pair_1');
-        let pair2 = document.getElementById('zuschnitt_pair_2');
-        let pair3 = document.getElementById('zuschnitt_pair_3');
+    winkelInputs.forEach((inp, idx) => {
+      if (schenkelVals[idx + 1] === undefined || schenkelVals[idx + 1] === 0) return;
+      let alpha = parseFloat(getCleanVal(inp.value)) || 0;
+      if (alpha > 0) {
+        alpha = Math.min(Math.max(alpha, 1), 180);
+        const angleRad = (alpha * Math.PI) / 180;
+        totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
+        totalBogenMaß += angleRad * rBiege;
+      }
+    });
 
-        if (pair1) {
-            const hasWinkel1 = baseWinkel1 && parseFloat(baseWinkel1.value) > 0;
-            if (hasWinkel1 && isGlobalValid) {
-                pair1.classList.remove('hidden');
-                pair1.classList.add('flex');
-                if (baseSchenkel2) setInputState(baseSchenkel2, true);
-            } else {
-                pair1.classList.add('hidden');
-                pair1.classList.remove('flex');
-                if (baseSchenkel2) { baseSchenkel2.value = ''; setInputState(baseSchenkel2, false); }
-            }
-        }
+    let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
+    if (gesamtValEl) gesamtValEl.textContent = Math.round(gesamtlänge).toLocaleString('de-DE') + ' mm';
+    if (biegeEl) biegeEl.textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
+    if (summeEl) summeEl.textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
+  }
 
-        const winkel1 = document.querySelector('#zuschnitt_pair_1 input[data-type="winkel"]');
-        const schenkel3 = document.querySelector('#zuschnitt_pair_1 input[data-type="schenkel"]');
-        if (pair2) {
-            const hasWinkel2 = winkel1 && parseFloat(winkel1.value) > 0 && pair1.classList.contains('flex');
-            if (hasWinkel2) {
-                pair2.classList.remove('hidden');
-                pair2.classList.add('flex');
-                if (schenkel3) setInputState(schenkel3, true);
-            } else {
-                pair2.classList.add('hidden');
-                pair2.classList.remove('flex');
-                if (schenkel3) { schenkel3.value = ''; setInputState(schenkel3, false); }
-            }
-        }
-
-        const winkel2 = document.querySelector('#zuschnitt_pair_2 input[data-type="winkel"]');
-        const schenkel4 = document.querySelector('#zuschnitt_pair_2 input[data-type="schenkel"]');
-        if (pair3) {
-            const hasWinkel3 = winkel2 && parseFloat(winkel2.value) > 0 && pair2.classList.contains('flex');
-            if (hasWinkel3) {
-                pair3.classList.remove('hidden');
-                pair3.classList.add('flex');
-                if (schenkel4) setInputState(schenkel4, true);
-            } else {
-                pair3.classList.add('hidden');
-                pair3.classList.remove('flex');
-                if (schenkel4) { schenkel4.value = ''; setInputState(schenkel4, false); }
-            }
-        }
-    }
-
-    function setInputState(input, enabled) {
-        if (enabled) {
-            input.removeAttribute('disabled');
-            input.classList.remove('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
-            input.classList.add('bg-white', 'text-slate-700');
-        } else {
-            input.setAttribute('disabled', 'true');
-            input.classList.add('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
-            input.classList.remove('bg-white', 'text-slate-700');
-        }
-    }
-
-    function resetChainFrom(index) {
-        if (index === 0) {
-            const allInputs = document.querySelectorAll('#view-zuschnitt input[data-type]');
-            allInputs.forEach(inp => { inp.value = ''; });
-            document.getElementById('zuschnitt_durchmesser').value = '';
-            document.getElementById('zuschnitt_rfaktor').value = '';
-            validateAndChainInputs();
-        }
-        calculateZuschnitt();
-    }
-
-    /**
-     * Kernberechnung nach der verifizierten Cutback-Methode (Schnittpunktmaß-Verfahren):
-     * 1. Biegeradius R = Radiusfaktor * Durchmesser
-     * 2. Cutback C = R * tan(Winkel / 2) für jede Biegung
-     * 3. Netto-Schenkel = Eingegebene Schnittpunktmaße minus angrenzende Cutbacks
-     * 4. Gesamtzuschnitt = Summe(Netto-Schenkel) + Summe(Bogenmaße)
-     */
-    function calculateZuschnitt() {
-        const dVal = parseFloat(document.getElementById('zuschnitt_durchmesser')?.value);
-        const rFaktor = parseFloat(document.getElementById('zuschnitt_rfaktor')?.value);
-
-        const outGesamt = document.getElementById('zuschnitt_out_gesamtlänge_wert');
-        const outRadius = document.getElementById('zuschnitt_out_biegeradius');
-        const outSummeSchenkel = document.getElementById('zuschnitt_out_summeschenkel');
-        const outTitel = document.getElementById('zuschnitt_out_titel');
-
-        if (!dVal || !rFaktor || isNaN(dVal) || isNaN(rFaktor)) {
-            if (outGesamt) outGesamt.textContent = '0 mm';
-            if (outRadius) outRadius.textContent = '-';
-            if (outSummeSchenkel) outSummeSchenkel.textContent = '0 mm';
-            if (outTitel) outTitel.innerHTML = 'Ergebnis &ndash; <i>Parameter wählen</i>';
-            return;
-        }
-
-        // Biegeradius an der neutralen Faser: R = Faktor * Rohr-Ø
-        const radius = rFaktor * dVal;
-        if (outRadius) outRadius.textContent = radius.toFixed(1) + ' mm (R' + radius + ')';
-
-        // Alle aktiven Schenkel und Winkel einsammeln
-        const schenkelElements = Array.from(document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]'))
-            .filter(inp => !inp.disabled);
-        const winkelElements = Array.from(document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]'))
-            .filter(inp => !inp.disabled);
-
-        const schenkelRaw = schenkelElements.map(inp => parseFloat(inp.value.replace(',', '.')) || 0);
-        const winkelRaw = winkelElements.map(inp => parseFloat(inp.value.replace(',', '.')) || 0);
-
-        let summeBogenMaesse = 0;
-        let bogenAnzahl = 0;
-        const cutbacks = [];
-
-        // Cutbacks und Bogenmaße pro Biegung berechnen
-        winkelRaw.forEach(winkelVal => {
-            if (winkelVal > 0) {
-                // Radiant Umrechnung für tan
-                const rad = (winkelVal * Math.PI) / 180;
-                const cutback = radius * Math.tan(rad / 2);
-                cutbacks.push(cutback);
-
-                // Bogenmaß: L_b = (PI * R * Winkel) / 180
-                const bogenMaß = (Math.PI * radius * winkelVal) / 180;
-                summeBogenMaesse += bogenMaß;
-                bogenAnzahl++;
-            } else {
-                cutbacks.push(0);
-            }
-        });
-
-        // Netto-Schenkel berechnen (Abzug der angrenzenden Cutbacks)
-        let summeNettoSchenkel = 0;
-        schenkelRaw.forEach((schenkelVal, idx) => {
-            if (schenkelVal > 0) {
-                let netto = schenkelVal;
-                // Linker Nachbar-Cutback abziehen (falls vorhanden)
-                if (idx > 0 && idx - 1 < cutbacks.length && cutbacks[idx - 1] > 0) {
-                    netto -= cutbacks[idx - 1];
-                }
-                // Rechter Nachbar-Cutback abziehen (falls vorhanden)
-                if (idx < cutbacks.length && cutbacks[idx] > 0) {
-                    netto -= cutbacks[idx];
-                }
-                // Verhindern, dass Netto-Schenkel negativ wird
-                if (netto < 0) netto = 0;
-                summeNettoSchenkel += netto;
-            }
-        });
-
-        // Gesamtzuschnittlänge = Summe der Netto-Schenkel + Summe der Bogenmaße
-        const gesamtlänge = summeNettoSchenkel + summeBogenMaesse;
-
-        if (outSummeSchenkel) outSummeSchenkel.textContent = summeNettoSchenkel.toFixed(1) + ' mm';
-        if (outGesamt) outGesamt.textContent = gesamtlänge.toFixed(1) + ' mm';
-        if (outTitel) {
-            outTitel.innerHTML = `Ergebnis &ndash; Cutback-Modus (${bogenAnzahl} Bogen aktiv)`;
-        }
-    }
-
-    return {
-        init: init,
-        calculate: calculateZuschnitt
-    };
+  return { init, checkParameters, calculateZuschnitt };
 })();
