@@ -1,26 +1,29 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.122)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.125)
 // ============================================================================
 window.AppShell = (() => {
   let currentRole = null; // 'master' | 'user' | null
 
+  // --- ZENTRALE SPLASH-SCREEN LOGIK ---
   function checkDailySplash() {
-    const today = new Date().toISOString().split('T')[0];
-    const lastSplash = localStorage.getItem('zangenschlosser_last_splash');
+    const today = new Date().toISOString().slice(0, 10);
+    const lastShown = localStorage.getItem('zangenschlosser_splash_date_v1');
     const splashModal = document.getElementById('daily_splash_modal');
     if (!splashModal) return;
 
-    if (lastSplash !== today) {
+    if (lastShown !== today) {
       splashModal.classList.remove('hidden');
     } else {
       splashModal.classList.add('hidden');
     }
   }
+
   function closeDailySplash() {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('zangenschlosser_last_splash', today);
+    const today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem('zangenschlosser_splash_date_v1', today);
     document.getElementById('daily_splash_modal')?.classList.add('hidden');
   }
+  // -------------------------------------
 
   function openMehrModal() { document.getElementById('mehr_modal')?.classList.remove('hidden'); }
   function closeMehrModal() { document.getElementById('mehr_modal')?.classList.add('hidden'); }
@@ -83,8 +86,8 @@ window.AppShell = (() => {
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
 
-  // --- ADMIN & PIN LOGIK (Einfaches Tippen) ---
-  function handleTitleTap() {
+  // --- ADMIN & PIN LOGIK ---
+  function handleTitleClick() {
     closeTopMenu();
     openPinModal();
   }
@@ -168,7 +171,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = [
-        { version: "v1.10.122", date: "18.09.2026, 13:45 (MEZ)", text: "Admin-Modus mit PIN-Verifizierung auf einfachen Tap umgestellt.", border: "border-indigo-500" }
+        { version: "v1.10.125", date: "18.09.2026, 14:30 (MEZ)", text: "Zentrale Splash-Screen Logik bereinigt und Konflikte mit Login-Flow behoben.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -196,7 +199,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.122</p>
+          <p class="text-xs text-slate-500">Version: v1.10.125</p>
         </div>
       `;
     }
@@ -236,13 +239,6 @@ window.AppShell = (() => {
     checkInstallState();
     checkDailySplash();
     initServiceWorker();
-
-    // Event Listener für einfachen Klick/Tap auf den Menü-Titel
-    const menuTitle = document.getElementById('menu_app_title_text');
-    if (menuTitle) {
-      menuTitle.style.cursor = 'pointer';
-      menuTitle.addEventListener('click', handleTitleTap);
-    }
   }
 
   return {
@@ -251,7 +247,7 @@ window.AppShell = (() => {
     openMehrModal, closeMehrModal, selectMehrItem,
     installPWA, openTopMenu, closeTopMenu,
     openSubModal, closeSubModal, switchApp,
-    handleLogin, handleLogout, closePinModal
+    handleTitleClick, handleLogin, handleLogout, closePinModal
   };
 })();
 
@@ -266,6 +262,7 @@ window.closeTopMenu = () => window.AppShell.closeTopMenu();
 window.openSubModal = (t) => window.AppShell.openSubModal(t);
 window.closeSubModal = () => window.AppShell.closeSubModal();
 window.switchApp = (a, t) => window.AppShell.switchApp(a, t);
+window.handleTitleClick = () => window.AppShell.handleTitleClick();
 window.handleLogin = () => window.AppShell.handleLogin();
 window.handleLogout = () => window.AppShell.handleLogout();
 window.closePinModal = () => window.AppShell.closePinModal();
