@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.120
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.118
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,7 +15,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.120 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.118 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -49,14 +49,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.120) -->
-  <script src="js/version.js?v=v1.10.120"></script>
-  <script src="js/zuschnitt.js?v=v1.10.120"></script>
-  <script src="js/etagen.js?v=v1.10.120"></script>
-  <script src="js/drehwinkel.js?v=v1.10.120"></script>
-  <script src="js/tabellen.js?v=v1.10.120"></script>
-  <script src="js/drehmoment.js?v=v1.10.120"></script>
-  <script src="js/shell.js?v=v1.10.120"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.118) -->
+  <script src="js/version.js?v=v1.10.118"></script>
+  <script src="js/zuschnitt.js?v=v1.10.118"></script>
+  <script src="js/etagen.js?v=v1.10.118"></script>
+  <script src="js/drehwinkel.js?v=v1.10.118"></script>
+  <script src="js/tabellen.js?v=v1.10.118"></script>
+  <script src="js/drehmoment.js?v=v1.10.118"></script>
+  <script src="js/shell.js?v=v1.10.118"></script>
 
   <style>
     /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -122,12 +122,14 @@
       color: #ffe600 !important;
     }
     
+    /* GS: Bereinigung der Wrapper-Container, damit keine störenden hellen Außenränder um die Inputs liegen */
     body.theme-gs .input-wrapper {
       background-color: transparent !important;
       border: none !important;
       padding: 0 !important;
     }
 
+    /* GS: Alle Input- und Select-Felder erhalten einen reinen gelben Rahmen (#ffe600) ohne Fokus-Ringe */
     body.theme-gs input, body.theme-gs select {
       background-color: #0b1d3a !important;
       color: #ffffff !important;
@@ -144,6 +146,7 @@
       color: #94a3b8 !important;
     }
 
+    /* GS: Präzise Überschreibung für sämtliche Ergebnisfelder im GS-Style mit 2.5px Rahmenstärke und Farbton #1D375B */
     body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"],
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"],
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
@@ -153,27 +156,31 @@
       background-color: #1D375B !important;
     }
 
+    /* GS: Spezifische Akzentbalken-Farben für die Etagen-Ergebnisse C, T, R gemäß 3D-Skizze */
     body.theme-gs #view-etagen div:has(#etagen_out_c) {
-      border-left-color: #ef4444 !important;
+      border-left-color: #ef4444 !important; /* Rot für C */
     }
     body.theme-gs #view-etagen div:has(#etagen_out_travel) {
-      border-left-color: #f97316 !important;
+      border-left-color: #f97316 !important; /* Orange für T */
     }
     body.theme-gs #view-etagen div:has(#etagen_out_run) {
-      border-left-color: #0ea5e9 !important;
+      border-left-color: #0ea5e9 !important; /* Blau/Sky für R */
     }
 
+    /* GS: Die Ausgabefelder im Zuschnittsrechner erhalten den Rot-Ton des Lösch-Buttons (#ef4444) für ihren linken Akzentbalken */
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div.grid div.p-2 {
       border-left-color: #ef4444 !important;
       background-color: #1D375B !important;
     }
 
+    /* GS: Die beiden Container im Verdrehwinkel-Modul (Anschluss A und B) erhalten ebenfalls den einheitlichen gelben Akzentbalken (#ffe600) */
     body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
       border-left-color: #ffe600 !important;
       background-color: #1D375B !important;
     }
 
+    /* GS: TABELLEN-MODUL — Sämtliche Rahmen in den Tabellen-Sektionen auf Gelb (#ffe600) umstellen */
     body.theme-gs #view-eoform .eo-sub-section,
     body.theme-gs #view-eoform .eo-sub-section > div,
     body.theme-gs #view-eoform .eo-sub-section table {
@@ -184,6 +191,7 @@
       background-color: #112a52 !important;
     }
 
+    /* GS: Absolut kompromisslose Erzwingung von weißem Text für sämtliche Inhalte in den Ergebnis-Boxen (AUSNAHME: Umschalt-Button) */
     body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"] *:not(button),
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"] *:not(button),
     body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge *:not(button),
@@ -191,6 +199,7 @@
       color: #ffffff !important;
     }
 
+    /* GS: Spezifische Textfarben für die Umschalt-Buttons bei Anschluss A (mit maximaler CSS-Spezifität) */
     body.theme-gs #view-drehwinkel button.dw-mode-btn-active {
       color: #ffffff !important;
       background-color: #005691 !important;
@@ -211,6 +220,7 @@
       border-color: #cbd5e1 !important;
     }
 
+    /* SAUBERE STRUKTUR: Gesamtzuschnittlänge Label oben (klein/dezent), Wert unten (fett) */
     #zuschnitt_out_gesamtlänge {
       display: flex;
       flex-direction: column;
@@ -220,12 +230,12 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #94a3b8;
+      color: #94a3b8; /* dezent */
       order: 1;
     }
     #zuschnitt_out_gesamtlänge .result-value {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.5rem; /* text-2xl */
+      font-weight: 700; /* fett */
       margin-top: 0.125rem;
       order: 2;
     }
@@ -237,7 +247,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.120)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.118)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -305,6 +315,7 @@
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 transition-colors">
         <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
         <div class="space-y-3">
+          <!-- NACHZIEHLÄNGE (NZ) -->
           <div class="p-4 bg-yellow-50/60 rounded-xl border-[2.5px] border-yellow-300 border-l-[12px] border-l-yellow-500 shadow-sm">
             <div class="text-xs font-bold text-yellow-800 uppercase tracking-wider">Nachziehlänge (NZ)</div>
             <div id="etagen_out_t" class="text-xl font-bold text-yellow-950 mt-0.5">0 mm</div>
@@ -362,13 +373,13 @@
           <div id="zuschnitt_base_group" class="flex items-stretch gap-2">
             <div class="flex-1 space-y-3">
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 1 (Freies Maß)" data-type="schenkel" data-index="0" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 1" data-type="schenkel" data-index="0" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
                 <input type="text" placeholder="Biegewinkel 1" data-type="winkel" data-index="0" inputmode="decimal" min="1" max="180" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 2 (Freies Maß)" data-type="schenkel" data-index="1" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 2" data-type="schenkel" data-index="1" inputmode="decimal" disabled class="w-full bg-slate-200 border border-slate-300 rounded-lg p-2.5 text-base text-slate-400 cursor-not-allowed focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_base" title="Basis-Kette löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -382,7 +393,7 @@
                 <input type="text" placeholder="Biegewinkel 2" data-type="winkel" data-index="1" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 3 (Freies Maß)" data-type="schenkel" data-index="2" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 3" data-type="schenkel" data-index="2" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_1" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -396,7 +407,7 @@
                 <input type="text" placeholder="Biegewinkel 3" data-type="winkel" data-index="2" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 4 (Freies Maß)" data-type="schenkel" data-index="3" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 4" data-type="schenkel" data-index="3" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_2" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -410,7 +421,7 @@
                 <input type="text" placeholder="Biegewinkel 4" data-type="winkel" data-index="3" inputmode="decimal" min="1" max="180" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-colors">
               </div>
               <div class="input-wrapper bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                <input type="text" placeholder="Schenkel 5 (Freies Maß)" data-type="schenkel" data-index="4" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
+                <input type="text" placeholder="Schenkel 5" data-type="schenkel" data-index="4" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-base focus:bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none transition-colors">
               </div>
             </div>
             <button type="button" tabindex="-1" id="zuschnitt_clear_3" title="Einheit löschen" class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold px-3.5 rounded-xl flex items-center justify-center transition-colors shadow-sm">
@@ -423,8 +434,9 @@
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-2 border-2 border-red-500 transition-colors">
         <h2 id="zuschnitt_out_titel" class="text-xs font-semibold text-red-600 uppercase tracking-wider border-b border-red-200 pb-1.5">Ergebnis &ndash; <i>Parameter wählen</i></h2>
         
+        <!-- Strukturierte Ergebnis-Box: Label dezent oben, Wert mit ID und fett unten -->
         <div id="zuschnitt_out_gesamtlänge" class="p-3 bg-red-50 rounded-xl border-[2.5px] border-red-300 border-l-[12px] border-l-red-500 shadow-sm flex flex-col">
-          <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Gesamtzuschnittlänge (Freie Schenkel + Bogenmaße)</span>
+          <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Gesamtzuschnittlänge</span>
           <span id="zuschnitt_out_gesamtlänge_wert" class="text-2xl font-bold text-slate-700 mt-0.5">0 mm</span>
         </div>
 
@@ -434,7 +446,7 @@
             <span id="zuschnitt_out_biegeradius" class="font-bold text-slate-700 text-sm mt-0.5">-</span>
           </div>
           <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 border-l-[12px] border-l-red-500 flex flex-col">
-            <span class="text-[10px] font-semibold text-slate-400">Summe freie Schenkel:</span>
+            <span class="text-[10px] font-semibold text-slate-400">Summe Schenkel:</span>
             <span id="zuschnitt_out_summeschenkel" class="font-bold text-slate-700 text-sm mt-0.5">0 mm</span>
           </div>
         </div>
@@ -469,6 +481,7 @@
       </section>
 
       <section class="space-y-3 flex flex-col">
+        <!-- Anschluss A Container (im einheitlichen GS-Style mit gelbem Akzentbalken) -->
         <div class="bg-white p-2 rounded-2xl shadow-sm border-[2.5px] border-slate-200 border-l-[12px] border-l-[#005691] inline-flex items-center gap-2 mr-auto w-max transition-colors">
           <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative transition-opacity duration-200" id="dw_dial_a" data-anschluss="a">
             <svg viewBox="0 0 200 200" class="w-full h-full select-none">
@@ -491,6 +504,7 @@
           </div>
         </div>
 
+        <!-- Anschluss B Container (im einheitlichen GS-Style mit gelbem Akzentbalken) -->
         <div class="bg-white p-2 rounded-2xl shadow-sm border-[2.5px] border-slate-200 border-l-[12px] border-l-orange-500 inline-flex flex-col items-center ml-auto w-max transition-colors">
           <div class="dw-dial w-[120px] h-[120px] touch-none cursor-pointer relative" id="dw_dial_b" data-anschluss="b">
             <svg viewBox="0 0 200 200" class="w-full h-full select-none">
@@ -514,6 +528,8 @@
     <!-- MODUL 4: TABELLEN -->
     <div id="view-eoform" class="app-view hidden flex-col w-full h-[calc(100dvh-172px)] flex-1 relative min-h-0">
       <div class="flex-1 flex flex-col w-full h-full space-y-2 pb-2 min-h-0 relative">
+        
+        <!-- Subview 1: Einstecktiefe Standard -->
         <section id="eo_sub_din" class="eo-sub-section flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors relative overflow-hidden">
           <div class="absolute inset-3 sm:inset-5 overflow-y-auto border border-slate-100 rounded-xl">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -531,10 +547,13 @@
           </div>
         </section>
 
+        <!-- Subview 2: EO-FORM L (Architektur exakt wie Din: absolute inset für echten, direkten Scroll-Kontext) -->
         <section id="eo_sub_l" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors relative overflow-hidden">
+          <!-- Grafik oben fix zentriert -->
           <div class="bg-emerald-50/40 p-2.5 mb-2 rounded-xl border border-emerald-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-emerald-50/70 transition-colors z-10" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM L Technische Skizze')">
             <img src="./img/eo-form.png" alt="EO-FORM L Skizze" class="max-h-24 sm:max-h-32 object-contain select-none pointer-events-none">
           </div>
+          <!-- Direkter Scroll-Container mit absolutem Inset, damit position: sticky zuverlässig greift -->
           <div class="absolute inset-x-3 bottom-3 top-[110px] sm:inset-x-5 sm:bottom-5 sm:top-[135px] overflow-auto border border-emerald-100 rounded-xl bg-emerald-50/20">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
@@ -554,10 +573,13 @@
           </div>
         </section>
 
+        <!-- Subview 3: EO-Form-S (Architektur exakt wie Din: absolute inset für echten, direkten Scroll-Kontext) -->
         <section id="eo_sub_s" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors relative overflow-hidden">
+          <!-- Grafik oben fix zentriert -->
           <div class="bg-red-50/40 p-2.5 mb-2 rounded-xl border border-red-100 shrink-0 flex items-center justify-center cursor-pointer overflow-hidden shadow-xs hover:bg-red-50/70 transition-colors z-10" onclick="openZoomModal('./img/eo-form.png', 'EO-FORM S Technische Skizze')">
             <img src="./img/eo-form.png" alt="EO-FORM S Skizze" class="max-h-24 sm:max-h-32 object-contain select-none pointer-events-none">
           </div>
+          <!-- Direkter Scroll-Container mit absolutem Inset, damit position: sticky zuverlässig greift -->
           <div class="absolute inset-x-3 bottom-3 top-[110px] sm:inset-x-5 sm:bottom-5 sm:top-[135px] overflow-auto border border-red-100 rounded-xl bg-red-50/20">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
               <thead class="sticky top-0 bg-white z-20 shadow-xs">
@@ -577,6 +599,7 @@
           </div>
         </section>
 
+        <!-- Subview 4: Drehmomente -->
         <section id="eo_sub_drehmoment" class="eo-sub-section hidden flex-1 flex flex-col bg-white p-3 sm:p-5 rounded-2xl shadow-sm min-h-0 w-full transition-colors relative overflow-hidden">
           <div class="absolute inset-3 sm:inset-5 overflow-y-auto border border-amber-100 rounded-xl bg-amber-50/20">
             <table class="w-full text-left text-xs border-collapse whitespace-nowrap">
@@ -592,8 +615,10 @@
             </table>
           </div>
         </section>
+
       </div>
 
+      <!-- FIXIERTES DAUMEN-DOCK -->
       <section class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-3xl px-3 z-30 pointer-events-none">
         <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-lg border border-slate-200 flex gap-1 pointer-events-auto transition-colors">
           <button onclick="switchEoSub('din')" id="eo_tab_din" class="flex-1 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-[#005691] text-white transition-all shadow-sm">Einstecktiefe</button>
@@ -604,6 +629,7 @@
       </section>
     </div>
 
+    <!-- Platzhalter Mehr-Module -->
     <div id="view-foobar2" class="app-view hidden space-y-4 flex-1">
       <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0 transition-colors">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 2 (Mehr-Menü)</h2>
@@ -618,8 +644,10 @@
         <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 3</h3>
       </section>
     </div>
+
   </main>
 
+  <!-- Bottom Tab Bar (Global) -->
   <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 text-center">
       <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 transition-colors">
@@ -640,6 +668,7 @@
     </div>
   </footer>
 
+  <!-- Modals -->
   <div id="mehr_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end justify-center p-0">
     <div class="bg-white rounded-t-3xl p-5 max-w-lg w-full space-y-3 text-slate-800 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-2.5">
@@ -660,6 +689,7 @@
     </div>
   </div>
 
+  <!-- ZOOM MODAL -->
   <div id="zoom_modal" class="hidden fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-2 sm:p-6" onclick="closeZoomModal()">
     <div class="relative bg-white rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
       <div class="bg-slate-100 px-4 py-3 border-b shrink-0 space-y-1.5">
@@ -685,6 +715,7 @@
     </div>
   </div>
 
+  <!-- SPLASH SCREEN -->
   <div id="daily_splash_modal" class="hidden fixed inset-0 bg-black z-50 flex items-center justify-center p-0">
     <div onclick="closeDailySplash()" class="relative w-full h-full max-w-lg max-h-screen bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer group">
       <img src="./img/dr-zange.jpg" alt="Dr. Zange Willkommen" class="w-full h-full object-contain select-none pointer-events-none">
@@ -695,6 +726,7 @@
     </div>
   </div>
 
+  <!-- TOP-MENÜ -->
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-3">
@@ -739,6 +771,7 @@
     </div>
   </div>
 
+  <!-- BOOTSTRAPPER -->
   <script>
     function checkDailySplash() {
       const today = new Date().toISOString().slice(0, 10);

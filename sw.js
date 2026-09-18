@@ -1,7 +1,7 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.10.119)
+// ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.10.47)
 // ============================================================================
-const CACHE_NAME = 'zangenschlosser-cache-v1.10.119';
+const CACHE_NAME = 'zangenschlosser-cache-v1.10.47';
 const ASSETS = [
   './',
   './index.html',
@@ -41,6 +41,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
+  // Externe CDNs (wie Tailwind) direkt vom Netzwerk laden, nicht cachen/abfangen
   if (url.origin !== location.origin) {
     return;
   }
@@ -53,6 +54,7 @@ self.addEventListener('fetch', (event) => {
       return fetch(event.request).then((response) => {
         return response;
       }).catch(() => {
+        // Fallback falls offline und Asset nicht im Cache
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
