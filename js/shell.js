@@ -1,24 +1,28 @@
-// ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.123)
-// ============================================================================
-window.AppShell = (() => {
+/**
+ * ============================================================================
+ * ZANGENSCHLOSSER APP (Dr. Zange) - AppShell Controller (v1.10.127)
+ * ============================================================================
+ */
+
+const AppShell = (() => {
   let currentRole = null; // 'master' | 'user' | null
 
   function checkDailySplash() {
-    const today = new Date().toISOString().split('T')[0];
-    const lastSplash = localStorage.getItem('zangenschlosser_last_splash');
+    const today = new Date().toISOString().slice(0, 10);
+    const lastShown = localStorage.getItem('zangenschlosser_splash_date_v1');
     const splashModal = document.getElementById('daily_splash_modal');
     if (!splashModal) return;
 
-    if (lastSplash !== today) {
+    if (lastShown !== today) {
       splashModal.classList.remove('hidden');
     } else {
       splashModal.classList.add('hidden');
     }
   }
+
   function closeDailySplash() {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('zangenschlosser_last_splash', today);
+    const today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem('zangenschlosser_splash_date_v1', today);
     document.getElementById('daily_splash_modal')?.classList.add('hidden');
   }
 
@@ -83,7 +87,7 @@ window.AppShell = (() => {
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
 
-  // --- ADMIN & PIN LOGIK (Direkter Aufruf per Click) ---
+  // --- ADMIN & PIN LOGIK ---
   function handleTitleClick() {
     closeTopMenu();
     openPinModal();
@@ -168,7 +172,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = [
-        { version: "v1.10.123", date: "18.09.2026, 14:05 (MEZ)", text: "PIN-Dialog direkt per Klick auf den Menü-Titel angebunden.", border: "border-indigo-500" }
+        { version: "v1.10.127", date: "18.09.2026, 14:50 (MEZ)", text: "Zentrale Versions-Injektion implementiert, um Abweichungen im Cache auszuschließen.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -196,7 +200,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.123</p>
+          <p class="text-xs text-slate-500">Version: v1.10.127</p>
         </div>
       `;
     }
@@ -228,7 +232,7 @@ window.AppShell = (() => {
     }
 
     const headerTitle = document.getElementById('header-title');
-    if (headerTitle) headerTitle.textContent = appTitle;
+    if (headerTitle) headerTitle.textContent = `${appTitle} (${window.APP_CONFIG?.version || 'v1.10.127'})`;
     window.scrollTo(0, 0);
   }
 
