@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ETAGENRECHNER
+// ZANGENSCHLOSSER-APP: MODUL ETAGENRECHNER (v1.10.127)
 // ============================================================================
 window.EtagenApp = (() => {
   const toRad = (deg) => (deg * Math.PI) / 180;
