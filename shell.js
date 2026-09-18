@@ -1,29 +1,24 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.125)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.41)
 // ============================================================================
 window.AppShell = (() => {
-  let currentRole = null; // 'master' | 'user' | null
-
-  // --- ZENTRALE SPLASH-SCREEN LOGIK ---
   function checkDailySplash() {
-    const today = new Date().toISOString().slice(0, 10);
-    const lastShown = localStorage.getItem('zangenschlosser_splash_date_v1');
+    const today = new Date().toISOString().split('T')[0];
+    const lastSplash = localStorage.getItem('zangenschlosser_last_splash');
     const splashModal = document.getElementById('daily_splash_modal');
     if (!splashModal) return;
 
-    if (lastShown !== today) {
+    if (lastSplash !== today) {
       splashModal.classList.remove('hidden');
     } else {
       splashModal.classList.add('hidden');
     }
   }
-
   function closeDailySplash() {
-    const today = new Date().toISOString().slice(0, 10);
-    localStorage.setItem('zangenschlosser_splash_date_v1', today);
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('zangenschlosser_last_splash', today);
     document.getElementById('daily_splash_modal')?.classList.add('hidden');
   }
-  // -------------------------------------
 
   function openMehrModal() { document.getElementById('mehr_modal')?.classList.remove('hidden'); }
   function closeMehrModal() { document.getElementById('mehr_modal')?.classList.add('hidden'); }
@@ -81,83 +76,9 @@ window.AppShell = (() => {
 
   function openTopMenu() { 
     checkInstallState();
-    updateMenuUI();
     document.getElementById('top_menu_modal')?.classList.remove('hidden'); 
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
-
-  // --- ADMIN & PIN LOGIK ---
-  function handleTitleClick() {
-    closeTopMenu();
-    openPinModal();
-  }
-
-  function openPinModal() {
-    const modal = document.getElementById('pin_modal');
-    const input = document.getElementById('pin_input');
-    if (input) input.value = '';
-    if (modal) modal.classList.remove('hidden');
-    if (input) input.focus();
-  }
-
-  function closePinModal() {
-    document.getElementById('pin_modal')?.classList.add('hidden');
-  }
-
-  function handleLogin() {
-    const input = document.getElementById('pin_input');
-    if (!input) return;
-    const pin = input.value.trim();
-
-    if (pin === '0633') {
-      currentRole = 'master';
-      applyRole('master');
-      closePinModal();
-      alert('Master-Modus aktiv (Vollzugriff).');
-    } else if (pin === '0449') {
-      currentRole = 'user';
-      applyRole('user');
-      closePinModal();
-      alert('Benutzer-Modus aktiv (Prüfebene).');
-    } else {
-      alert('Falsche PIN!');
-      input.value = '';
-      input.focus();
-    }
-  }
-
-  function handleLogout() {
-    currentRole = null;
-    applyRole(null);
-    updateMenuUI();
-    alert('Erfolgreich abgemeldet.');
-  }
-
-  function applyRole(role) {
-    const header = document.querySelector('header');
-    if (!header) return;
-
-    header.classList.remove('role-header-master', 'role-header-user');
-
-    if (role === 'master') {
-      header.classList.add('role-header-master');
-    } else if (role === 'user') {
-      header.classList.add('role-header-user');
-    }
-    updateMenuUI();
-  }
-
-  function updateMenuUI() {
-    const logoutContainer = document.getElementById('logout_container');
-    if (!logoutContainer) return;
-
-    if (currentRole) {
-      logoutContainer.style.display = 'block';
-    } else {
-      logoutContainer.style.display = 'none';
-    }
-  }
-  // -------------------------
 
   function openSubModal(type) {
     const titleEl = document.getElementById('sub_modal_title');
@@ -170,8 +91,8 @@ window.AppShell = (() => {
       const titles = { master: 'Zangenschlosser App', etagen: 'Etagenrechner', zuschnitt: 'Zuschnittsrechner', drehwinkel: 'Verdrehwinkel' };
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
-      const logs = [
-        { version: "v1.10.125", date: "18.09.2026, 14:30 (MEZ)", text: "Zentrale Splash-Screen Logik bereinigt und Konflikte mit Login-Flow behoben.", border: "border-indigo-500" }
+      const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
+        { version: "v1.10.41", date: "15.09.2026, 15:20 (MEZ)", text: "GS-Design Integration, einheitliche Typografie und einmaliges Smart-Loading aktiv.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -199,7 +120,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.125</p>
+          <p class="text-xs text-slate-500">Version: v1.10.41</p>
         </div>
       `;
     }
@@ -230,6 +151,16 @@ window.AppShell = (() => {
       }
     }
 
+    const badge = document.getElementById('header-badge');
+    if (badge) {
+      if (appName === 'eoform') {
+        badge.classList.remove('hidden');
+        badge.textContent = 'Einstecktiefe';
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
     const headerTitle = document.getElementById('header-title');
     if (headerTitle) headerTitle.textContent = appTitle;
     window.scrollTo(0, 0);
@@ -246,8 +177,7 @@ window.AppShell = (() => {
     checkDailySplash, closeDailySplash,
     openMehrModal, closeMehrModal, selectMehrItem,
     installPWA, openTopMenu, closeTopMenu,
-    openSubModal, closeSubModal, switchApp,
-    handleTitleClick, handleLogin, handleLogout, closePinModal
+    openSubModal, closeSubModal, switchApp
   };
 })();
 
@@ -262,7 +192,3 @@ window.closeTopMenu = () => window.AppShell.closeTopMenu();
 window.openSubModal = (t) => window.AppShell.openSubModal(t);
 window.closeSubModal = () => window.AppShell.closeSubModal();
 window.switchApp = (a, t) => window.AppShell.switchApp(a, t);
-window.handleTitleClick = () => window.AppShell.handleTitleClick();
-window.handleLogin = () => window.AppShell.handleLogin();
-window.handleLogout = () => window.AppShell.handleLogout();
-window.closePinModal = () => window.AppShell.closePinModal();

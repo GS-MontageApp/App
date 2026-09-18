@@ -1,11 +1,10 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.10.125)
+// ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.10.119)
 // ============================================================================
-const CACHE_NAME = 'zangenschlosser-cache-v1.10.125';
+const CACHE_NAME = 'zangenschlosser-cache-v1.10.119';
 const ASSETS = [
   './',
   './index.html',
-  './css/style.css',
   './js/version.js',
   './js/shell.js',
   './js/etagen.js',
@@ -14,8 +13,7 @@ const ASSETS = [
   './js/tabellen.js',
   './js/drehmoment.js',
   './manifest.json',
-  './img/dr-zange.jpg',
-  './img/eo-form.png'
+  './img/dr-zange.jpg'
 ];
 
 self.addEventListener('install', (event) => {
