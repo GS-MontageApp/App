@@ -1,12 +1,12 @@
 /**
  * ================================================================================
  * ZANGENSCHLOSSER APP (Dr. Zange) - Modul: Zuschnittsrechner (zuschnitt.js)
- * Version: v1.10.121
+ * Version: v1.10.122
  * 
  * Beschreibung:
- * Berechnet die Gesamtzuschnittlänge von Rohren basierend auf realen, an der 
- * neutralen Faser gemessenen freien Schenkeln (Tangentenmaßen) und dem exakten 
- * Bogenmaß (ohne verdeckten Schnittpunkt-/Cutback-Versatz).
+ * Berechnet die Gesamtzuschnittlänge von Rohren basierend auf der verifizierten
+ * Cutback-Methode (Schnittpunktmaß / Apex-to-Apex mit Tangens-Rückzügen) und 
+ * den echten Bogenmaßen an der neutralen Faser für millimetergenaue Praxisergebnisse.
  * ================================================================================
  */
 
@@ -14,7 +14,7 @@ const ZuschnittApp = (function() {
     'use strict';
 
     function init() {
-        console.log('[ZuschnittApp] Initialisiere Zuschnittsrechner (Tangentenmaß-Logik)...');
+        console.log('[ZuschnittApp] Initialisiere Zuschnittsrechner (Cutback-Logik aktiv)...');
         setupEventListeners();
         calculateZuschnitt();
     }
@@ -85,7 +85,6 @@ const ZuschnittApp = (function() {
             }
         }
 
-        // Weitere Paare analog schalten...
         const winkel1 = document.querySelector('#zuschnitt_pair_1 input[data-type="winkel"]');
         const schenkel3 = document.querySelector('#zuschnitt_pair_1 input[data-type="schenkel"]');
         if (pair2) {
@@ -141,8 +140,11 @@ const ZuschnittApp = (function() {
     }
 
     /**
-     * Kernberechnung nach dem echten Tangentenmaß-Prinzip (an neutraler Faser gemessen):
-     * Gesamtzuschnitt = Summe der reinen geraden Schenkel (Tangenten) + Summe der Bogenmaße (an neutraler Faser).
+     * Kernberechnung nach der verifizierten Cutback-Methode (Schnittpunktmaß-Verfahren):
+     * 1. Biegeradius R = Radiusfaktor * Durchmesser
+     * 2. Cutback C = R * tan(Winkel / 2) für jede Biegung
+     * 3. Netto-Schenkel = Eingegebene Schnittpunktmaße minus angrenzende Cutbacks
+     * 4. Gesamtzuschnitt = Summe(Netto-Schenkel) + Summe(Bogenmaße)
      */
     function calculateZuschnitt() {
         const dVal = parseFloat(document.getElementById('zuschnitt_durchmesser')?.value);
@@ -166,40 +168,61 @@ const ZuschnittApp = (function() {
         if (outRadius) outRadius.textContent = radius.toFixed(1) + ' mm (R' + radius + ')';
 
         // Alle aktiven Schenkel und Winkel einsammeln
-        let summeSchenkel = 0;
+        const schenkelElements = Array.from(document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]'))
+            .filter(inp => !inp.disabled);
+        const winkelElements = Array.from(document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]'))
+            .filter(inp => !inp.disabled);
+
+        const schenkelRaw = schenkelElements.map(inp => parseFloat(inp.value.replace(',', '.')) || 0);
+        const winkelRaw = winkelElements.map(inp => parseFloat(inp.value.replace(',', '.')) || 0);
+
         let summeBogenMaesse = 0;
         let bogenAnzahl = 0;
+        const cutbacks = [];
 
-        const schenkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]');
-        schenkelInputs.forEach(inp => {
-            if (!inp.disabled && inp.value) {
-                const val = parseFloat(inp.value.replace(',', '.'));
-                if (!isNaN(val)) {
-                    summeSchenkel += val;
-                }
+        // Cutbacks und Bogenmaße pro Biegung berechnen
+        winkelRaw.forEach(winkelVal => {
+            if (winkelVal > 0) {
+                // Radiant Umrechnung für tan
+                const rad = (winkelVal * Math.PI) / 180;
+                const cutback = radius * Math.tan(rad / 2);
+                cutbacks.push(cutback);
+
+                // Bogenmaß: L_b = (PI * R * Winkel) / 180
+                const bogenMaß = (Math.PI * radius * winkelVal) / 180;
+                summeBogenMaesse += bogenMaß;
+                bogenAnzahl++;
+            } else {
+                cutbacks.push(0);
             }
         });
 
-        const winkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]');
-        winkelInputs.forEach(inp => {
-            if (!inp.disabled && inp.value) {
-                const winkelVal = parseFloat(inp.value.replace(',', '.'));
-                if (!isNaN(winkelVal) && winkelVal > 0) {
-                    // Bogenmaß an der neutralen Faser: L_b = (PI * R * Winkel) / 180
-                    const bogenMaß = (Math.PI * radius * winkelVal) / 180;
-                    summeBogenMaesse += bogenMaß;
-                    bogenAnzahl++;
+        // Netto-Schenkel berechnen (Abzug der angrenzenden Cutbacks)
+        let summeNettoSchenkel = 0;
+        schenkelRaw.forEach((schenkelVal, idx) => {
+            if (schenkelVal > 0) {
+                let netto = schenkelVal;
+                // Linker Nachbar-Cutback abziehen (falls vorhanden)
+                if (idx > 0 && idx - 1 < cutbacks.length && cutbacks[idx - 1] > 0) {
+                    netto -= cutbacks[idx - 1];
                 }
+                // Rechter Nachbar-Cutback abziehen (falls vorhanden)
+                if (idx < cutbacks.length && cutbacks[idx] > 0) {
+                    netto -= cutbacks[idx];
+                }
+                // Verhindern, dass Netto-Schenkel negativ wird
+                if (netto < 0) netto = 0;
+                summeNettoSchenkel += netto;
             }
         });
 
-        // Gesamtzuschnittlänge = Reale freie Schenkel (Tangenten) + Bogenmaße an der neutralen Faser
-        const gesamtlänge = summeSchenkel + summeBogenMaesse;
+        // Gesamtzuschnittlänge = Summe der Netto-Schenkel + Summe der Bogenmaße
+        const gesamtlänge = summeNettoSchenkel + summeBogenMaesse;
 
-        if (outSummeSchenkel) outSummeSchenkel.textContent = summeSchenkel.toFixed(1) + ' mm';
+        if (outSummeSchenkel) outSummeSchenkel.textContent = summeNettoSchenkel.toFixed(1) + ' mm';
         if (outGesamt) outGesamt.textContent = gesamtlänge.toFixed(1) + ' mm';
         if (outTitel) {
-            outTitel.innerHTML = `Ergebnis &ndash; Tangenten-Modus (${bogenAnzahl} Bogen aktiv)`;
+            outTitel.innerHTML = `Ergebnis &ndash; Cutback-Modus (${bogenAnzahl} Bogen aktiv)`;
         }
     }
 
