@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL VERDREHWINKEL (v1.10.127)
+// ZANGENSCHLOSSER-APP: MODUL VERDREHWINKEL
 // ============================================================================
 window.DrehwinkelApp = (() => {
   const assets = {

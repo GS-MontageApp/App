@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL DREHMOMENTTABELLE (8.8 / 10.9 / 12.9) (v1.10.127)
+// ZANGENSCHLOSSER-APP: MODUL DREHMOMENTTABELLE (8.8 / 10.9 / 12.9) v1.10.106
 // ============================================================================
 window.DrehmomentApp = (() => {
   const STORAGE_KEY = 'zangenschlosser_drehmoment_selections_v1';
@@ -48,7 +48,7 @@ window.DrehmomentApp = (() => {
     const tbody = document.getElementById('eo_tbody_drehmoment');
     if (!tbody) return;
     tbody.innerHTML = drehmomentData.map(r => `
-      <tr class="bg-amber-50/55">
+      <tr class="bg-amber-50/50">
         <td class="py-2.5 px-3 font-bold">${r.gewinde}</td>
         <td class="py-2.5 px-3">${r.m88}</td>
         <td class="py-2.5 px-3">${r.m109}</td>
