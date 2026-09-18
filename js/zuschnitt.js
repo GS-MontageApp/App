@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.120)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.127)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -198,8 +198,6 @@ window.ZuschnittApp = (() => {
       if (alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
-        
-        // Da freie Schenkel (Tangentenmaße) gemessen werden, addieren wir das Bogenmaß direkt zur Schenkelsumme
         totalBogenMaß += angleRad * rBiege;
       }
     });
