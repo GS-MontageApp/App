@@ -2,8 +2,6 @@
 // ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.122)
 // ============================================================================
 window.AppShell = (() => {
-  let tapCount = 0;
-  let tapTimer = null;
   let currentRole = null; // 'master' | 'user' | null
 
   function checkDailySplash() {
@@ -85,19 +83,10 @@ window.AppShell = (() => {
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
 
-  // --- ADMIN & PIN LOGIK ---
-  function handleTitleTripleTap() {
-    tapCount++;
-    if (tapCount === 1) {
-      tapTimer = setTimeout(() => {
-        tapCount = 0;
-      }, 600);
-    } else if (tapCount === 3) {
-      clearTimeout(tapTimer);
-      tapCount = 0;
-      closeTopMenu();
-      openPinModal();
-    }
+  // --- ADMIN & PIN LOGIK (Einfaches Tippen) ---
+  function handleTitleTap() {
+    closeTopMenu();
+    openPinModal();
   }
 
   function openPinModal() {
@@ -179,7 +168,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = [
-        { version: "v1.10.122", date: "18.09.2026, 13:45 (MEZ)", text: "Admin-Modus mit PIN-Verifizierung, Rollen-Indikatoren und Logout integriert.", border: "border-indigo-500" }
+        { version: "v1.10.122", date: "18.09.2026, 13:45 (MEZ)", text: "Admin-Modus mit PIN-Verifizierung auf einfachen Tap umgestellt.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -248,11 +237,11 @@ window.AppShell = (() => {
     checkDailySplash();
     initServiceWorker();
 
-    // Event Listener für Triple-Tap auf den Menü-Titel
+    // Event Listener für einfachen Klick/Tap auf den Menü-Titel
     const menuTitle = document.getElementById('menu_app_title_text');
     if (menuTitle) {
       menuTitle.style.cursor = 'pointer';
-      menuTitle.addEventListener('click', handleTitleTripleTap);
+      menuTitle.addEventListener('click', handleTitleTap);
     }
   }
 
