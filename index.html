@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.124
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.125
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,13 +15,13 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.124 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.125 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
 
   <!-- Externes CSS Stylesheet -->
-  <link rel="stylesheet" href="./css/style.css?v=v1.10.124">
+  <link rel="stylesheet" href="./css/style.css?v=v1.10.125">
 
   <!-- Sofortige globale Bereitstellung der Theme-Funktion für OnClick-Handler -->
   <script>
@@ -52,14 +52,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.124) -->
-  <script src="js/version.js?v=v1.10.124"></script>
-  <script src="js/zuschnitt.js?v=v1.10.124"></script>
-  <script src="js/etagen.js?v=v1.10.124"></script>
-  <script src="js/drehwinkel.js?v=v1.10.124"></script>
-  <script src="js/tabellen.js?v=v1.10.124"></script>
-  <script src="js/drehmoment.js?v=v1.10.124"></script>
-  <script src="js/shell.js?v=v1.10.124"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.125) -->
+  <script src="js/version.js?v=v1.10.125"></script>
+  <script src="js/zuschnitt.js?v=v1.10.125"></script>
+  <script src="js/etagen.js?v=v1.10.125"></script>
+  <script src="js/drehwinkel.js?v=v1.10.125"></script>
+  <script src="js/tabellen.js?v=v1.10.125"></script>
+  <script src="js/drehmoment.js?v=v1.10.125"></script>
+  <script src="js/shell.js?v=v1.10.125"></script>
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
@@ -67,7 +67,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.124)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.125)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -596,25 +596,6 @@
   </div>
 
   <script>
-    function checkDailySplash() {
-      const today = new Date().toISOString().slice(0, 10);
-      const lastShown = localStorage.getItem('zangenschlosser_splash_date_v1');
-      const splashModal = document.getElementById('daily_splash_modal');
-
-      if (lastShown !== today) {
-        if (splashModal) splashModal.classList.remove('hidden');
-      } else {
-        if (splashModal) splashModal.classList.add('hidden');
-      }
-    }
-
-    function closeDailySplash() {
-      const today = new Date().toISOString().slice(0, 10);
-      localStorage.setItem('zangenschlosser_splash_date_v1', today);
-      const splashModal = document.getElementById('daily_splash_modal');
-      if (splashModal) splashModal.classList.add('hidden');
-    }
-
     function openZoomModal(imgSrc, title) {
       const modal = document.getElementById('zoom_modal');
       const img = document.getElementById('zoom_modal_img');
@@ -654,9 +635,9 @@
         window.setTheme(savedTheme);
       }
 
-      checkDailySplash();
-
+      // Zentraler Aufruf der AppShell Initialisierung (inkl. sauberer Splash-Screen Prüfung)
       AppShell.init();
+
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
       if (window.DrehwinkelApp) DrehwinkelApp.init();
