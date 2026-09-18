@@ -5,6 +5,29 @@
     ================================================================================
     ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.120
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
+    
+    --------------------------------------------------------------------------------
+    PROJEKT-KONZEPTLISTE & ENTWICKLUNGSFAHRPLAN:
+    1. Berechnungslogik (Freie Schenkel / Tangentenmaße): Umstellung der Zuschnitts-
+       Berechnung auf freie, gerade Schenkel (Tangentenmaße) ohne Cutback, bei dem
+       das Bogenmaß direkt zur Schenkelsumme addiert wird.
+    2. Künftige Parameter (Rohr-Wandstärke): Optionale Integration der Wandstärke (s)
+       zur präziseren Radius- und Kompensationsberechnung.
+    3. Werkstattspezifischer Offset / Korrekturwert: Implementierung eines individuellen
+       Offset-Werts zur maschinen- und chargenspezifischen Kalibrierung.
+    4. Geschützter Admin-Modus per PIN & Geste:
+       - Auslöser: Triple-Tap (3x Schnell-Antippen) auf den Titel „Zangenschlosser App“ 
+         im geöffneten Top-Menü (Einstellungen).
+       - Overlay & Input: Modales Overlay mit auf 4 Ziffern limitiertem Eingabefeld 
+         (inputmode="numeric") und grünem „Login“-Button.
+       - Rollentrennung nach PIN: Master-PIN (0633) für vollen Admin-Zugriff; 
+         Benutzer-PIN (0449) für erweiterte Prüf- bzw. Kollegen-Ebene.
+       - Visueller Indikator: Header-Hintergrund färbt sich bei Master dezent rot und 
+         bei Benutzer dezent grün.
+    5. Logout-Funktion im Admin-/Prüf-Modus: Ein roter Logout-Button in den Einstellungen, 
+       der bei aktivem Login erscheint, um die Session sauber zu beenden.
+    6. Architektur & Code-Qualität: Fortlaufende Modularisierung, Auslagerung des CSS-Stylings 
+       in eine externe css/style.css, Projekt-Versionierung und Service-Worker-Abgleich.
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -49,7 +72,7 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.120) -->
+  <!-- Single Source of Truth Version Config & Module -->
   <script src="js/version.js?v=v1.10.120"></script>
   <script src="js/zuschnitt.js?v=v1.10.120"></script>
   <script src="js/etagen.js?v=v1.10.120"></script>
