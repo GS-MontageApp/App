@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.123)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -176,7 +176,7 @@ window.ZuschnittApp = (() => {
       if (summeEl) summeEl.textContent = "0 mm";
       return;
     } else {
-      if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
+      if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr (v1.10.123)`;
     }
 
     const schenkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]');
@@ -185,7 +185,7 @@ window.ZuschnittApp = (() => {
     let sumSchenkel = 0, schenkelVals = [];
     schenkelInputs.forEach((inp) => {
       const v = parseFloat(getCleanVal(inp.value)) || 0;
-      schenkelVals.push(v);
+      schenkelVals.pop ? schenkelVals.push(v) : null;
       sumSchenkel += v;
     });
 
@@ -198,8 +198,17 @@ window.ZuschnittApp = (() => {
       if (alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
-        totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
-        totalBogenMaß += angleRad * rBiege;
+
+        // Sonderfall-Behandlung für 180° Bogen (U-Kehre / parallele Schenkel)
+        if (alpha >= 179.9) {
+          // Bei 180° beträgt das Bogenmaß exakt Pi * R und der Abzug entspricht dem doppelten Radius (2 * R)
+          totalBogenMaß += Math.PI * rBiege;
+          totalCutback += (2 * rBiege);
+        } else {
+          // Standard Cutback-Logik für Winkel < 180°
+          totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
+          totalBogenMaß += angleRad * rBiege;
+        }
       }
     });
 
