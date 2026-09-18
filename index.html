@@ -3,31 +3,43 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.120
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.121
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     
-    --------------------------------------------------------------------------------
-    PROJEKT-KONZEPTLISTE & ENTWICKLUNGSFAHRPLAN:
+    ================================================================================
+    VOLLSTÄNDIGE PROJEKT-KONZEPTLISTE & ENTWICKLUNGSFAHRPLAN:
     1. Berechnungslogik (Freie Schenkel / Tangentenmaße): Umstellung der Zuschnitts-
-       Berechnung auf freie, gerade Schenkel (Tangentenmaße) ohne Cutback, bei dem
-       das Bogenmaß direkt zur Schenkelsumme addiert wird.
-    2. Künftige Parameter (Rohr-Wandstärke): Optionale Integration der Wandstärke (s)
-       zur präziseren Radius- und Kompensationsberechnung.
-    3. Werkstattspezifischer Offset / Korrekturwert: Implementierung eines individuellen
-       Offset-Werts zur maschinen- und chargenspezifischen Kalibrierung.
-    4. Geschützter Admin-Modus per PIN & Geste:
-       - Auslöser: Triple-Tap (3x Schnell-Antippen) auf den Titel „Zangenschlosser App“ 
-         im geöffneten Top-Menü (Einstellungen).
-       - Overlay & Input: Modales Overlay mit auf 4 Ziffern limitiertem Eingabefeld 
-         (inputmode="numeric") und grünem „Login“-Button.
-       - Rollentrennung nach PIN: Master-PIN (0633) für vollen Admin-Zugriff; 
-         Benutzer-PIN (0449) für erweiterte Prüf- bzw. Kollegen-Ebene.
-       - Visueller Indikator: Header-Hintergrund färbt sich bei Master dezent rot und 
-         bei Benutzer dezent grün.
-    5. Logout-Funktion im Admin-/Prüf-Modus: Ein roter Logout-Button in den Einstellungen, 
-       der bei aktivem Login erscheint, um die Session sauber zu beenden.
-    6. Architektur & Code-Qualität: Fortlaufende Modularisierung, Auslagerung des CSS-Stylings 
-       in eine externe css/style.css, Projekt-Versionierung und Service-Worker-Abgleich.
+       Berechnung von Schnittpunktmaßen auf freie, gerade Schenkel (Tangentenmaße), um 
+       die reale Handwerksmessung mit dem Zollstock exakt abzubilden (ohne verdeckten 
+       Cutback, bei dem das Bogenmaß direkt zur reinen Schenkelsumme addiert wird).
+    2. Künftige Parameter: Rohr-Wandstärke: Geplante Integration der Wandstärke (s) 
+       als optionalen Eingabeparameter (ganz pragmatisch ohne unnötigen Material-Overhead), 
+       um bei Bedarf den Innen-, Außen- oder Mitten-Biegeradius noch präziser zu berücksichtigen.
+    3. Werkstattspezifischer Offset / Korrekturwert: Implementierung eines individuellen 
+       Offset-Werts zur maschinen- und chargenspezifischen Kalibrierung (Feinjustierung der 
+       Zuschnittslänge bei realen Abweichungen, z. B. durch Materialverhalten).
+    4. Geschützter Admin-Modus per PIN & Geste (Option A):
+       - Auslöser: Ein Triple-Tap (dreimaliges schnelles Antippen) auf den Titel „Zangenschlosser App“ 
+         im geöffneten Top-Menü (Einstellungen) öffnet das PIN-Eingabefenster.
+       - Overlay & Input: Modales Overlay mit einem auf genau 4 Ziffern limitierten Eingabefeld 
+         (inputmode="numeric") und einem markanten grünen Button mit der Aufschrift „Login“.
+       - Rollentrennung nach PIN:
+         * Master-PIN (0633): Schaltet den vollen Administrator-Bereich für tiefergehende 
+           Einstellungen frei (wie Wandstärke, Offsets und Kalibrierungsfaktoren).
+         * Benutzer-PIN (0449): Dient als erweiterte Prüf- oder Kollegen-Ebene, um Testrohre 
+           zu dokumentieren oder vordefinierte Profile zu wählen, ohne globale Faktoren zu überschreiben.
+       - Visueller Indikator (Header-Färbung):
+         * Master eingeloggt (0633): Der App-Header erhält einen dezenten roten Hintergrundton.
+         * Benutzer eingeloggt (0449): Der App-Header erhält einen dezenten grünen Hintergrundton.
+         * Kein Login / Standard: Der Standard-Header-Hintergrund bleibt aktiv.
+    5. Logout-Funktion im Admin-/Prüf-Modus: Sobald der Master (0633) oder ein Benutzer (0449) 
+       eingeloggt ist, erscheint im Einstellungs-Menü (Top-Menu) ein roter Logout-Button. Ein Klick 
+       darauf beendet die aktive Rolle, setzt den Header-Hintergrund wieder auf den Standard zurück 
+       und sperrt die erweiterten Bereiche sofort wieder.
+    6. Architektur & Code-Qualität: Fortlaufende Modularisierung (Saubere Trennung von JavaScript-Modulen 
+       wie zuschnitt.js, etagen.js, drehwinkel.js etc.). Auslagerung des umfangreichen CSS-Stylings 
+       (inklusive GS-Design-Theme) in eine externe css/style.css. Konsequente Versionierung im gesamten 
+       Projekt (aktuell auf v1.10.121 angehoben) inklusive Aktualisierung des Service Workers (sw.js).
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -38,8 +50,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.120 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.121 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css?v=v1.10.121">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
 
@@ -72,187 +85,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module -->
-  <script src="js/version.js?v=v1.10.120"></script>
-  <script src="js/zuschnitt.js?v=v1.10.120"></script>
-  <script src="js/etagen.js?v=v1.10.120"></script>
-  <script src="js/drehwinkel.js?v=v1.10.120"></script>
-  <script src="js/tabellen.js?v=v1.10.120"></script>
-  <script src="js/drehmoment.js?v=v1.10.120"></script>
-  <script src="js/shell.js?v=v1.10.120"></script>
-
-  <style>
-    /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    input, select, button, table {
-      font-family: inherit !important;
-    }
-
-    .row-selected {
-      outline: 2.5px solid #005691 !important;
-      background-color: rgba(0, 86, 145, 0.16) !important;
-      position: relative;
-      z-index: 10;
-    }
-    .group-start-l td {
-      border-top: 2px solid #34d399 !important;
-    }
-    .group-start-s td {
-      border-top: 2px solid #f87171 !important;
-    }
-
-    /* THEME: GS (Gustav Schmidt Look) */
-    body.theme-gs {
-      background-color: #0b1d3a !important;
-      color: #f8fafc !important;
-    }
-    body.theme-gs header {
-      background-color: rgba(11, 29, 58, 0.95) !important;
-      border-bottom-color: #1e3a8a !important;
-    }
-    body.theme-gs header h1, body.theme-gs header span {
-      color: #ffffff !important;
-    }
-    body.theme-gs main section, 
-    body.theme-gs main .bg-white {
-      background-color: #112a52 !important;
-      color: #ffffff !important;
-      border-color: #1e3a8a !important;
-    }
-    body.theme-gs main h2, 
-    body.theme-gs main h3, 
-    body.theme-gs main label, 
-    body.theme-gs main span,
-    body.theme-gs main div {
-      color: #f1f5f9;
-    }
-    body.theme-gs main h2 {
-      color: #ffe600 !important;
-    }
-    body.theme-gs footer {
-      background-color: rgba(11, 29, 58, 0.95) !important;
-      border-top-color: #1e3a8a !important;
-    }
-    body.theme-gs .nav-btn span {
-      color: #cbd5e1 !important;
-    }
-    body.theme-gs .nav-btn.text-indigo-600 span {
-      color: #ffe600 !important;
-    }
-    
-    body.theme-gs .input-wrapper {
-      background-color: transparent !important;
-      border: none !important;
-      padding: 0 !important;
-    }
-
-    body.theme-gs input, body.theme-gs select {
-      background-color: #0b1d3a !important;
-      color: #ffffff !important;
-      border: 2px solid #ffe600 !important;
-      outline: none !important;
-      box-shadow: none !important;
-    }
-    body.theme-gs input:focus, body.theme-gs select:focus {
-      outline: none !important;
-      box-shadow: none !important;
-      border: 2px solid #ffe600 !important;
-    }
-    body.theme-gs input::placeholder {
-      color: #94a3b8 !important;
-    }
-
-    body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"],
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"],
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
-    body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
-      border: 2.5px solid #ffe600 !important;
-      border-left-width: 12px !important;
-      background-color: #1D375B !important;
-    }
-
-    body.theme-gs #view-etagen div:has(#etagen_out_c) {
-      border-left-color: #ef4444 !important;
-    }
-    body.theme-gs #view-etagen div:has(#etagen_out_travel) {
-      border-left-color: #f97316 !important;
-    }
-    body.theme-gs #view-etagen div:has(#etagen_out_run) {
-      border-left-color: #0ea5e9 !important;
-    }
-
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div.grid div.p-2 {
-      border-left-color: #ef4444 !important;
-      background-color: #1D375B !important;
-    }
-
-    body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
-      border-left-color: #ffe600 !important;
-      background-color: #1D375B !important;
-    }
-
-    body.theme-gs #view-eoform .eo-sub-section,
-    body.theme-gs #view-eoform .eo-sub-section > div,
-    body.theme-gs #view-eoform .eo-sub-section table {
-      border-color: #ffe600 !important;
-    }
-    body.theme-gs #view-eoform .eo-sub-section div[class*="rounded-xl"] {
-      border: 2px solid #ffe600 !important;
-      background-color: #112a52 !important;
-    }
-
-    body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"] *:not(button),
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"] *:not(button),
-    body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge *:not(button),
-    body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] *:not(button) {
-      color: #ffffff !important;
-    }
-
-    body.theme-gs #view-drehwinkel button.dw-mode-btn-active {
-      color: #ffffff !important;
-      background-color: #005691 !important;
-    }
-    body.theme-gs #view-drehwinkel button.dw-mode-btn-inactive {
-      color: #000000 !important;
-      background-color: #f1f5f9 !important;
-    }
-
-    body.theme-gs table th {
-      background-color: #112a52 !important;
-      color: #ffe600 !important;
-      border-bottom-color: #1e3a8a !important;
-    }
-    body.theme-gs table td {
-      background-color: #f8fafc !important;
-      color: #0f172a !important;
-      border-color: #cbd5e1 !important;
-    }
-
-    #zuschnitt_out_gesamtlänge {
-      display: flex;
-      flex-direction: column;
-    }
-    #zuschnitt_out_gesamtlänge .result-label {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #94a3b8;
-      order: 1;
-    }
-    #zuschnitt_out_gesamtlänge .result-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-top: 0.125rem;
-      order: 2;
-    }
-  </style>
+  <!-- Single Source of Truth Version Config & Module (v1.10.121) -->
+  <script src="js/version.js?v=v1.10.121"></script>
+  <script src="js/zuschnitt.js?v=v1.10.121"></script>
+  <script src="js/etagen.js?v=v1.10.121"></script>
+  <script src="js/drehwinkel.js?v=v1.10.121"></script>
+  <script src="js/tabellen.js?v=v1.10.121"></script>
+  <script src="js/drehmoment.js?v=v1.10.121"></script>
+  <script src="js/shell.js?v=v1.10.121"></script>
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
@@ -260,7 +100,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.120)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.121)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
