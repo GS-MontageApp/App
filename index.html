@@ -3,7 +3,7 @@
 <head>
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.121
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.122
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     ================================================================================
   -->
@@ -15,13 +15,13 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.121 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.10.122 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
 
   <!-- Externes CSS Stylesheet -->
-  <link rel="stylesheet" href="./css/style.css?v=v1.10.121">
+  <link rel="stylesheet" href="./css/style.css?v=v1.10.122">
 
   <!-- Sofortige globale Bereitstellung der Theme-Funktion für OnClick-Handler -->
   <script>
@@ -52,14 +52,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.121) -->
-  <script src="js/version.js?v=v1.10.121"></script>
-  <script src="js/zuschnitt.js?v=v1.10.121"></script>
-  <script src="js/etagen.js?v=v1.10.121"></script>
-  <script src="js/drehwinkel.js?v=v1.10.121"></script>
-  <script src="js/tabellen.js?v=v1.10.121"></script>
-  <script src="js/drehmoment.js?v=v1.10.121"></script>
-  <script src="js/shell.js?v=v1.10.121"></script>
+  <!-- Single Source of Truth Version Config & Module (Aktualisiert auf v1.10.122) -->
+  <script src="js/version.js?v=v1.10.122"></script>
+  <script src="js/zuschnitt.js?v=v1.10.122"></script>
+  <script src="js/etagen.js?v=v1.10.122"></script>
+  <script src="js/drehwinkel.js?v=v1.10.122"></script>
+  <script src="js/tabellen.js?v=v1.10.122"></script>
+  <script src="js/drehmoment.js?v=v1.10.122"></script>
+  <script src="js/shell.js?v=v1.10.122"></script>
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
@@ -67,7 +67,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.121)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.122)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -525,11 +525,13 @@
     </div>
   </div>
 
+  <!-- TOP-MENÜ MODAL -->
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-3">
         <div>
-          <h3 class="font-bold text-lg text-indigo-600 leading-tight">⚙️ Zangenschlosser App</h3>
+          <!-- Triple-Tap Ziel auf diesen Text -->
+          <h3 id="menu_app_title_text" class="font-bold text-lg text-indigo-600 leading-tight select-none">⚙️ Zangenschlosser App</h3>
           <p id="menu_version_subtitle" class="text-xs font-mono text-slate-400 mt-0.5">Lade Version...</p>
         </div>
         <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
@@ -549,10 +551,35 @@
             <span class="text-indigo-400">&rsaquo;</span>
           </button>
         </div>
+        <!-- Logout Container (Standardmäßig versteckt, wird via JS eingeblendet) -->
+        <div id="logout_container" class="pt-3 pb-3" style="display: none;">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Admin-Sitzung</h4>
+          <button onclick="handleLogout()" class="w-full text-left p-3 bg-red-50 hover:bg-red-100 rounded-xl font-semibold text-red-700 transition-colors flex items-center justify-between shadow-sm border border-red-200">
+            <span>🚪 Abmelden (Logout)</span>
+            <span class="text-red-400">&rsaquo;</span>
+          </button>
+        </div>
       </div>
       <button onclick="closeTopMenu()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors">
         Schließen
       </button>
+    </div>
+  </div>
+
+  <!-- PIN EINGABE MODAL -->
+  <div id="pin_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl p-6 max-w-xs w-full space-y-4 text-slate-800 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-base text-slate-700">🔐 PIN-Eingabe</h3>
+        <button onclick="closePinModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div class="space-y-3">
+        <label class="block text-xs font-semibold text-slate-600">Bitte 4-stellige PIN eingeben:</label>
+        <input type="password" id="pin_input" maxlength="4" inputmode="numeric" placeholder="••••" class="w-full text-center tracking-widest text-2xl bg-slate-50 border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <button onclick="handleLogin()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm transition-colors shadow-md">
+          Login
+        </button>
+      </div>
     </div>
   </div>
 
