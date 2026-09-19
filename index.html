@@ -8,11 +8,8 @@
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     
     ÄNDERUNGEN IN v1.12.1:
-    - Logout-Button im Top-Menü (`logout_menu_item`) ist standardmäßig ausgeblendet 
-      (`hidden`) und erscheint dynamisch nur im eingeloggten Zustand.
-    - Rollen-Badges mit dezenten, matten Hintergründen (`bg-red-100` / `bg-emerald-100`).
-    - Vollflächig eingefärbter Header je nach aktiver Rolle (Root / Benutzer).
-    - PIN-Login-Modal mit "X"-Schließsymbol im oberen Kopfbereich.
+    - Integrierter Root-Bereich im Zuschnittsrechner (`root_section_zuschnitt`).
+    - Standardmäßig ausgeblendet, freigeschaltet exklusiv für Rolle `root` (PIN 0633).
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -54,6 +51,7 @@
       const headerEl = document.getElementById('main_header');
       const badgeEl = document.getElementById('role_status_badge');
       const logoutItem = document.getElementById('logout_menu_item');
+      const rootSecZuschnitt = document.getElementById('root_section_zuschnitt');
 
       if (headerEl) {
         headerEl.classList.remove('role-header-root', 'role-header-user');
@@ -67,6 +65,7 @@
           badgeEl.classList.remove('hidden');
         }
         if (logoutItem) logoutItem.classList.remove('hidden');
+        if (rootSecZuschnitt) rootSecZuschnitt.classList.remove('hidden');
         localStorage.setItem('zangenschlosser_role', 'root');
         window.closePinModal();
       } else if (pin === '0449') {
@@ -77,6 +76,7 @@
           badgeEl.classList.remove('hidden');
         }
         if (logoutItem) logoutItem.classList.remove('hidden');
+        if (rootSecZuschnitt) rootSecZuschnitt.classList.add('hidden');
         localStorage.setItem('zangenschlosser_role', 'user');
         window.closePinModal();
       } else {
@@ -92,6 +92,7 @@
       const headerEl = document.getElementById('main_header');
       const badgeEl = document.getElementById('role_status_badge');
       const logoutItem = document.getElementById('logout_menu_item');
+      const rootSecZuschnitt = document.getElementById('root_section_zuschnitt');
 
       if (headerEl) headerEl.classList.remove('role-header-root', 'role-header-user');
       if (badgeEl) {
@@ -99,6 +100,7 @@
         badgeEl.className = 'hidden';
       }
       if (logoutItem) logoutItem.classList.add('hidden');
+      if (rootSecZuschnitt) rootSecZuschnitt.classList.add('hidden');
       localStorage.removeItem('zangenschlosser_role');
     };
 
@@ -338,6 +340,20 @@
             <span class="text-[10px] font-semibold text-slate-400">Summe freie Schenkel:</span>
             <span id="zuschnitt_out_summeschenkel" class="font-bold text-slate-700 text-sm mt-0.5">0 mm</span>
           </div>
+        </div>
+      </section>
+
+      <!-- NEU: GESCHÜTZTER ROOT-BEREICH IM ZUSCHNITTSRECHNER (NACH DEM ERGEBNIS) -->
+      <section id="root_section_zuschnitt" class="hidden bg-slate-900 text-amber-300 p-5 rounded-2xl shadow-sm space-y-3 border-2 border-amber-400 transition-colors">
+        <div class="flex items-center justify-between border-b border-amber-500/30 pb-2">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400">~/root &ndash; Administrator-Bereich (Zuschnitt)</h2>
+          <span class="text-[10px] font-mono bg-amber-400/20 px-2 py-0.5 rounded text-amber-300">PIN 0633 aktiv</span>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Geschützter Admin-Bereich für erweiterte Zuschnitts-Parameter, Wandstärken-Korrekturen und Werkstatt-Offsets.
+        </p>
+        <div class="p-3 bg-slate-950 rounded-xl border border-amber-500/30 text-xs font-mono text-slate-200">
+          Status: Admin-Modus freigeschaltet.
         </div>
       </section>
     </div>
@@ -722,6 +738,7 @@
       const headerEl = document.getElementById('main_header');
       const badgeEl = document.getElementById('role_status_badge');
       const logoutItem = document.getElementById('logout_menu_item');
+      const rootSecZuschnitt = document.getElementById('root_section_zuschnitt');
       
       if (savedRole === 'root' && headerEl && badgeEl) {
         headerEl.classList.add('role-header-root');
@@ -729,12 +746,14 @@
         badgeEl.className = 'badge-root';
         badgeEl.classList.remove('hidden');
         if (logoutItem) logoutItem.classList.remove('hidden');
+        if (rootSecZuschnitt) rootSecZuschnitt.classList.remove('hidden');
       } else if (savedRole === 'user' && headerEl && badgeEl) {
         headerEl.classList.add('role-header-user');
         badgeEl.textContent = '~/benutzer';
         badgeEl.className = 'badge-user';
         badgeEl.classList.remove('hidden');
         if (logoutItem) logoutItem.classList.remove('hidden');
+        if (rootSecZuschnitt) rootSecZuschnitt.classList.add('hidden');
       }
 
       if (window.setTheme) {
