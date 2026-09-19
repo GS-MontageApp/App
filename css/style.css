@@ -1,5 +1,6 @@
 /* ============================================================================
-   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.120)
+   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.121)
+   Projekt-Fokus: Mobile PWA (S24 & iOS), Card-Anker (p-5), saubere Rollen-Trennung
    ============================================================================ */
 
 /* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
@@ -26,6 +27,19 @@ input, select, button, table {
   border-top: 2px solid #f87171 !important;
 }
 
+/* ============================================================================ */
+/* ROLLE-SPEZIFISCHE HEADER FARBEN (Flächendeckend bei Erhalt der Theme-Farben) */
+/* ============================================================================ */
+header#main_header.role-header-root {
+  background-color: rgba(239, 68, 68, 0.22) !important; /* Dezentes Rot für Root */
+  border-bottom-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+header#main_header.role-header-user {
+  background-color: rgba(16, 185, 129, 0.22) !important; /* Dezentes Grün für Benutzer */
+  border-bottom-color: rgba(16, 185, 129, 0.4) !important;
+}
+
 /* THEME: GS (Gustav Schmidt Look) */
 body.theme-gs {
   background-color: #0b1d3a !important;
@@ -35,6 +49,16 @@ body.theme-gs header {
   background-color: rgba(11, 29, 58, 0.95) !important;
   border-bottom-color: #1e3a8a !important;
 }
+/* GS-Theme Überschreibung für Rollen-Header im Dark Mode (dezent angepasst) */
+body.theme-gs header#main_header.role-header-root {
+  background-color: rgba(239, 68, 68, 0.3) !important;
+  border-bottom-color: rgba(239, 68, 68, 0.5) !important;
+}
+body.theme-gs header#main_header.role-header-user {
+  background-color: rgba(16, 185, 129, 0.3) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.5) !important;
+}
+
 body.theme-gs header h1, body.theme-gs header span {
   color: #ffffff !important;
 }
@@ -171,30 +195,4 @@ body.theme-gs table td {
   font-weight: 700;
   margin-top: 0.125rem;
   order: 2;
-}
-
-/* ============================================================================ */
-/* ROLLE-SPEZIFISCHE HEADER FARBEN (v1.11.7)                                    */
-/* ============================================================================ */
-header.role-header-root {
-  background-color: rgba(239, 68, 68, 0.15) !important;
-  border-bottom-color: rgba(239, 68, 68, 0.3) !important;
-}
-
-header.role-header-user {
-  background-color: rgba(16, 185, 129, 0.15) !important;
-  border-bottom-color: rgba(16, 185, 129, 0.3) !important;
-}
-
-/* ============================================================================ */
-/* ROLLE-SPEZIFISCHE HEADER FARBEN (v1.11.11)                                   */
-/* ============================================================================ */
-header.role-header-root {
-  background-color: rgba(239, 68, 68, 0.15) !important;
-  border-bottom-color: rgba(239, 68, 68, 0.3) !important;
-}
-
-header.role-header-user {
-  background-color: rgba(16, 185, 129, 0.15) !important;
-  border-bottom-color: rgba(16, 185, 129, 0.3) !important;
 }
