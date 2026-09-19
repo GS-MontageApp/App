@@ -48,10 +48,12 @@ window.ZuschnittApp = (() => {
         if (val !== '') {
           let num = parseFloat(val);
           if (!isNaN(num)) {
+            // Begrenzung auf exakt 1 Nachkommastelle bei der Eingabe
+            let rounded = Math.round(num * 10) / 10;
             if (type === 'schenkel') {
-              this.value = num.toFixed(1) + ' mm';
+              this.value = rounded.toFixed(1) + ' mm';
             } else if (type === 'winkel') {
-              let clamped = Math.min(Math.max(num, 1), 180);
+              let clamped = Math.min(Math.max(rounded, 1), 180);
               this.value = clamped.toFixed(1) + ' Grad';
             }
           }
