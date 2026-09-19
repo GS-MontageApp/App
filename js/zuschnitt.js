@@ -167,7 +167,7 @@ window.ZuschnittApp = (() => {
     const titelEl = document.getElementById('zuschnitt_out_titel');
     const gesamtValEl = document.getElementById('zuschnitt_out_gesamtlänge_wert');
     const biegeEl = document.getElementById('zuschnitt_out_biegeradius');
-    const summeEl = document.getElementById('zuschnitt_out_summeschenkel');
+    const summeEl = document.getElementById('zuschnitt_out_summeschenkel').toFixed(2);
 
     if (!dVal || !rVal) {
       if (gesamtValEl) gesamtValEl.textContent = "0 mm";
