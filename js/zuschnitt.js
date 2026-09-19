@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.120)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -41,21 +41,15 @@ window.ZuschnittApp = (() => {
         }, 150);
       });
 
-      // Inline-Rechenlogik beim Verlassen des Feldes (blur): z. B. "150-50" -> "100"
       input.addEventListener('blur', function() {
         if (this.hasAttribute('disabled')) return;
         const type = this.getAttribute('data-type');
-        let rawVal = this.value.replace(' mm', '').replace(' Grad', '').trim();
-        
-        if (rawVal !== '') {
-          let evaluatedVal = evaluateInlineMath(rawVal);
-          if (!isNaN(evaluatedVal)) {
-            if (type === 'schenkel') {
-              this.value = evaluatedVal.toFixed(2) + ' mm';
-            } else if (type === 'winkel') {
-              let num = Math.min(Math.max(evaluatedVal, 1), 180);
-              this.value = num + ' Grad';
-            }
+        let val = getCleanVal(this.value);
+        if (val !== '') {
+          if (type === 'schenkel') this.value = val + ' mm';
+          if (type === 'winkel') {
+            let num = Math.min(Math.max(parseFloat(val) || 0, 1), 180);
+            this.value = num + ' Grad';
           }
         }
       });
@@ -79,18 +73,6 @@ window.ZuschnittApp = (() => {
     });
 
     checkParameters();
-  }
-
-  // Hilfsfunktion zur sicheren Auswertung einfacher mathematischer Strings (z.B. "150-50")
-  function evaluateInlineMath(expr) {
-    try {
-      const sanitized = expr.replace(',', '.').replace(/[^0-9+\-*/().]/g, '');
-      if (!sanitized) return NaN;
-      const result = Function('"use strict"; return (' + sanitized + ')')();
-      return typeof result === 'number' && !isNaN(result) ? result : NaN;
-    } catch {
-      return parseFloat(expr.replace(',', '.')) || NaN;
-    }
   }
 
   function checkParameters() {
@@ -176,9 +158,7 @@ window.ZuschnittApp = (() => {
 
   function getCleanVal(str) {
     if (!str) return '';
-    const raw = str.replace(' mm', '').replace(' Grad', '').trim();
-    const evaluated = evaluateInlineMath(raw);
-    return !isNaN(evaluated) ? evaluated : '';
+    return str.replace(' mm', '').replace(' Grad', '').replace(',', '.').trim();
   }
 
   function calculateZuschnitt() {
@@ -190,10 +170,10 @@ window.ZuschnittApp = (() => {
     const summeEl = document.getElementById('zuschnitt_out_summeschenkel');
 
     if (!dVal || !rVal) {
-      if (gesamtValEl) gesamtValEl.textContent = "0.00 mm";
+      if (gesamtValEl) gesamtValEl.textContent = "0 mm";
       if (titelEl) titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
       if (biegeEl) biegeEl.textContent = "-";
-      if (summeEl) summeEl.textContent = "0.00 mm";
+      if (summeEl) summeEl.textContent = "0 mm";
       return;
     } else {
       if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
@@ -204,32 +184,29 @@ window.ZuschnittApp = (() => {
 
     let sumSchenkel = 0, schenkelVals = [];
     schenkelInputs.forEach((inp) => {
-      const v = getCleanVal(inp.value);
-      const numV = typeof v === 'number' ? v : (parseFloat(v) || 0);
-      schenkelVals.push(numV);
-      sumSchenkel += numV;
+      const v = parseFloat(getCleanVal(inp.value)) || 0;
+      schenkelVals.push(v);
+      sumSchenkel += v;
     });
 
-    let totalBogenMaß = 0;
+    let totalCutback = 0, totalBogenMaß = 0;
     const rBiege = parseFloat(dVal) * parseFloat(rVal);
 
     winkelInputs.forEach((inp, idx) => {
       if (schenkelVals[idx + 1] === undefined || schenkelVals[idx + 1] === 0) return;
-      const alphaVal = getCleanVal(inp.value);
-      let alpha = typeof alphaVal === 'number' ? alphaVal : (parseFloat(alphaVal) || 0);
+      let alpha = parseFloat(getCleanVal(inp.value)) || 0;
       if (alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
-        // Korrekte Bogenmaß-Formel: Bogen = (alpha / 360) * 2 * pi * rBiege  gleichwertig zu alphaRad * rBiege
         const angleRad = (alpha * Math.PI) / 180;
+        totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
         totalBogenMaß += angleRad * rBiege;
       }
     });
 
-    let gesamtlänge = sumSchenkel + totalBogenMaß;
-    
-    if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mm';
-    if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mm';
-    if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mm';
+    let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
+    if (gesamtValEl) gesamtValEl.textContent = Math.round(gesamtlänge).toLocaleString('de-DE') + ' mm';
+    if (biegeEl) biegeEl.textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
+    if (summeEl) summeEl.textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
   }
 
   return { init, checkParameters, calculateZuschnitt };
