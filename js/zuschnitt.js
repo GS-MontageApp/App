@@ -84,10 +84,8 @@ window.ZuschnittApp = (() => {
   // Hilfsfunktion zur sicheren Auswertung einfacher mathematischer Strings (z.B. "150-50")
   function evaluateInlineMath(expr) {
     try {
-      // Erlaubt nur Ziffern, Punkt, Komma und Grundrechenarten (+, -, *, /)
       const sanitized = expr.replace(',', '.').replace(/[^0-9+\-*/().]/g, '');
       if (!sanitized) return NaN;
-      // Sichere Auswertung über Function
       const result = Function('"use strict"; return (' + sanitized + ')')();
       return typeof result === 'number' && !isNaN(result) ? result : NaN;
     } catch {
@@ -221,6 +219,7 @@ window.ZuschnittApp = (() => {
       let alpha = typeof alphaVal === 'number' ? alphaVal : (parseFloat(alphaVal) || 0);
       if (alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
+        // Korrekte Bogenmaß-Formel: Bogen = (alpha / 360) * 2 * pi * rBiege  gleichwertig zu alphaRad * rBiege
         const angleRad = (alpha * Math.PI) / 180;
         totalBogenMaß += angleRad * rBiege;
       }
