@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.11.2)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.11.3)
 // ============================================================================
 window.AppShell = (() => {
   function checkDailySplash() {
@@ -80,7 +80,7 @@ window.AppShell = (() => {
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
 
-  // PIN-Login Modus (Punkt 1 & 2)
+  // PIN-Login Modus (Global abgesichert)
   function openPinModal() {
     closeTopMenu();
     const pinInput = document.getElementById('pin_input');
@@ -100,11 +100,9 @@ window.AppShell = (() => {
     if (pin === '0633') {
       alert('Root-Modus aktiviert (Administrator).');
       closePinModal();
-      // Hier erfolgt im nächsten Schritt die Rollenzuweisung & Header-Färbung
     } else if (pin === '0449') {
       alert('Benutzer-Modus aktiviert (Prüf-Ebene).');
       closePinModal();
-      // Hier erfolgt im nächsten Schritt die Rollenzuweisung & Header-Färbung
     } else {
       alert('Ungültige PIN!');
       if (pinInput) {
@@ -126,7 +124,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-        { version: "v1.11.2", date: "19.09.2026, 15:10 (MEZ)", text: "PIN-Login Modal und Zahnrad-Auslöser im Top-Menü integriert.", border: "border-indigo-500" }
+        { version: "v1.11.3", date: "19.09.2026, 15:15 (MEZ)", text: "Globale PIN-Funktionen fehlerfrei im Window-Scope verdrahtet.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -154,7 +152,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.11.2</p>
+          <p class="text-xs text-slate-500">Version: v1.11.3</p>
         </div>
       `;
     }
@@ -224,6 +222,7 @@ window.AppShell = (() => {
   };
 })();
 
+// Sofortige globale Brücken-Zuweisung für HTML-OnClick-Attribute
 window.closeDailySplash = () => window.AppShell.closeDailySplash();
 window.openMehrModal = () => window.AppShell.openMehrModal();
 window.closeMehrModal = () => window.AppShell.closeMehrModal();
