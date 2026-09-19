@@ -3,11 +3,11 @@
    ============================================================================ */
 
 /* Rollenbasierte Header-Hintergründe */
-header.role-header-master {
+header.role-header-root {
   background-color: rgba(239, 68, 68, 0.15) !important;
   border-bottom-color: rgba(239, 68, 68, 0.3) !important;
 }
-body.theme-gs header.role-header-master {
+body.theme-gs header.role-header-root {
   background-color: rgba(127, 29, 29, 0.85) !important;
   border-bottom-color: #991b1b !important;
 }
