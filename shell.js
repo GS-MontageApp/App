@@ -1,82 +1,80 @@
-// ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.11.2)
-// ============================================================================
-window.AppShell = (() => {
+/**
+ * ============================================================================
+ * ZANGENSCHLOSSER APP (Dr. Zange) - AppShell Controller (v1.11.2)
+ * ============================================================================
+ */
+
+const AppShell = (() => {
+  let currentView = 'etagen';
   let currentRole = null; // 'root' (0633) oder 'benutzer' (0449)
 
-  function checkDailySplash() {
-    const today = new Date().toISOString().split('T')[0];
-    const lastSplash = localStorage.getItem('zangenschlosser_last_splash');
-    const splashModal = document.getElementById('daily_splash_modal');
-    if (!splashModal) return;
+  function init() {
+    console.log("AppShell initialized (v1.11.2)");
+    setupEventListeners();
+  }
 
-    if (lastSplash !== today) {
-      splashModal.classList.remove('hidden');
-    } else {
-      splashModal.classList.add('hidden');
+  function setupEventListeners() {
+    // Hier können globale Event-Listener bei Bedarf registriert werden
+  }
+
+  function switchApp(viewId, title) {
+    currentView = viewId;
+    
+    // Alle Views ausblenden
+    document.querySelectorAll('.app-view').forEach(el => {
+      el.classList.add('hidden');
+      el.classList.remove('block', 'flex');
+    });
+
+    // Gewünschte View einblenden
+    const target = document.getElementById(`view-${viewId}`);
+    if (target) {
+      target.classList.remove('hidden');
+      target.classList.add(viewId === 'eoform' ? 'flex' : 'block');
+    }
+
+    // Header-Titel & aktive Rolle aktualisieren
+    const headerTitle = document.getElementById('header-title');
+    if (headerTitle) {
+      headerTitle.setAttribute('data-base-title', title);
+      applyRoleUI();
+    }
+
+    // Aktiven Zustand der Navigations-Buttons aktualisieren
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.remove('text-indigo-600', 'text-amber-500');
+      btn.classList.add('text-slate-400');
+    });
+
+    const activeNav = document.getElementById(`nav-${viewId}`);
+    if (activeNav) {
+      activeNav.classList.remove('text-slate-400');
+      activeNav.classList.add('text-indigo-600');
     }
   }
 
-  function closeDailySplash() {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('zangenschlosser_last_splash', today);
-    document.getElementById('daily_splash_modal')?.classList.add('hidden');
-  }
-
-  function openMehrModal() { document.getElementById('mehr_modal')?.classList.remove('hidden'); }
-  function closeMehrModal() { document.getElementById('mehr_modal')?.classList.add('hidden'); }
-  function selectMehrItem(appName, appTitle) {
-    closeMehrModal();
-    switchApp(appName, appTitle);
-  }
-
-  function checkInstallState() {
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    const installContainer = document.getElementById('install_container');
-    if (isStandalone && installContainer) {
-      installContainer.style.display = 'none';
-    }
-  }
-
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-  });
-
-  function installPWA() {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          document.getElementById('install_container').style.display = 'none';
-        }
-        deferredPrompt = null;
-      });
-    } else {
-      alert('Die App ist bereits installiert oder wird in diesem Browser direkt über das Menü unterstützt.');
-    }
-  }
-
-  function initServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log('ServiceWorker Fehler:', err));
-      });
-    }
-  }
-
-  // --- ADMIN PIN & MENÜ STEUERUNG ---
   function openTopMenu() {
-    checkInstallState();
-    updateMenuUI();
-    document.getElementById('top_menu_modal')?.classList.remove('hidden');
+    const modal = document.getElementById('top_menu_modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      const menuSub = document.getElementById('menu_version_subtitle');
+      if (menuSub && window.APP_CONFIG) {
+        menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
+      }
+      updateMenuUI();
+    }
   }
-  function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
 
+  function closeTopMenu() {
+    const modal = document.getElementById('top_menu_modal');
+    if (modal) {
+      modal.classList.add('hidden');
+    }
+  }
+
+  // --- ADMIN PIN & ROLLE LOGIK ---
   function triggerAdminLogin() {
     closeTopMenu();
-    // Erstelle ein modales PIN-Eingabefenster
     let pinModal = document.getElementById('admin_pin_modal');
     if (!pinModal) {
       pinModal = document.createElement('div');
@@ -134,22 +132,18 @@ window.AppShell = (() => {
     const headerTitle = document.getElementById('header-title');
     if (!header || !headerTitle) return;
 
-    // Reset Klassen & Styles
-    header.classList.remove('role-header-root', 'role-header-benutzer');
-    
-    // Aktuellen App-Titel ermitteln (Standard: Zuschnittsrechner)
+    header.classList.remove('role-header-master', 'role-header-user');
     let baseTitle = headerTitle.getAttribute('data-base-title') || 'Zuschnittsrechner';
 
     if (currentRole === 'root') {
-      header.classList.add('role-header-root');
-      headerTitle.innerHTML = `<span class="truncate">${baseTitle}</span> <span class="ml-2 font-mono text-xs text-red-600 font-bold">~/root</span>`;
+      header.classList.add('role-header-master');
+      headerTitle.innerHTML = `<span>${baseTitle}</span> <span class="ml-2 font-mono text-xs text-red-600 font-bold">~/root</span>`;
     } else if (currentRole === 'benutzer') {
-      header.classList.add('role-header-benutzer');
-      headerTitle.innerHTML = `<span class="truncate">${baseTitle}</span> <span class="ml-2 font-mono text-xs text-emerald-600 font-bold">~/benutzer</span>`;
+      header.classList.add('role-header-user');
+      headerTitle.innerHTML = `<span>${baseTitle}</span> <span class="ml-2 font-mono text-xs text-emerald-600 font-bold">~/benutzer</span>`;
     } else {
-      headerTitle.innerHTML = `<span class="truncate">${baseTitle}</span>`;
+      headerTitle.innerHTML = `<span>${baseTitle}</span>`;
     }
-    updateMenuUI();
   }
 
   function updateMenuUI() {
@@ -176,58 +170,47 @@ window.AppShell = (() => {
     }
   }
 
-  function switchApp(appName, appTitle) {
-    document.querySelectorAll('.app-view').forEach(el => {
-      el.classList.add('hidden');
-      el.classList.remove('block');
-    });
-    document.querySelectorAll('.nav-btn').forEach(el => {
-      el.classList.remove('text-indigo-600');
-      el.classList.add('text-slate-400');
-    });
-
-    const targetView = document.getElementById('view-' + appName);
-    if (targetView) {
-      targetView.classList.remove('hidden');
-      targetView.classList.add('block');
-    }
-
-    const activeNav = document.getElementById('nav-' + appName);
-    if (activeNav) {
-      activeNav.classList.remove('text-slate-400');
-      activeNav.classList.add('text-indigo-600');
-    }
-
-    const headerTitle = document.getElementById('header-title');
-    if (headerTitle) {
-      headerTitle.setAttribute('data-base-title', appTitle);
-      applyRoleUI(); // Hält den Rollen-Suffix ~/root oder ~/benutzer rechtsbündig aktuell
-    }
-    window.scrollTo(0, 0);
+  function openMehrModal() {
+    const modal = document.getElementById('mehr_modal');
+    if (modal) modal.classList.remove('hidden');
   }
 
-  function init() {
-    checkInstallState();
-    checkDailySplash();
-    initServiceWorker();
+  function closeMehrModal() {
+    const modal = document.getElementById('mehr_modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function selectMehrItem(viewId, title) {
+    closeMehrModal();
+    switchApp(viewId, title);
+  }
+
+  function installPWA() {
+    console.log("PWA Installation angefordert");
+    alert("Die Web-App kann über die Browser-Menüoption 'Zum Startbildschirm hinzufügen' / 'Installieren' eingerichtet werden.");
+    closeTopMenu();
   }
 
   return {
     init,
-    checkDailySplash, closeDailySplash,
-    openMehrModal, closeMehrModal, selectMehrItem,
-    installPWA, openTopMenu, closeTopMenu,
-    triggerAdminLogin, verifyPin, logoutAdmin,
-    switchApp
+    switchApp,
+    openTopMenu,
+    closeTopMenu,
+    openMehrModal,
+    closeMehrModal,
+    selectMehrItem,
+    installPWA,
+    triggerAdminLogin,
+    verifyPin,
+    logoutAdmin
   };
 })();
 
-// Globale Funktionsbrücken
-window.closeDailySplash = () => window.AppShell.closeDailySplash();
-window.openMehrModal = () => window.AppShell.openMehrModal();
-window.closeMehrModal = () => window.AppShell.closeMehrModal();
-window.selectMehrItem = (a, t) => window.AppShell.selectMehrItem(a, t);
-window.installPWA = () => window.AppShell.installPWA();
-window.openTopMenu = () => window.AppShell.openTopMenu();
-window.closeTopMenu = () => window.AppShell.closeTopMenu();
-window.switchApp = (a, t) => window.AppShell.switchApp(a, t);
+// Globale Shortcuts für HTML-OnClick-Attribute
+function openTopMenu() { AppShell.openTopMenu(); }
+function closeTopMenu() { AppShell.closeTopMenu(); }
+function openMehrModal() { AppShell.openMehrModal(); }
+function closeMehrModal() { AppShell.closeMehrModal(); }
+function selectMehrItem(v, t) { AppShell.selectMehrItem(v, t); }
+function installPWA() { AppShell.installPWA(); }
+function switchApp(v, t) { AppShell.switchApp(v, t); }
