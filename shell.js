@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.10.41)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.11.1)
 // ============================================================================
 window.AppShell = (() => {
   function checkDailySplash() {
@@ -92,7 +92,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-        { version: "v1.10.41", date: "15.09.2026, 15:20 (MEZ)", text: "GS-Design Integration, einheitliche Typografie und einmaliges Smart-Loading aktiv.", border: "border-indigo-500" }
+        { version: "v1.11.1", date: "19.09.2026, 14:30 (MEZ)", text: "Zuschnittrechner als Startansicht und GS-Style als Standard aktiv.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -120,7 +120,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.10.41</p>
+          <p class="text-xs text-slate-500">Version: v1.11.1</p>
         </div>
       `;
     }
@@ -132,7 +132,7 @@ window.AppShell = (() => {
   function switchApp(appName, appTitle) {
     document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('.nav-btn').forEach(el => {
-      el.classList.remove('text-indigo-600');
+      el.classList.remove('text-indigo-600', 'text-yellow-400');
       el.classList.add('text-slate-400');
     });
 
@@ -142,12 +142,20 @@ window.AppShell = (() => {
     const activeNav = document.getElementById('nav-' + appName);
     if (activeNav) {
       activeNav.classList.remove('text-slate-400');
-      activeNav.classList.add('text-indigo-600');
+      if (document.body.classList.contains('theme-gs')) {
+        activeNav.classList.add('text-yellow-400');
+      } else {
+        activeNav.classList.add('text-indigo-600');
+      }
     } else if (appName === 'foobar2' || appName === 'foobar3') {
       const mehrNav = document.getElementById('nav-mehr');
       if (mehrNav) {
         mehrNav.classList.remove('text-slate-400');
-        mehrNav.classList.add('text-indigo-600');
+        if (document.body.classList.contains('theme-gs')) {
+          mehrNav.classList.add('text-yellow-400');
+        } else {
+          mehrNav.classList.add('text-indigo-600');
+        }
       }
     }
 
@@ -181,7 +189,6 @@ window.AppShell = (() => {
   };
 })();
 
-// Globale Brücken für HTML-OnClick-Attribut-Kompatibilität
 window.closeDailySplash = () => window.AppShell.closeDailySplash();
 window.openMehrModal = () => window.AppShell.openMehrModal();
 window.closeMehrModal = () => window.AppShell.closeMehrModal();
