@@ -41,31 +41,22 @@ window.ZuschnittApp = (() => {
         }, 150);
       });
 
-      // Harter Live-Eingabe-Filter direkt beim Tippen: Verhindert mehr als eine Nachkommastelle
+      // Live-Eingabe-Filter: Begrenzt die Eingabe direkt beim Tippen auf max. 1 Nachkommastelle
       input.addEventListener('input', function() {
         if (this.hasAttribute('disabled')) return;
         
-        let cursorPos = this.selectionStart;
         let originalVal = this.value;
-        
-        // Erlaube Ziffern, Komma, Punkt und Minus/Rechenzeichen, aber erzwinge max. 1 Nachkommastelle nach Punkt/Komma
         let cleaned = originalVal.replace(' mm', '').replace(' Grad', '');
         
-        // Regex-Prüfung: Ziffern, optional ein Trennzeichen (. oder ,) und maximal 1 Ziffer danach
         let parts = cleaned.split(/[.,]/);
         if (parts.length > 2) {
-          // Mehrere Trennzeichen verhindern -> nur das erste behalten
           cleaned = parts[0] + '.' + parts.slice(1).join('');
           parts = cleaned.split(/[.,]/);
         }
         if (parts.length === 2 && parts[1].length > 1) {
           parts[1] = parts[1].substring(0, 1);
           cleaned = parts[0] + '.' + parts[1];
-        }
-
-        if (cleaned !== originalVal && !originalVal.endsWith('.') && !originalVal.endsWith(',')) {
-          // Nur korrigieren, wenn der Nutzer nicht gerade ein Trennzeichen tippt
-          // Wir lassen das Feld während der Live-Eingabe flexibel, greifen aber hart ein
+          this.value = cleaned;
         }
 
         updateVisibility();
@@ -235,6 +226,7 @@ window.ZuschnittApp = (() => {
 
     let gesamtlänge = sumSchenkel + totalBogenMaß;
 
+    // Ausgabe exakt auf 1 Nachkommastelle formatiert
     if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
