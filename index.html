@@ -1,18 +1,48 @@
 <!DOCTYPE html>
 <html lang="de" class="h-full">
 <head>
-<!--
-================================================================================
-ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.122
-Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
---------------------------------------------------------------------------------
-PROJEKT-KONZEPTLISTE & ENTWICKLUNGSFAHRPLAN:
-1. Berechnungslogik (Freie Schenkel / Tangentenmaße): Umstellung der Zuschnitts-
-Berechnung auf freie, gerade Schenkel (Tangentenmaße) inklusive Inline-Berechnungen 
-und präziser Nachkommastellen-Begrenzung (max. 1 Nachkommastelle) für mobile PWA.
-2. Code-Qualität: Fortlaufende Modularisierung, Service-Worker-Abgleich.
-================================================================================
--->
+ <!-- === ZANGENSCHLOSSER APP - Version v1.10.122 === -->
+  <!--
+    ================================================================================
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.122
+    Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
+    
+    ================================================================================
+    VOLLSTÄNDIGE PROJEKT-KONZEPTLISTE & ENTWICKLUNGSFAHRPLAN:
+    1. Berechnungslogik (Freie Schenkel / Tangentenmaße): Umstellung der Zuschnitts-
+       Berechnung von Schnittpunktmaßen auf freie, gerade Schenkel (Tangentenmaße), um 
+       die reale Handwerksmessung mit dem Zollstock exakt abzubilden (ohne verdeckten 
+       Cutback, bei dem das Bogenmaß direkt zur reinen Schenkelsumme addiert wird).
+    2. Künftige Parameter: Rohr-Wandstärke: Geplante Integration der Wandstärke (s) 
+       als optionalen Eingabeparameter (ganz pragmatisch ohne unnötigen Material-Overhead), 
+       um bei Bedarf den Innen-, Außen- oder Mitten-Biegeradius noch präziser zu berücksichtigen.
+    3. Werkstattspezifischer Offset / Korrekturwert: Implementierung eines individuellen 
+       Offset-Werts zur maschinen- und chargenspezifischen Kalibrierung (Feinjustierung der 
+       Zuschnittslänge bei realen Abweichungen, z. B. durch Materialverhalten).
+    4. Geschützter Admin-Modus per PIN & Geste (Option A):
+       - Auslöser: Ein Triple-Tap (dreimaliges schnelles Antippen) auf den Titel „Zangenschlosser App“ 
+         im geöffneten Top-Menü (Einstellungen) öffnet das PIN-Eingabefenster.
+       - Overlay & Input: Modales Overlay mit einem auf genau 4 Ziffern limitierten Eingabefeld 
+         (inputmode="numeric") und einem markanten grünen Button mit der Aufschrift „Login“.
+       - Rollentrennung nach PIN:
+         * Master-PIN (0633): Schaltet den vollen Administrator-Bereich für tiefergehende 
+           Einstellungen frei (wie Wandstärke, Offsets und Kalibrierungsfaktoren).
+         * Benutzer-PIN (0449): Dient als erweiterte Prüf- oder Kollegen-Ebene, um Testrohre 
+           zu dokumentieren oder vordefinierte Profile zu wählen, ohne globale Faktoren zu überschreiben.
+       - Visueller Indikator (Header-Färbung):
+         * Master eingeloggt (0633): Der App-Header erhält einen dezenten roten Hintergrundton.
+         * Benutzer eingeloggt (0449): Der App-Header erhält einen dezenten grünen Hintergrundton.
+         * Kein Login / Standard: Der Standard-Header-Hintergrund bleibt aktiv.
+    5. Logout-Funktion im Admin-/Prüf-Modus: Sobald der Master (0633) oder ein Benutzer (0449) 
+       eingeloggt ist, erscheint im Einstellungs-Menü (Top-Menu) ein roter Logout-Button. Ein Klick 
+       darauf beendet die aktive Rolle, setzt den Header-Hintergrund wieder auf den Standard zurück 
+       und sperrt die erweiterten Bereiche sofort wieder.
+    6. Architektur & Code-Qualität: Fortlaufende Modularisierung (Saubere Trennung von JavaScript-Modulen 
+       wie zuschnitt.js, etagen.js, drehwinkel.js etc.). Auslagerung des umfangreichen CSS-Stylings 
+       (inklusive GS-Design-Theme) in eine externe css/style.css. Konsequente Versionierung im gesamten 
+       Projekt (aktuell auf v1.10.121 angehoben) inklusive Aktualisierung des Service Workers (sw.js).
+    ================================================================================
+  -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Anti-Cache Direktiven -->
