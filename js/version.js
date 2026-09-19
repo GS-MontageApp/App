@@ -3,7 +3,7 @@
 // ============================================================================
 const APP_CONFIG = {
   version: 'v1.12.1',
-  date: '19.09.2026, 17:50 (MEZ)'
+  date: '19.09.2026, 18:00 (MEZ)'
 };
 
 // Global export for Window (Browser) and ServiceWorker (self)
