@@ -1,7 +1,7 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.11.2)
+// ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.10.122)
 // ============================================================================
-const CACHE_NAME = 'zangenschlosser-cache-v1.11.2';
+const CACHE_NAME = 'zangenschlosser-cache-v1.10.122';
 const ASSETS = [
   './',
   './index.html',
