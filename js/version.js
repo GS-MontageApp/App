@@ -3,7 +3,7 @@
 // ============================================================================
 const APP_CONFIG = {
   version: 'v1.11.2',
-  date: '19.09.2026, 13:45 (MEZ)'
+  date: '19.09.2026, 14:00 (MEZ)'
 };
 
 if (typeof window !== 'undefined') window.APP_CONFIG = APP_CONFIG;
