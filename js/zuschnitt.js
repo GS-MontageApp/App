@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.120)1112
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.120)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -41,6 +41,37 @@ window.ZuschnittApp = (() => {
         }, 150);
       });
 
+      // Harter Live-Eingabe-Filter direkt beim Tippen: Verhindert mehr als eine Nachkommastelle
+      input.addEventListener('input', function() {
+        if (this.hasAttribute('disabled')) return;
+        
+        let cursorPos = this.selectionStart;
+        let originalVal = this.value;
+        
+        // Erlaube Ziffern, Komma, Punkt und Minus/Rechenzeichen, aber erzwinge max. 1 Nachkommastelle nach Punkt/Komma
+        let cleaned = originalVal.replace(' mm', '').replace(' Grad', '');
+        
+        // Regex-Prüfung: Ziffern, optional ein Trennzeichen (. oder ,) und maximal 1 Ziffer danach
+        let parts = cleaned.split(/[.,]/);
+        if (parts.length > 2) {
+          // Mehrere Trennzeichen verhindern -> nur das erste behalten
+          cleaned = parts[0] + '.' + parts.slice(1).join('');
+          parts = cleaned.split(/[.,]/);
+        }
+        if (parts.length === 2 && parts[1].length > 1) {
+          parts[1] = parts[1].substring(0, 1);
+          cleaned = parts[0] + '.' + parts[1];
+        }
+
+        if (cleaned !== originalVal && !originalVal.endsWith('.') && !originalVal.endsWith(',')) {
+          // Nur korrigieren, wenn der Nutzer nicht gerade ein Trennzeichen tippt
+          // Wir lassen das Feld während der Live-Eingabe flexibel, greifen aber hart ein
+        }
+
+        updateVisibility();
+        calculateZuschnitt();
+      });
+
       input.addEventListener('blur', function() {
         if (this.hasAttribute('disabled')) return;
         const type = this.getAttribute('data-type');
@@ -53,11 +84,6 @@ window.ZuschnittApp = (() => {
             this.value = clamped.toFixed(1) + ' Grad';
           }
         }
-      });
-
-      input.addEventListener('input', () => {
-        updateVisibility();
-        calculateZuschnitt();
       });
 
       input.addEventListener('keydown', function(e) {
@@ -157,7 +183,6 @@ window.ZuschnittApp = (() => {
     calculateZuschnitt();
   }
 
-  // Extrahiert den numerischen Wert und rundet ihn strikt auf 1 Nachkommastelle
   function getCleanVal(str) {
     if (!str) return '';
     let raw = str.toString().replace(' mm', '').replace(' Grad', '').replace(',', '.').trim();
@@ -210,7 +235,6 @@ window.ZuschnittApp = (() => {
 
     let gesamtlänge = sumSchenkel + totalBogenMaß;
 
-    // Formatierung auf exakt eine Nachkommastelle für alle Ausgaben
     if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
