@@ -1,5 +1,5 @@
 /* ============================================================================
-   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.122)
+   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.124)
    Projekt-Fokus: Mobile PWA (S24 & iOS), Card-Anker (p-5), saubere Rollen-Trennung
    ============================================================================ */
 
@@ -28,16 +28,46 @@ input, select, button, table {
 }
 
 /* ============================================================================ */
-/* ROLLE-SPEZIFISCHE HEADER FARBEN (Flächendeckend & mit hoher Spezifität)       */
+/* ROLLE-SPEZIFISCHE HEADER FARBEN & BADGES (v1.10.124)                        */
+/* Flächendeckende Header-Einfärbung und dezente matte Badge-Hintergründe        */
 /* ============================================================================ */
+
+/* Header Hintergrundfärbung für Root */
 header#main_header.role-header-root {
-  background-color: rgba(239, 68, 68, 0.22) !important;
-  border-bottom-color: rgba(239, 68, 68, 0.4) !important;
+  background-color: rgba(254, 226, 226, 0.9) !important; /* Entspricht einem sanften Rot-Ton */
+  border-bottom-color: rgba(239, 68, 68, 0.3) !important;
 }
 
+/* Header Hintergrundfärbung für Benutzer */
 header#main_header.role-header-user {
-  background-color: rgba(16, 185, 129, 0.22) !important;
-  border-bottom-color: rgba(16, 185, 129, 0.4) !important;
+  background-color: rgba(209, 250, 229, 0.9) !important; /* Entspricht einem sanften Grün-Ton (Emerald) */
+  border-bottom-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Badge Styling für Root im Header */
+#role_status_badge.badge-root {
+  background-color: #fee2e2 !important; /* bg-red-100 */
+  color: #b91c1c !important;             /* text-red-700 */
+  border: 1px solid #fca5a5 !important;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+/* Badge Styling für Benutzer im Header */
+#role_status_badge.badge-user {
+  background-color: #d1fae5 !important; /* bg-emerald-100 */
+  color: #047857 !important;             /* text-emerald-700 */
+  border: 1px solid #6ee7b7 !important;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-block;
 }
 
 /* THEME: GS (Gustav Schmidt Look) */
@@ -49,14 +79,27 @@ body.theme-gs header#main_header {
   background-color: rgba(11, 29, 58, 0.95) !important;
   border-bottom-color: #1e3a8a !important;
 }
+
 /* GS-Theme Überschreibung für Rollen-Header im Dark Mode */
 body.theme-gs header#main_header.role-header-root {
-  background-color: rgba(239, 68, 68, 0.35) !important;
-  border-bottom-color: rgba(239, 68, 68, 0.6) !important;
+  background-color: rgba(127, 29, 29, 0.35) !important;
+  border-bottom-color: rgba(239, 68, 68, 0.5) !important;
 }
 body.theme-gs header#main_header.role-header-user {
-  background-color: rgba(16, 185, 129, 0.35) !important;
-  border-bottom-color: rgba(16, 185, 129, 0.6) !important;
+  background-color: rgba(6, 78, 59, 0.35) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+/* GS-Theme Badges im Dark Mode */
+body.theme-gs #role_status_badge.badge-root {
+  background-color: rgba(127, 29, 29, 0.6) !important;
+  color: #fca5a5 !important;
+  border-color: #ef4444 !important;
+}
+body.theme-gs #role_status_badge.badge-user {
+  background-color: rgba(6, 78, 59, 0.6) !important;
+  color: #6ee7b7 !important;
+  border-color: #10b981 !important;
 }
 
 body.theme-gs header h1, body.theme-gs header span {
