@@ -34,13 +34,13 @@ input, select, button, table {
 
 /* Header Hintergrundfärbung für Root */
 header#main_header.role-header-root {
-  background-color: rgba(254, 226, 226, 0.9) !important; /* Entspricht einem sanften Rot-Ton */
+  background-color: rgba(239, 68, 68, 0.15) !important; /* Entspricht einem sanften Rot-Ton */
   border-bottom-color: rgba(239, 68, 68, 0.3) !important;
 }
 
 /* Header Hintergrundfärbung für Benutzer */
 header#main_header.role-header-user {
-  background-color: rgba(209, 250, 229, 0.9) !important; /* Entspricht einem sanften Grün-Ton (Emerald) */
+  background-color: rgba(127, 29, 29, 0.85) !important; /* Entspricht einem sanften Grün-Ton (Emerald) */
   border-bottom-color: rgba(16, 185, 129, 0.3) !important;
 }
 
