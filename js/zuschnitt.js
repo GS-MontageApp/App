@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.120)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -46,10 +46,14 @@ window.ZuschnittApp = (() => {
         const type = this.getAttribute('data-type');
         let val = getCleanVal(this.value);
         if (val !== '') {
-          if (type === 'schenkel') this.value = val + ' mm';
-          if (type === 'winkel') {
-            let num = Math.min(Math.max(parseFloat(val) || 0, 1), 180);
-            this.value = num + ' Grad';
+          let num = parseFloat(val);
+          if (!isNaN(num)) {
+            if (type === 'schenkel') {
+              this.value = num.toFixed(1) + ' mm';
+            } else if (type === 'winkel') {
+              let clamped = Math.min(Math.max(num, 1), 180);
+              this.value = clamped.toFixed(1) + ' Grad';
+            }
           }
         }
       });
@@ -170,10 +174,10 @@ window.ZuschnittApp = (() => {
     const summeEl = document.getElementById('zuschnitt_out_summeschenkel');
 
     if (!dVal || !rVal) {
-      if (gesamtValEl) gesamtValEl.textContent = "0 mm";
+      if (gesamtValEl) gesamtValEl.textContent = "0.0 mm";
       if (titelEl) titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
       if (biegeEl) biegeEl.textContent = "-";
-      if (summeEl) summeEl.textContent = "0 mm";
+      if (summeEl) summeEl.textContent = "0.0 mm";
       return;
     } else {
       if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
@@ -189,7 +193,7 @@ window.ZuschnittApp = (() => {
       sumSchenkel += v;
     });
 
-    let totalCutback = 0, totalBogenMaß = 0;
+    let totalBogenMaß = 0;
     const rBiege = parseFloat(dVal) * parseFloat(rVal);
 
     winkelInputs.forEach((inp, idx) => {
@@ -198,15 +202,16 @@ window.ZuschnittApp = (() => {
       if (alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
-        totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
         totalBogenMaß += angleRad * rBiege;
       }
     });
 
-    let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
-    if (gesamtValEl) gesamtValEl.textContent = Math.round(gesamtlänge).toLocaleString('de-DE') + ' mm';
-    if (biegeEl) biegeEl.textContent = Math.round(rBiege).toLocaleString('de-DE') + ' mm';
-    if (summeEl) summeEl.textContent = Math.round(sumSchenkel).toLocaleString('de-DE') + ' mm';
+    let gesamtlänge = sumSchenkel + totalBogenMaß;
+
+    // Ausgabe exakt auf maximal eine Nachkommastelle formatiert
+    if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
+    if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
+    if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
   }
 
   return { init, checkParameters, calculateZuschnitt };
