@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="de" class="h-full">
 <head>
-  <!-- === ZANGENSCHLOSSER APP - Version v1.11.1 === -->
+  <!-- === ZANGENSCHLOSSER APP - Version v1.11.2 === -->
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.11.1
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.11.2
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     
-    ÄNDERUNGEN IN v1.11.1:
-    - Zuschnittsrechner ist jetzt die standardmäßige Startansicht beim Laden.
-    - GS-Style (theme-gs) ist fest als Standard-Theme definiert.
+    ÄNDERUNGEN IN v1.11.2:
+    - Zahnradsymbol im Top-Menü links neben "Zangenschlosser App" als Klick-Auslöser für PIN-Login.
+    - Modales Overlay mit 4-stelliger PIN-Eingabe (inputmode="numeric") und grünem "Login"-Button.
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -20,9 +20,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.11.1 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.11.2 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css?v=v1.11.1">
+  <link rel="stylesheet" href="css/style.css?v=v1.11.2">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
 
@@ -55,14 +55,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (v1.11.1) -->
-  <script src="js/version.js?v=v1.11.1"></script>
-  <script src="js/zuschnitt.js?v=v1.11.1"></script>
-  <script src="js/etagen.js?v=v1.11.1"></script>
-  <script src="js/drehwinkel.js?v=v1.11.1"></script>
-  <script src="js/tabellen.js?v=v1.11.1"></script>
-  <script src="js/drehmoment.js?v=v1.11.1"></script>
-  <script src="js/shell.js?v=v1.11.1"></script>
+  <!-- Single Source of Truth Version Config & Module (v1.11.2) -->
+  <script src="js/version.js?v=v1.11.2"></script>
+  <script src="js/zuschnitt.js?v=v1.11.2"></script>
+  <script src="js/etagen.js?v=v1.11.2"></script>
+  <script src="js/drehwinkel.js?v=v1.11.2"></script>
+  <script src="js/tabellen.js?v=v1.11.2"></script>
+  <script src="js/drehmoment.js?v=v1.11.2"></script>
+  <script src="js/shell.js?v=v1.11.2"></script>
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
@@ -70,7 +70,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Zuschnittsrechner (v1.11.1)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Zuschnittsrechner (v1.11.2)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -531,9 +531,12 @@
   <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl p-6 max-w-lg w-full space-y-4 text-slate-800 shadow-2xl max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom duration-200">
       <div class="flex justify-between items-center border-b pb-3">
-        <div>
-          <h3 class="font-bold text-lg text-indigo-600 leading-tight">⚙️ Zangenschlosser App</h3>
-          <p id="menu_version_subtitle" class="text-xs font-mono text-slate-400 mt-0.5">Lade Version...</p>
+        <div class="flex items-center gap-2">
+          <span onclick="openPinModal()" class="text-xl cursor-pointer hover:opacity-80 transition-opacity select-none" title="Admin/Prüfer Login">⚙️</span>
+          <div>
+            <h3 class="font-bold text-lg text-indigo-600 leading-tight">Zangenschlosser App</h3>
+            <p id="menu_version_subtitle" class="text-xs font-mono text-slate-400 mt-0.5">Lade Version...</p>
+          </div>
         </div>
         <button onclick="closeTopMenu()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
       </div>
@@ -556,6 +559,28 @@
       <button onclick="closeTopMenu()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors">
         Schließen
       </button>
+    </div>
+  </div>
+
+  <!-- PIN-LOGIN MODAL (Punkt 2) -->
+  <div id="pin_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 text-slate-800 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-base text-indigo-600">🔐 Administrator / Prüf-Login</h3>
+        <button onclick="closePinModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
+      </div>
+      <div class="space-y-3">
+        <label class="block text-xs font-semibold text-slate-600">Bitte 4-stellige PIN eingeben:</label>
+        <input type="password" id="pin_input" maxlength="4" inputmode="numeric" placeholder="••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-center text-xl font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="closePinModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors">
+          Abbrechen
+        </button>
+        <button onclick="submitPinLogin()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-emerald-50 font-semibold py-2.5 rounded-xl text-sm transition-colors shadow-sm">
+          Login
+        </button>
+      </div>
     </div>
   </div>
 
@@ -626,7 +651,7 @@
         menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
       }
 
-      // GS-Design als fester Standard beim Start ('gs' als Fallback)
+      // GS-Design als fester Standard beim Start
       if (window.setTheme) {
         const savedTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'gs';
         window.setTheme(savedTheme);
@@ -644,7 +669,7 @@
         if (window.DrehmomentApp) DrehmomentApp.init();
       }, 100);
 
-      // Startansicht beim Reload direkt auf den Zuschnittsrechner gesetzt
+      // Startansicht direkt auf den Zuschnittsrechner gesetzt
       AppShell.switchApp('zuschnitt', 'Zuschnittsrechner');
     });
   </script>
