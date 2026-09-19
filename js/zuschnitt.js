@@ -46,16 +46,11 @@ window.ZuschnittApp = (() => {
         const type = this.getAttribute('data-type');
         let val = getCleanVal(this.value);
         if (val !== '') {
-          let num = parseFloat(val);
-          if (!isNaN(num)) {
-            // Begrenzung auf exakt 1 Nachkommastelle bei der Eingabe
-            let rounded = Math.round(num * 10) / 10;
-            if (type === 'schenkel') {
-              this.value = rounded.toFixed(1) + ' mm';
-            } else if (type === 'winkel') {
-              let clamped = Math.min(Math.max(rounded, 1), 180);
-              this.value = clamped.toFixed(1) + ' Grad';
-            }
+          if (type === 'schenkel') {
+            this.value = val.toFixed(1) + ' mm';
+          } else if (type === 'winkel') {
+            let clamped = Math.min(Math.max(val, 1), 180);
+            this.value = clamped.toFixed(1) + ' Grad';
           }
         }
       });
@@ -162,9 +157,13 @@ window.ZuschnittApp = (() => {
     calculateZuschnitt();
   }
 
+  // Extrahiert den numerischen Wert und rundet ihn strikt auf 1 Nachkommastelle
   function getCleanVal(str) {
     if (!str) return '';
-    return str.replace(' mm', '').replace(' Grad', '').replace(',', '.').trim();
+    let raw = str.toString().replace(' mm', '').replace(' Grad', '').replace(',', '.').trim();
+    let num = parseFloat(raw);
+    if (isNaN(num)) return '';
+    return Math.round(num * 10) / 10;
   }
 
   function calculateZuschnitt() {
@@ -190,9 +189,10 @@ window.ZuschnittApp = (() => {
 
     let sumSchenkel = 0, schenkelVals = [];
     schenkelInputs.forEach((inp) => {
-      const v = parseFloat(getCleanVal(inp.value)) || 0;
-      schenkelVals.push(v);
-      sumSchenkel += v;
+      const v = getCleanVal(inp.value);
+      const numV = typeof v === 'number' ? v : 0;
+      schenkelVals.push(numV);
+      sumSchenkel += numV;
     });
 
     let totalBogenMaß = 0;
@@ -200,8 +200,8 @@ window.ZuschnittApp = (() => {
 
     winkelInputs.forEach((inp, idx) => {
       if (schenkelVals[idx + 1] === undefined || schenkelVals[idx + 1] === 0) return;
-      let alpha = parseFloat(getCleanVal(inp.value)) || 0;
-      if (alpha > 0) {
+      let alpha = getCleanVal(inp.value);
+      if (typeof alpha === 'number' && alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
         totalBogenMaß += angleRad * rBiege;
@@ -210,7 +210,7 @@ window.ZuschnittApp = (() => {
 
     let gesamtlänge = sumSchenkel + totalBogenMaß;
 
-    // Ausgabe exakt auf maximal eine Nachkommastelle formatiert
+    // Formatierung auf exakt eine Nachkommastelle für alle Ausgaben
     if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
