@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.12.1)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -29,6 +29,12 @@ window.ZuschnittApp = (() => {
     if (clear2) clear2.addEventListener('click', () => clearPair(2));
     if (clear3) clear3.addEventListener('click', () => clearPair(3));
 
+    // Event-Listener für den Export-Button im Root-Bereich (~/root)
+    const exportBtn = document.getElementById('zuschnitt_export_btn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', toggleAndPopulateExportTable);
+    }
+
     const allInputs = Array.from(document.querySelectorAll('#view-zuschnitt input[type="text"]'));
     allInputs.forEach((input) => {
       input.addEventListener('focus', function() {
@@ -41,15 +47,11 @@ window.ZuschnittApp = (() => {
         }, 150);
       });
 
-      // Harter Live-Eingabe-Filter während des Tippens (max. 1 Nachkommastelle im aktuellen Token/Zahl)
       input.addEventListener('input', function() {
         if (this.hasAttribute('disabled')) return;
         
         let originalVal = this.value;
-        // Erlaube Ziffern, Rechenzeichen, Leerzeichen, Punkt und Komma
         let cleaned = originalVal.replace(/[^0-9.,+\-*/\s]/g, '');
-        
-        // Prüfe den letzten Abschnitt nach Rechenzeichen oder den gesamten String auf max. 1 Nachkommastelle
         let tokens = cleaned.split(/([+\-*/])/);
         let lastToken = tokens[tokens.length - 1];
         
@@ -74,7 +76,6 @@ window.ZuschnittApp = (() => {
         calculateZuschnitt();
       });
 
-      // Inline-Berechnung beim Verlassen des Feldes (blur / Enter)
       input.addEventListener('blur', function() {
         if (this.hasAttribute('disabled')) return;
         const type = this.getAttribute('data-type');
@@ -239,14 +240,10 @@ window.ZuschnittApp = (() => {
     const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
     const titelEl = document.getElementById('zuschnitt_out_titel');
     const gesamtValEl = document.getElementById('zuschnitt_out_gesamtlänge_wert');
-    const biegeEl = document.getElementById('zuschnitt_out_biegeradius');
-    const summeEl = document.getElementById('zuschnitt_out_summeschenkel');
 
     if (!dVal || !rVal) {
       if (gesamtValEl) gesamtValEl.textContent = "0,0 mm";
       if (titelEl) titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
-      if (biegeEl) biegeEl.textContent = "-";
-      if (summeEl) summeEl.textContent = "0,0 mm";
       return;
     } else {
       if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
@@ -280,8 +277,74 @@ window.ZuschnittApp = (() => {
     let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
 
     if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
-    if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
-    if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
+  }
+
+  // --- LOGIK FÜR DIE EXPORT-TABELLE IM ROOT-BEREICH ---
+  function toggleAndPopulateExportTable() {
+    const container = document.getElementById('zuschnitt_export_container');
+    if (!container) return;
+
+    const isHidden = container.classList.contains('hidden');
+    if (isHidden) {
+      populateExportTable();
+      container.classList.remove('hidden');
+    } else {
+      container.classList.add('hidden');
+    }
+  }
+
+  function populateExportTable() {
+    const tbody = document.getElementById('zuschnitt_export_tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const dVal = document.getElementById('zuschnitt_durchmesser')?.value;
+    const rVal = document.getElementById('zuschnitt_rfaktor')?.value;
+    const rBiege = (dVal && rVal) ? parseFloat(dVal) * parseFloat(rVal) : 0;
+
+    const schenkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]');
+    const winkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]');
+
+    let nockeCounter = 1;
+
+    winkelInputs.forEach((input, idx) => {
+      const winkelVal = input.value.trim();
+      const cleanWinkel = getCleanVal(winkelVal);
+
+      if (cleanWinkel !== '' && cleanWinkel > 0) {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-amber-500/10 hover:bg-amber-500/5';
+
+        // Millimeter (Schenkelmaß an Position idx + 1)
+        const rawSchenkel = schenkelInputs[idx + 1] ? schenkelInputs[idx + 1].value : '';
+        const cleanSchenkel = getCleanVal(rawSchenkel);
+        const mmStr = (cleanSchenkel !== '') ? cleanSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm' : '—';
+
+        // Travel (Schräglänge / Versatzmaß errechnet via Biegewinkel und Biegeradius)
+        let travelStr = '—';
+        if (rBiege > 0 && cleanWinkel > 0) {
+          const angleRad = (cleanWinkel * Math.PI) / 180;
+          const travelVal = 2 * rBiege * Math.tan(angleRad / 2);
+          travelStr = travelVal.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
+        }
+
+        tr.innerHTML = `
+          <td class="py-2 px-2 font-bold text-amber-400">${nockeCounter++}</td>
+          <td class="py-2 px-2">${mmStr}</td>
+          <td class="py-2 px-2">${travelStr}</td>
+          <td class="py-2 px-2 text-slate-400 italic">—</td>
+          <td class="py-2 px-2 font-semibold text-amber-300">${cleanWinkel}°</td>
+          <td class="py-2 px-2 text-slate-500">—</td>
+        `;
+        tbody.appendChild(tr);
+      }
+    });
+
+    if (tbody.children.length === 0) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td colspan="6" class="py-3 text-center text-slate-500 italic">Keine Biegewinkel in der Kette erfasst.</td>`;
+      tbody.appendChild(tr);
+    }
   }
 
   return { init, checkParameters, calculateZuschnitt };
