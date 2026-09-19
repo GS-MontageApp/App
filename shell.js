@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.11.1)
+// ZANGENSCHLOSSER-APP: SHELL / GLOBAL UI CONTROLLER (v1.11.2)
 // ============================================================================
 window.AppShell = (() => {
   function checkDailySplash() {
@@ -80,6 +80,40 @@ window.AppShell = (() => {
   }
   function closeTopMenu() { document.getElementById('top_menu_modal')?.classList.add('hidden'); }
 
+  // PIN-Login Modus (Punkt 1 & 2)
+  function openPinModal() {
+    closeTopMenu();
+    const pinInput = document.getElementById('pin_input');
+    if (pinInput) pinInput.value = '';
+    document.getElementById('pin_modal')?.classList.remove('hidden');
+    setTimeout(() => pinInput?.focus(), 100);
+  }
+
+  function closePinModal() {
+    document.getElementById('pin_modal')?.classList.add('hidden');
+  }
+
+  function submitPinLogin() {
+    const pinInput = document.getElementById('pin_input');
+    const pin = pinInput ? pinInput.value.trim() : '';
+
+    if (pin === '0633') {
+      alert('Root-Modus aktiviert (Administrator).');
+      closePinModal();
+      // Hier erfolgt im nächsten Schritt die Rollenzuweisung & Header-Färbung
+    } else if (pin === '0449') {
+      alert('Benutzer-Modus aktiviert (Prüf-Ebene).');
+      closePinModal();
+      // Hier erfolgt im nächsten Schritt die Rollenzuweisung & Header-Färbung
+    } else {
+      alert('Ungültige PIN!');
+      if (pinInput) {
+        pinInput.value = '';
+        pinInput.focus();
+      }
+    }
+  }
+
   function openSubModal(type) {
     const titleEl = document.getElementById('sub_modal_title');
     const contentEl = document.getElementById('sub_modal_content');
@@ -92,7 +126,7 @@ window.AppShell = (() => {
       if (titleEl) titleEl.textContent = `📜 Logbuch: ${titles[key] || key}`;
       
       const logs = (window.allLogbooks && window.allLogbooks[key]) ? window.allLogbooks[key] : [
-        { version: "v1.11.1", date: "19.09.2026, 14:30 (MEZ)", text: "Zuschnittrechner als Startansicht und GS-Style als Standard aktiv.", border: "border-indigo-500" }
+        { version: "v1.11.2", date: "19.09.2026, 15:10 (MEZ)", text: "PIN-Login Modal und Zahnrad-Auslöser im Top-Menü integriert.", border: "border-indigo-500" }
       ];
 
       let html = '<div class="space-y-3 pb-2 flex flex-col w-full">';
@@ -120,7 +154,7 @@ window.AppShell = (() => {
       contentEl.innerHTML = `
         <div class="space-y-3 text-slate-700 text-sm">
           <p>Support & Feedback über dein internes Projekt-Team.</p>
-          <p class="text-xs text-slate-500">Version: v1.11.1</p>
+          <p class="text-xs text-slate-500">Version: v1.11.2</p>
         </div>
       `;
     }
@@ -185,6 +219,7 @@ window.AppShell = (() => {
     checkDailySplash, closeDailySplash,
     openMehrModal, closeMehrModal, selectMehrItem,
     installPWA, openTopMenu, closeTopMenu,
+    openPinModal, closePinModal, submitPinLogin,
     openSubModal, closeSubModal, switchApp
   };
 })();
@@ -196,6 +231,9 @@ window.selectMehrItem = (a, t) => window.AppShell.selectMehrItem(a, t);
 window.installPWA = () => window.AppShell.installPWA();
 window.openTopMenu = () => window.AppShell.openTopMenu();
 window.closeTopMenu = () => window.AppShell.closeTopMenu();
+window.openPinModal = () => window.AppShell.openPinModal();
+window.closePinModal = () => window.AppShell.closePinModal();
+window.submitPinLogin = () => window.AppShell.submitPinLogin();
 window.openSubModal = (t) => window.AppShell.openSubModal(t);
 window.closeSubModal = () => window.AppShell.closeSubModal();
 window.switchApp = (a, t) => window.AppShell.switchApp(a, t);
