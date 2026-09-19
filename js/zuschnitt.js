@@ -33,7 +33,6 @@ window.ZuschnittApp = (() => {
     allInputs.forEach((input) => {
       input.addEventListener('focus', function() {
         if (this.hasAttribute('disabled')) return;
-        // Beim Fokussieren den gesamten Inhalt (inkl. evtl. Formeln oder Einheiten) freigeben
         this.value = this.value.replace(' mm', '').replace(' Grad', '');
         setTimeout(() => { 
           this.setSelectionRange(0, 9999); 
@@ -56,10 +55,7 @@ window.ZuschnittApp = (() => {
         let rawInput = this.value.trim();
         if (!rawInput) return;
 
-        // Entferne Einheiten falls vorhanden
         let cleanExpr = rawInput.replace(' mm', '').replace(' Grad', '').trim();
-
-        // Versuche einfache mathematische Ausdrücke sicher auszuwerten (erlaubt Ziffern, Punkt, Komma, +, -, *, /)
         let evaluatedVal = evaluateMathExpression(cleanExpr);
 
         if (evaluatedVal !== null && !isNaN(evaluatedVal)) {
@@ -69,14 +65,13 @@ window.ZuschnittApp = (() => {
             rounded = Math.min(Math.max(rounded, 1), 180);
           }
 
-          // Wenn der Nutzer eine Rechenoperation eingegeben hat (z.B. "100+200"), zeige "100+200 = 300.0 mm"
-          // Enthielt der Ausdruck keine Operatoren, zeige einfach den formatierten Wert "300.0 mm"
+          let roundedStr = rounded.toFixed(1).replace('.', ',');
+
           if (/[+\-*/]/.test(cleanExpr)) {
-            // Bereinige evtl. Doppel-Einheiten oder Leerzeichen im Ausdruck für die Darstellung
-            let formattedExpr = cleanExpr.replace(',', '.');
-            this.value = `${formattedExpr} = ${rounded.toFixed(1)}${type === 'winkel' ? ' Grad' : ' mm'}`;
+            let formattedExpr = cleanExpr;
+            this.value = `${formattedExpr} = ${roundedStr} ${type === 'winkel' ? 'Grad' : 'mm'}`;
           } else {
-            this.value = rounded.toFixed(1) + (type === 'winkel' ? ' Grad' : ' mm');
+            this.value = roundedStr + (type === 'winkel' ? ' Grad' : ' mm');
           }
         }
 
@@ -100,19 +95,19 @@ window.ZuschnittApp = (() => {
     checkParameters();
   }
 
-  // Hilfsfunktion zur sicheren Auswertung von einfachen mathematischen Ausdrücken im Eingabefeld
+  // Hilfsfunktion zur sicheren Auswertung von mathematischen Ausdrücken mit Komma/Punkt-Handling
   function evaluateMathExpression(expr) {
     try {
-      // Normalisiere Komma zu Punkt und entferne unerlaubte Zeichen (erlaube nur Ziffern, Punkt, Operatoren und Klammern)
-      let sanitized = expr.replace(',', '.').replace(/[^0-9.\+\-\*\/\(\)]/g, '');
-      if (!sanitized) return null;
+      if (!expr) return null;
+      // Ersetze alle Kommas global durch Punkte für die JavaScript-Auswertung
+      let normalized = expr.toString().replace(/,/g, '.');
+      let sanitized = normalized.replace(/[^0-9.\+\-\*\/\(\)\s]/g, '');
+      if (!sanitized.trim()) return null;
       
-      // Verwende Function statt eval für etwas mehr Sicherheit bei einfachen Rechenoperationen
       let result = Function('"use strict"; return (' + sanitized + ')')();
       return typeof result === 'number' && !isNaN(result) ? result : null;
     } catch (e) {
-      // Falls die Formel unvollständig ist (z.B. nur ein "+" am Ende), versuche den letzten Operator zu ignorieren oder parse als reinen Float
-      let fallback = parseFloat(expr.replace(',', '.'));
+      let fallback = parseFloat(expr.toString().replace(/,/g, '.'));
       return isNaN(fallback) ? null : fallback;
     }
   }
@@ -198,16 +193,14 @@ window.ZuschnittApp = (() => {
     calculateZuschnitt();
   }
 
-  // Extrahiert und berechnet den reinen numerischen Wert für Berechnungen im Hintergrund (unterstützt auch Formeln im Feld)
   function getCleanVal(str) {
     if (!str) return '';
     let rawStr = str.toString();
     
-    // Falls ein "=" enthalten ist (z.B. "100+200 = 300.0 mm"), nehmen wir den Teil nach dem "=" oder werten den linken Teil aus
     if (rawStr.includes('=')) {
       let parts = rawStr.split('=');
       let rightSide = parts[1].replace(' mm', '').replace(' Grad', '').trim();
-      let num = parseFloat(rightSide);
+      let num = parseFloat(rightSide.replace(',', '.'));
       return isNaN(num) ? '' : (Math.round(num * 10) / 10);
     }
 
@@ -226,10 +219,10 @@ window.ZuschnittApp = (() => {
     const summeEl = document.getElementById('zuschnitt_out_summeschenkel');
 
     if (!dVal || !rVal) {
-      if (gesamtValEl) gesamtValEl.textContent = "0.0 mm";
+      if (gesamtValEl) gesamtValEl.textContent = "0,0 mm";
       if (titelEl) titelEl.innerHTML = "Ergebnis &ndash; <i>Parameter wählen</i>";
       if (biegeEl) biegeEl.textContent = "-";
-      if (summeEl) summeEl.textContent = "0.0 mm";
+      if (summeEl) summeEl.textContent = "0,0 mm";
       return;
     } else {
       if (titelEl) titelEl.innerHTML = `Ergebnis &ndash; für <u><b>${dVal} Millimeter</b></u> Rohr`;
@@ -262,7 +255,6 @@ window.ZuschnittApp = (() => {
 
     let gesamtlänge = sumSchenkel - totalCutback + totalBogenMaß;
 
-    // Ausgabe exakt auf 1 Nachkommastelle formatiert
     if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
     if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mm';
