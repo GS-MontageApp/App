@@ -1,5 +1,5 @@
 /* ============================================================================
-   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.124)
+   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.125)
    Projekt-Fokus: Mobile PWA (S24 & iOS), Card-Anker (p-5), saubere Rollen-Trennung
    ============================================================================ */
 
@@ -28,19 +28,18 @@ input, select, button, table {
 }
 
 /* ============================================================================ */
-/* ROLLE-SPEZIFISCHE HEADER FARBEN & BADGES (v1.10.124)                        */
-/* Flächendeckende Header-Einfärbung und dezente matte Badge-Hintergründe        */
+/* ROLLE-SPEZIFISCHE HEADER FARBEN & BADGES (v1.10.125)                        */
 /* ============================================================================ */
 
-/* Header Hintergrundfärbung für Root */
+/* Header Hintergrundfärbung für Root (Sanftes, mattes Rot) */
 header#main_header.role-header-root {
-  background-color: rgba(239, 68, 68, 0.15) !important; /* Entspricht einem sanften Rot-Ton */
+  background-color: rgba(254, 226, 226, 0.9) !important;
   border-bottom-color: rgba(239, 68, 68, 0.3) !important;
 }
 
-/* Header Hintergrundfärbung für Benutzer */
+/* Header Hintergrundfärbung für Benutzer (Sanftes, mattes Grün) */
 header#main_header.role-header-user {
-  background-color: rgba(127, 29, 29, 0.85) !important; /* Entspricht einem sanften Grün-Ton (Emerald) */
+  background-color: rgba(209, 250, 229, 0.9) !important;
   border-bottom-color: rgba(16, 185, 129, 0.3) !important;
 }
 
@@ -154,62 +153,6 @@ body.theme-gs input::placeholder {
   color: #94a3b8 !important;
 }
 
-body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"],
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"],
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
-body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
-  border: 2.5px solid #ffe600 !important;
-  border-left-width: 12px !important;
-  background-color: #1D375B !important;
-}
-
-body.theme-gs #view-etagen div:has(#etagen_out_c) {
-  border-left-color: #ef4444 !important;
-}
-body.theme-gs #view-etagen div:has(#etagen_out_travel) {
-  border-left-color: #f97316 !important;
-}
-body.theme-gs #view-etagen div:has(#etagen_out_run) {
-  border-left-color: #0ea5e9 !important;
-}
-
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div.grid div.p-2 {
-  border-left-color: #ef4444 !important;
-  background-color: #1D375B !important;
-}
-
-body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
-  border-left-color: #ffe600 !important;
-  background-color: #1D375B !important;
-}
-
-body.theme-gs #view-eoform .eo-sub-section,
-body.theme-gs #view-eoform .eo-sub-section > div,
-body.theme-gs #view-eoform .eo-sub-section table {
-  border-color: #ffe600 !important;
-}
-body.theme-gs #view-eoform .eo-sub-section div[class*="rounded-xl"] {
-  border: 2px solid #ffe600 !important;
-  background-color: #112a52 !important;
-}
-
-body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"] *:not(button),
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"] *:not(button),
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge *:not(button),
-body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] *:not(button) {
-  color: #ffffff !important;
-}
-
-body.theme-gs #view-drehwinkel button.dw-mode-btn-active {
-  color: #ffffff !important;
-  background-color: #005691 !important;
-}
-body.theme-gs #view-drehwinkel button.dw-mode-btn-inactive {
-  color: #000000 !important;
-  background-color: #f1f5f9 !important;
-}
-
 body.theme-gs table th {
   background-color: #112a52 !important;
   color: #ffe600 !important;
@@ -219,23 +162,4 @@ body.theme-gs table td {
   background-color: #f8fafc !important;
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
-}
-
-#zuschnitt_out_gesamtlänge {
-  display: flex;
-  flex-direction: column;
-}
-#zuschnitt_out_gesamtlänge .result-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #94a3b8;
-  order: 1;
-}
-#zuschnitt_out_gesamtlänge .result-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-top: 0.125rem;
-  order: 2;
 }
