@@ -41,15 +41,21 @@ window.ZuschnittApp = (() => {
         }, 150);
       });
 
+      // Inline-Rechenlogik beim Verlassen des Feldes (blur): z. B. "150-50" -> "100"
       input.addEventListener('blur', function() {
         if (this.hasAttribute('disabled')) return;
         const type = this.getAttribute('data-type');
-        let val = getCleanVal(this.value);
-        if (val !== '') {
-          if (type === 'schenkel') this.value = val + ' mm';
-          if (type === 'winkel') {
-            let num = Math.min(Math.max(parseFloat(val) || 0, 1), 180);
-            this.value = num + ' Grad';
+        let rawVal = this.value.replace(' mm', '').replace(' Grad', '').trim();
+        
+        if (rawVal !== '') {
+          let evaluatedVal = evaluateInlineMath(rawVal);
+          if (!isNaN(evaluatedVal)) {
+            if (type === 'schenkel') {
+              this.value = evaluatedVal.toFixed(2) + ' mm';
+            } else if (type === 'winkel') {
+              let num = Math.min(Math.max(evaluatedVal, 1), 180);
+              this.value = num + ' Grad';
+            }
           }
         }
       });
@@ -73,6 +79,20 @@ window.ZuschnittApp = (() => {
     });
 
     checkParameters();
+  }
+
+  // Hilfsfunktion zur sicheren Auswertung einfacher mathematischer Strings (z.B. "150-50")
+  function evaluateInlineMath(expr) {
+    try {
+      // Erlaubt nur Ziffern, Punkt, Komma und Grundrechenarten (+, -, *, /)
+      const sanitized = expr.replace(',', '.').replace(/[^0-9+\-*/().]/g, '');
+      if (!sanitized) return NaN;
+      // Sichere Auswertung über Function
+      const result = Function('"use strict"; return (' + sanitized + ')')();
+      return typeof result === 'number' && !isNaN(result) ? result : NaN;
+    } catch {
+      return parseFloat(expr.replace(',', '.')) || NaN;
+    }
   }
 
   function checkParameters() {
@@ -158,7 +178,9 @@ window.ZuschnittApp = (() => {
 
   function getCleanVal(str) {
     if (!str) return '';
-    return str.replace(' mm', '').replace(' Grad', '').replace(',', '.').trim();
+    const raw = str.replace(' mm', '').replace(' Grad', '').trim();
+    const evaluated = evaluateInlineMath(raw);
+    return !isNaN(evaluated) ? evaluated : '';
   }
 
   function calculateZuschnitt() {
@@ -184,9 +206,10 @@ window.ZuschnittApp = (() => {
 
     let sumSchenkel = 0, schenkelVals = [];
     schenkelInputs.forEach((inp) => {
-      const v = parseFloat(getCleanVal(inp.value)) || 0;
-      schenkelVals.push(v);
-      sumSchenkel += v;
+      const v = getCleanVal(inp.value);
+      const numV = typeof v === 'number' ? v : (parseFloat(v) || 0);
+      schenkelVals.push(numV);
+      sumSchenkel += numV;
     });
 
     let totalBogenMaß = 0;
@@ -194,7 +217,8 @@ window.ZuschnittApp = (() => {
 
     winkelInputs.forEach((inp, idx) => {
       if (schenkelVals[idx + 1] === undefined || schenkelVals[idx + 1] === 0) return;
-      let alpha = parseFloat(getCleanVal(inp.value)) || 0;
+      const alphaVal = getCleanVal(inp.value);
+      let alpha = typeof alphaVal === 'number' ? alphaVal : (parseFloat(alphaVal) || 0);
       if (alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
