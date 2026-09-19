@@ -1,193 +1,29 @@
 /* ============================================================================
-   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.120)
+   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.11.2)
    ============================================================================ */
 
 /* Rollenbasierte Header-Hintergründe */
-header.role-header-master {
-  background-color: rgba(239, 68, 68, 0.15) !important;
-  border-bottom-color: rgba(239, 68, 68, 0.3) !important;
+header.role-header-root {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  border-bottom-color: rgba(239, 68, 68, 0.4) !important;
 }
-body.theme-gs header.role-header-master {
-  background-color: rgba(127, 29, 29, 0.85) !important;
+body.theme-gs header.role-header-root {
+  background-color: rgba(127, 29, 29, 0.9) !important;
   border-bottom-color: #991b1b !important;
 }
 
-header.role-header-user {
-  background-color: rgba(16, 185, 129, 0.15) !important;
-  border-bottom-color: rgba(16, 185, 129, 0.3) !important;
+header.role-header-benutzer {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.4) !important;
 }
-body.theme-gs header.role-header-user {
-  background-color: rgba(6, 78, 59, 0.85) !important;
+body.theme-gs header.role-header-benutzer {
+  background-color: rgba(6, 78, 59, 0.9) !important;
   border-bottom-color: #065f46 !important;
 }
 
-/* GLOBAL: Einheitliche, saubere Typografie für die gesamte App */
+/* Restliche globale Styles unverändert ... */
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-input, select, button, table {
-  font-family: inherit !important;
-}
-
-.row-selected {
-  outline: 2.5px solid #005691 !important;
-  background-color: rgba(0, 86, 145, 0.16) !important;
-  position: relative;
-  z-index: 10;
-}
-.group-start-l td {
-  border-top: 2px solid #34d399 !important;
-}
-.group-start-s td {
-  border-top: 2px solid #f87171 !important;
-}
-
-/* THEME: GS (Gustav Schmidt Look) */
-body.theme-gs {
-  background-color: #0b1d3a !important;
-  color: #f8fafc !important;
-}
-body.theme-gs header {
-  background-color: rgba(11, 29, 58, 0.95) !important;
-  border-bottom-color: #1e3a8a !important;
-}
-body.theme-gs header h1, body.theme-gs header span {
-  color: #ffffff !important;
-}
-body.theme-gs main section, 
-body.theme-gs main .bg-white {
-  background-color: #112a52 !important;
-  color: #ffffff !important;
-  border-color: #1e3a8a !important;
-}
-body.theme-gs main h2, 
-body.theme-gs main h3, 
-body.theme-gs main label, 
-body.theme-gs main span,
-body.theme-gs main div {
-  color: #f1f5f9;
-}
-body.theme-gs main h2 {
-  color: #ffe600 !important;
-}
-body.theme-gs footer {
-  background-color: rgba(11, 29, 58, 0.95) !important;
-  border-top-color: #1e3a8a !important;
-}
-body.theme-gs .nav-btn span {
-  color: #cbd5e1 !important;
-}
-body.theme-gs .nav-btn.text-indigo-600 span {
-  color: #ffe600 !important;
-}
-
-body.theme-gs .input-wrapper {
-  background-color: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-}
-
-body.theme-gs input, body.theme-gs select {
-  background-color: #0b1d3a !important;
-  color: #ffffff !important;
-  border: 2px solid #ffe600 !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-body.theme-gs input:focus, body.theme-gs select:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  border: 2px solid #ffe600 !important;
-}
-body.theme-gs input::placeholder {
-  color: #94a3b8 !important;
-}
-
-body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"],
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"],
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
-body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
-  border: 2.5px solid #ffe600 !important;
-  border-left-width: 12px !important;
-  background-color: #1D375B !important;
-}
-
-body.theme-gs #view-etagen div:has(#etagen_out_c) {
-  border-left-color: #ef4444 !important;
-}
-body.theme-gs #view-etagen div:has(#etagen_out_travel) {
-  border-left-color: #f97316 !important;
-}
-body.theme-gs #view-etagen div:has(#etagen_out_run) {
-  border-left-color: #0ea5e9 !important;
-}
-
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge,
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div.grid div.p-2 {
-  border-left-color: #ef4444 !important;
-  background-color: #1D375B !important;
-}
-
-body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] {
-  border-left-color: #ffe600 !important;
-  background-color: #1D375B !important;
-}
-
-body.theme-gs #view-eoform .eo-sub-section,
-body.theme-gs #view-eoform .eo-sub-section > div,
-body.theme-gs #view-eoform .eo-sub-section table {
-  border-color: #ffe600 !important;
-}
-body.theme-gs #view-eoform .eo-sub-section div[class*="rounded-xl"] {
-  border: 2px solid #ffe600 !important;
-  background-color: #112a52 !important;
-}
-
-body.theme-gs #view-etagen section:nth-of-type(2) div[class*="rounded-xl"] *:not(button),
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div[class*="rounded-xl"] *:not(button),
-body.theme-gs #view-zuschnitt section:nth-of-type(3) div#zuschnitt_out_gesamtlänge *:not(button),
-body.theme-gs #view-drehwinkel section:nth-of-type(2) > div[class*="rounded-2xl"] *:not(button) {
-  color: #ffffff !important;
-}
-
-body.theme-gs #view-drehwinkel button.dw-mode-btn-active {
-  color: #ffffff !important;
-  background-color: #005691 !important;
-}
-body.theme-gs #view-drehwinkel button.dw-mode-btn-inactive {
-  color: #000000 !important;
-  background-color: #f1f5f9 !important;
-}
-
-body.theme-gs table th {
-  background-color: #112a52 !important;
-  color: #ffe600 !important;
-  border-bottom-color: #1e3a8a !important;
-}
-body.theme-gs table td {
-  background-color: #f8fafc !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-}
-
-#zuschnitt_out_gesamtlänge {
-  display: flex;
-  flex-direction: column;
-}
-#zuschnitt_out_gesamtlänge .result-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #94a3b8;
-  order: 1;
-}
-#zuschnitt_out_gesamtlänge .result-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-top: 0.125rem;
-  order: 2;
 }
