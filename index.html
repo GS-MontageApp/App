@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="de" class="h-full">
 <head>
-  <!-- === ZANGENSCHLOSSER APP - Version v1.11.10 === -->
+  <!-- === ZANGENSCHLOSSER APP - Version v1.11.11 === -->
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.11.10
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.11.11
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     
-    ÄNDERUNGEN IN v1.11.10:
-    - PIN-Modal bereinigt: "Abbrechen"-Button entfernt, "X"-Schließsymbol direkt rechts
-      neben der Überschrift "Bitte vierstellige PIN eingeben" im weißen Bereich platziert.
-    - Erfolgsmeldungen (Alerts) bei erfolgreichem Login/Logout entfernt; Alerts nur noch
-      bei ungültiger PIN.
-    - Versions-Upgrade auf v1.11.10.
+    ÄNDERUNGEN IN v1.11.11:
+    - PIN-Modal mit "X"-Schließsymbol im weißen Bereich rechts neben dem Titel.
+    - Erfolgsmeldungen (Alerts) bei Login/Logout entfernt (nur noch bei Fehler).
+    - Header-Färbung für root (rot) und benutzer (grün) bei Erhalt der Theme-Textfarben.
+    - Logout-Button im Top-Menü auf "Logout" verkürzt.
+    - Durchgehende Versionsanpassung auf v1.11.11.
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -23,9 +23,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.11.10 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.11.11 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css?v=v1.11.10">
+  <link rel="stylesheet" href="css/style.css?v=v1.11.11">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
 
@@ -114,14 +114,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (v1.11.10) -->
-  <script src="js/version.js?v=v1.11.10"></script>
-  <script src="js/zuschnitt.js?v=v1.11.10"></script>
-  <script src="js/etagen.js?v=v1.11.10"></script>
-  <script src="js/drehwinkel.js?v=v1.11.10"></script>
-  <script src="js/tabellen.js?v=v1.11.10"></script>
-  <script src="js/drehmoment.js?v=v1.11.10"></script>
-  <script src="js/shell.js?v=v1.11.10"></script>
+  <!-- Single Source of Truth Version Config & Module (v1.11.11) -->
+  <script src="js/version.js?v=v1.11.11"></script>
+  <script src="js/zuschnitt.js?v=v1.11.11"></script>
+  <script src="js/etagen.js?v=v1.11.11"></script>
+  <script src="js/drehwinkel.js?v=v1.11.11"></script>
+  <script src="js/tabellen.js?v=v1.11.11"></script>
+  <script src="js/drehmoment.js?v=v1.11.11"></script>
+  <script src="js/shell.js?v=v1.11.11"></script>
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
@@ -129,7 +129,7 @@
   <header id="main_header" class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Zuschnittsrechner (v1.11.10)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Zuschnittsrechner (v1.11.11)</h1>
       </div>
       <div class="flex items-center gap-3">
         <!-- Rechtsbündiger Status-Text für Rollen -->
@@ -608,7 +608,7 @@
         <div class="pt-3 pb-3">
           <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Sitzung</h4>
           <button onclick="logoutRole(); closeTopMenu();" class="w-full text-left p-3 bg-red-50 hover:bg-red-100 rounded-xl font-semibold text-red-700 transition-colors flex items-center justify-between shadow-sm">
-            <span>🔓 Logout / Standard (Rolle zurücksetzen)</span>
+            <span>🔓 Logout</span>
             <span class="text-red-400">&rsaquo;</span>
           </button>
         </div>
@@ -626,7 +626,7 @@
     </div>
   </div>
 
-  <!-- PIN-LOGIN MODAL (Aktualisiertes Design: X-Symbol im weißen Bereich rechts neben dem Titel) -->
+  <!-- PIN-LOGIN MODAL -->
   <div id="pin_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 text-slate-800 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
       <div class="flex justify-between items-center border-b pb-3">
@@ -710,7 +710,7 @@
         menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
       }
 
-      // Wiederherstellung des Rollen-Status aus localStorage beim Laden
+      // Wiederherstellung des Rollen-Status & Header-Färbung beim Laden
       const savedRole = localStorage.getItem('zangenschlosser_role');
       const headerEl = document.getElementById('main_header');
       const badgeEl = document.getElementById('role_status_badge');
