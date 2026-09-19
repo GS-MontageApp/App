@@ -185,3 +185,16 @@ header.role-header-user {
   background-color: rgba(16, 185, 129, 0.15) !important;
   border-bottom-color: rgba(16, 185, 129, 0.3) !important;
 }
+
+/* ============================================================================ */
+/* ROLLE-SPEZIFISCHE HEADER FARBEN (v1.11.11)                                   */
+/* ============================================================================ */
+header.role-header-root {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border-bottom-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+header.role-header-user {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.3) !important;
+}
