@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="de" class="h-full">
 <head>
-  <!-- === ZANGENSCHLOSSER APP - Version v1.11.8 === -->
+  <!-- === ZANGENSCHLOSSER APP - Version v1.11.9 === -->
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.11.8
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.11.9
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     
-    ÄNDERUNGEN IN v1.11.8:
-    - Vollständige, ungekürzte Bereitstellung der index.html mit allen Ansichten,
-      Modalen und der robusten globalen PIN-Login- sowie Rollen-Header-Logik.
+    ÄNDERUNGEN IN v1.11.9:
+    - Designanpassung des PIN-Login-Overlays: Überschrift entfernt, reduziertes Layout
+      mit "Bitte vierstellige PIN eingeben", Input und grünem Login-Button.
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -20,9 +20,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.11.8 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.11.9 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css?v=v1.11.8">
+  <link rel="stylesheet" href="css/style.css?v=v1.11.9">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
 
@@ -114,14 +114,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (v1.11.8) -->
-  <script src="js/version.js?v=v1.11.8"></script>
-  <script src="js/zuschnitt.js?v=v1.11.8"></script>
-  <script src="js/etagen.js?v=v1.11.8"></script>
-  <script src="js/drehwinkel.js?v=v1.11.8"></script>
-  <script src="js/tabellen.js?v=v1.11.8"></script>
-  <script src="js/drehmoment.js?v=v1.11.8"></script>
-  <script src="js/shell.js?v=v1.11.8"></script>
+  <!-- Single Source of Truth Version Config & Module (v1.11.9) -->
+  <script src="js/version.js?v=v1.11.9"></script>
+  <script src="js/zuschnitt.js?v=v1.11.9"></script>
+  <script src="js/etagen.js?v=v1.11.9"></script>
+  <script src="js/drehwinkel.js?v=v1.11.9"></script>
+  <script src="js/tabellen.js?v=v1.11.9"></script>
+  <script src="js/drehmoment.js?v=v1.11.9"></script>
+  <script src="js/shell.js?v=v1.11.9"></script>
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
@@ -129,7 +129,7 @@
   <header id="main_header" class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Zuschnittsrechner (v1.11.8)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Zuschnittsrechner (v1.11.9)</h1>
       </div>
       <div class="flex items-center gap-3">
         <!-- Rechtsbündiger Status-Text für Rollen -->
@@ -626,16 +626,12 @@
     </div>
   </div>
 
-  <!-- PIN-LOGIN MODAL -->
+  <!-- PIN-LOGIN MODAL (Reduziertes Design gemäß Vorgabe) -->
   <div id="pin_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 text-slate-800 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-base text-indigo-600">🔐 Administrator / Prüf-Login</h3>
-        <button onclick="closePinModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl px-2">&times;</button>
-      </div>
       <div class="space-y-3">
-        <label class="block text-xs font-semibold text-slate-600">Bitte 4-stellige PIN eingeben:</label>
-        <input type="password" id="pin_input" maxlength="4" inputmode="numeric" placeholder="••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-center text-xl font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <label class="block text-sm font-semibold text-slate-700 text-center">Bitte vierstellige PIN eingeben</label>
+        <input type="password" id="pin_input" maxlength="4" inputmode="numeric" placeholder="••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-center text-2xl font-mono tracking-widest focus:ring-2 focus:ring-emerald-500 focus:outline-none">
       </div>
       <div class="flex gap-2 pt-2">
         <button onclick="closePinModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-sm transition-colors">
@@ -741,7 +737,7 @@
       AppShell.init();
       if (window.EtagenApp) EtagenApp.init();
       if (window.ZuschnittApp) ZuschnittApp.init();
-      if (window.DrehwinkelApp) DrehwinkelApp.init();
+      if (window.DrehwinkelApp) ZuschnittApp.init();
       
       setTimeout(() => {
         if (window.TabellenApp) TabellenApp.init();
