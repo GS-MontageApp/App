@@ -16,10 +16,10 @@
     3. Startansicht beim Reload: Umstellung des Standard-Views beim Laden der App 
        direkt auf den Zuschnittsrechner (AppShell.switchApp).
     4. GS-Design als Standard: Voreinstellung des Design-Themes auf 'gs' (Gustav 
-       Schmidt Look) beim initialen Start der App.
+       Schmidt Look) als fixen Standard beim initialen Start der App.
     5. Geschützter Admin-Modus (Option A):
-       - Auslöser: Ein Klick/Tipp auf das Zahnrad-Symbol (⚙️) im Einstellungs-Bereich 
-         des Headers öffnet direkt das PIN-Eingabefenster.
+       - Auslöser: Ein Klick/Tipp auf das Zahnrad-Symbol (⚙️) rechts oben im Header 
+         öffnet direkt das PIN-Eingabefenster für den Admin/Prüf-Login.
        - Overlay & Input: Modales Overlay mit einem auf genau 4 Ziffern limitierten 
          Eingabefeld (inputmode="numeric") und einem Login-Button.
        - Rollentrennung nach PIN:
@@ -33,8 +33,9 @@
          * benutzer eingeloggt (0449): App-Header erhält einen dezenten grünen Hintergrundton 
            und rechtsbündig den Text "~/benutzer".
          * Kein Login / Standard: Standard-Header-Hintergrund und Standard-Titel aktiv.
-       - Logout-Funktion: Sobald root oder benutzer eingeloggt sind, erscheint im 
-         Top-Menü (Einstellungen) ein Logout-Button zum Beenden der Session.
+       - Logout-Funktion & Header-Bereinigung: Der Zugriff auf Einstellungen und Login 
+         erfolgt exklusiv über das Zahnrad-Symbol. Sobald root oder benutzer eingeloggt 
+         sind, erscheint im Top-Menü ein Logout-Button zum Beenden der Session.
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -98,13 +99,9 @@
         <h1 id="header-title" class="text-sm font-bold text-slate-800 truncate" data-base-title="Zuschnittsrechner">Zuschnittsrechner (v1.11.2)</h1>
       </div>
       <div class="flex items-center gap-1">
-        <!-- Zahnrad-Symbol als Auslöser für den Admin-Login -->
-        <button onclick="window.AppShell.triggerAdminLogin()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" title="Admin / Prüf-Login" aria-label="Admin Login">
+        <!-- Zahnrad-Symbol als exklusiver Auslöser für Admin-Login & Einstellungen -->
+        <button onclick="window.AppShell.openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" title="Einstellungen & Admin-Login" aria-label="Einstellungen">
           ⚙️
-        </button>
-        <!-- Top-Menü Öffner -->
-        <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
-          ☰
         </button>
       </div>
     </div>
@@ -658,7 +655,7 @@
         menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
       }
 
-      // GS-Design als Standard
+      // GS-Design als fester Standard beim Start ('gs' als Fallback)
       if (window.setTheme) {
         const savedTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'gs';
         window.setTheme(savedTheme);
