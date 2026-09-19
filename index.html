@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="de" class="h-full">
 <head>
-  <!-- === ZANGENSCHLOSSER APP - Version v1.10.122 === -->
+   <!-- === ZANGENSCHLOSSER APP - Version v1.11.1 === -->
   <!--
     ================================================================================
-    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.10.122
+    ZANGENSCHLOSSER APP (Dr. Zange) - Version v1.11.1
     Architektur: Variante 1 (Klassisches Web-Frontend mit Vanilla JS & Tailwind CSS)
     
     ================================================================================
@@ -40,7 +40,7 @@
     6. Architektur & Code-Qualität: Fortlaufende Modularisierung (Saubere Trennung von JavaScript-Modulen 
        wie zuschnitt.js, etagen.js, drehwinkel.js etc.). Auslagerung des umfangreichen CSS-Stylings 
        (inklusive GS-Design-Theme) in eine externe css/style.css. Konsequente Versionierung im gesamten 
-       Projekt (aktuell auf v1.10.122 angehoben) inklusive Aktualisierung des Service Workers (sw.js).
+       Projekt inklusive Aktualisierung des Service Workers (sw.js).
     ================================================================================
   -->
   <meta charset="UTF-8">
@@ -51,9 +51,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title id="page-title">Zangenschlosser App v1.10.122 (Dr. Zange)</title>
+  <title id="page-title">Zangenschlosser App v1.11.1 (Dr. Zange)</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css?v=v1.10.122">
+  <link rel="stylesheet" href="css/style.css?v=v1.11.1">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
 
@@ -86,14 +86,14 @@
     };
   </script>
 
-  <!-- Single Source of Truth Version Config & Module (v1.10.122) -->
-  <script src="js/version.js?v=v1.10.122"></script>
-  <script src="js/zuschnitt.js?v=v1.10.122"></script>
-  <script src="js/etagen.js?v=v1.10.122"></script>
-  <script src="js/drehwinkel.js?v=v1.10.122"></script>
-  <script src="js/tabellen.js?v=v1.10.122"></script>
-  <script src="js/drehmoment.js?v=v1.10.122"></script>
-  <script src="js/shell.js?v=v1.10.122"></script>
+  <!-- Single Source of Truth Version Config & Module (v1.11.1) -->
+  <script src="js/version.js?v=v1.11.1"></script>
+  <script src="js/zuschnitt.js?v=v1.11.1"></script>
+  <script src="js/etagen.js?v=v1.11.1"></script>
+  <script src="js/drehwinkel.js?v=v1.11.1"></script>
+  <script src="js/tabellen.js?v=v1.11.1"></script>
+  <script src="js/drehmoment.js?v=v1.11.1"></script>
+  <script src="js/shell.js?v=v1.11.1"></script>
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
@@ -101,7 +101,7 @@
   <header class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <h1 id="header-title" class="text-sm font-bold text-slate-800">Etagenrechner (v1.10.122)</h1>
+        <h1 id="header-title" class="text-sm font-bold text-slate-800">Zuschnittsrechner (v1.11.1)</h1>
       </div>
       <button onclick="openTopMenu()" class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 transition-colors flex items-center justify-center text-lg" aria-label="Menü öffnen">
         ⚙️
@@ -113,7 +113,7 @@
   <main class="flex-1 max-w-3xl mx-auto w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 flex flex-col justify-start">
         
     <!-- MODUL 1: ETAGENRECHNER -->
-    <div id="view-etagen" class="app-view space-y-5 flex-1 block">
+    <div id="view-etagen" class="app-view hidden space-y-5 flex-1">
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0 transition-colors">
         <div class="space-y-1.5">
           <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">3D-Isometrie Modell</h2>
@@ -198,8 +198,8 @@
       </section>
     </div>
 
-    <!-- MODUL 2: ZUSCHNITTSRECHNER -->
-    <div id="view-zuschnitt" class="app-view hidden space-y-4 flex-1">
+    <!-- MODUL 2: ZUSCHNITTSRECHNER (Standard-Startansicht) -->
+    <div id="view-zuschnitt" class="app-view space-y-4 flex-1 block">
       <section class="bg-white p-5 rounded-2xl shadow-sm space-y-3 first:mt-0 transition-colors">
         <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider border-b pb-1.5">Globale Parameter (Pflichtfeld)</h2>
         <div class="grid grid-cols-2 gap-3">
@@ -486,10 +486,10 @@
 
   <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 text-center">
-      <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 transition-colors">
+      <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
         <span class="text-lg">📐</span><span class="text-[10px] font-semibold truncate w-full">Etage</span>
       </button>
-      <button onclick="switchApp('zuschnitt', 'Zuschnittsrechner')" id="nav-zuschnitt" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+      <button onclick="switchApp('zuschnitt', 'Zuschnittsrechner')" id="nav-zuschnitt" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 transition-colors">
         <span class="text-lg">✂️</span><span class="text-[10px] font-semibold truncate w-full">Zuschnitt</span>
       </button>
       <button onclick="switchApp('drehwinkel', 'Verdrehwinkel')" id="nav-drehwinkel" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
@@ -657,8 +657,9 @@
         menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
       }
 
+      // GS-Design als Standard (Fallback auf 'gs', falls kein Theme gespeichert ist)
       if (window.setTheme) {
-        const savedTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'standard';
+        const savedTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'gs';
         window.setTheme(savedTheme);
       }
 
@@ -674,7 +675,8 @@
         if (window.DrehmomentApp) DrehmomentApp.init();
       }, 100);
 
-      AppShell.switchApp('etagen', 'Etagenrechner');
+      // Startansicht beim Reload direkt auf Zuschnittsrechner gesetzt
+      AppShell.switchApp('zuschnitt', 'Zuschnittsrechner');
     });
   </script>
 </body>
