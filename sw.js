@@ -41,19 +41,12 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
-  
-  if (url.origin !== location.origin) {
-    return;
-  }
+  if (url.origin !== location.origin) return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((response) => {
-        return response;
-      }).catch(() => {
+      if (cachedResponse) return cachedResponse;
+      return fetch(event.request).then((response) => response).catch(() => {
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
