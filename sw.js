@@ -2,36 +2,36 @@
 // ZANGENSCHLOSSER-APP: SERVICE WORKER (v1.10.122)
 // ============================================================================
 const CACHE_NAME = 'zangenschlosser-cache-v1.10.122';
-
-const urlsToCache = [
+const ASSETS = [
   './',
   './index.html',
-  './js/version.js?v=v1.10.122',
-  './js/zuschnitt.js?v=v1.10.122',
-  './js/etagen.js?v=v1.10.122',
-  './js/drehwinkel.js?v=v1.10.122',
-  './js/tabellen.js?v=v1.10.122',
-  './js/drehmoment.js?v=v1.10.122',
-  './js/shell.js?v=v1.10.122',
+  './css/style.css',
+  './js/version.js',
+  './js/shell.js',
+  './js/etagen.js',
+  './js/zuschnitt.js',
+  './js/drehwinkel.js',
+  './js/tabellen.js',
+  './js/drehmoment.js',
   './manifest.json',
   './img/dr-zange.jpg'
 ];
 
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    }).then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
           }
         })
       );
@@ -39,14 +39,25 @@ self.addEventListener('activate', event => {
   );
 });
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  
+  if (url.origin !== location.origin) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(event.request).then((response) => {
+        return response;
+      }).catch(() => {
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
         }
-        return fetch(event.request);
-      })
+      });
+    })
   );
 });
