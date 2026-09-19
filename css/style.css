@@ -1,5 +1,5 @@
 /* ============================================================================
-   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.121)
+   ZANGENSCHLOSSER-APP: GLOBAL STYLES & THEMES (v1.10.122)
    Projekt-Fokus: Mobile PWA (S24 & iOS), Card-Anker (p-5), saubere Rollen-Trennung
    ============================================================================ */
 
@@ -28,15 +28,15 @@ input, select, button, table {
 }
 
 /* ============================================================================ */
-/* ROLLE-SPEZIFISCHE HEADER FARBEN (Flächendeckend bei Erhalt der Theme-Farben) */
+/* ROLLE-SPEZIFISCHE HEADER FARBEN (Flächendeckend & mit hoher Spezifität)       */
 /* ============================================================================ */
 header#main_header.role-header-root {
-  background-color: rgba(239, 68, 68, 0.22) !important; /* Dezentes Rot für Root */
+  background-color: rgba(239, 68, 68, 0.22) !important;
   border-bottom-color: rgba(239, 68, 68, 0.4) !important;
 }
 
 header#main_header.role-header-user {
-  background-color: rgba(16, 185, 129, 0.22) !important; /* Dezentes Grün für Benutzer */
+  background-color: rgba(16, 185, 129, 0.22) !important;
   border-bottom-color: rgba(16, 185, 129, 0.4) !important;
 }
 
@@ -45,18 +45,18 @@ body.theme-gs {
   background-color: #0b1d3a !important;
   color: #f8fafc !important;
 }
-body.theme-gs header {
+body.theme-gs header#main_header {
   background-color: rgba(11, 29, 58, 0.95) !important;
   border-bottom-color: #1e3a8a !important;
 }
-/* GS-Theme Überschreibung für Rollen-Header im Dark Mode (dezent angepasst) */
+/* GS-Theme Überschreibung für Rollen-Header im Dark Mode */
 body.theme-gs header#main_header.role-header-root {
-  background-color: rgba(239, 68, 68, 0.3) !important;
-  border-bottom-color: rgba(239, 68, 68, 0.5) !important;
+  background-color: rgba(239, 68, 68, 0.35) !important;
+  border-bottom-color: rgba(239, 68, 68, 0.6) !important;
 }
 body.theme-gs header#main_header.role-header-user {
-  background-color: rgba(16, 185, 129, 0.3) !important;
-  border-bottom-color: rgba(16, 185, 129, 0.5) !important;
+  background-color: rgba(16, 185, 129, 0.35) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.6) !important;
 }
 
 body.theme-gs header h1, body.theme-gs header span {
