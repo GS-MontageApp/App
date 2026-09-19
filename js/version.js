@@ -1,8 +1,11 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: SINGLE SOURCE OF TRUTH - VERSION CONFIG (v1.10.122)
+// SINGLE SOURCE OF TRUTH: VERSION & BUILD (v1.10.122)
 // ============================================================================
-window.ZangenschlosserVersion = {
-  version: "v1.10.122",
-  buildDate: "2026-09-19",
-  appName: "Zangenschlosser App (Dr. Zange)"
+const APP_CONFIG = {
+  version: 'v1.10.122',
+  date: '19.09.2026, 13:20 (MEZ)'
 };
+
+// Global export for Window (Browser) and ServiceWorker (self)
+if (typeof window !== 'undefined') window.APP_CONFIG = APP_CONFIG;
+if (typeof self !== 'undefined') self.APP_CONFIG = APP_CONFIG;
