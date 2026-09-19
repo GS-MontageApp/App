@@ -41,9 +41,35 @@ window.ZuschnittApp = (() => {
         }, 150);
       });
 
-      // Live-Eingabe-Filter
+      // Harter Live-Eingabe-Filter während des Tippens (max. 1 Nachkommastelle im aktuellen Token/Zahl)
       input.addEventListener('input', function() {
         if (this.hasAttribute('disabled')) return;
+        
+        let originalVal = this.value;
+        // Erlaube Ziffern, Rechenzeichen, Leerzeichen, Punkt und Komma
+        let cleaned = originalVal.replace(/[^0-9.,+\-*/\s]/g, '');
+        
+        // Prüfe den letzten Abschnitt nach Rechenzeichen oder den gesamten String auf max. 1 Nachkommastelle
+        let tokens = cleaned.split(/([+\-*/])/);
+        let lastToken = tokens[tokens.length - 1];
+        
+        let parts = lastToken.split(/[.,]/);
+        if (parts.length > 2) {
+          lastToken = parts[0] + ',' + parts.slice(1).join('');
+          parts = lastToken.split(/[.,]/);
+        }
+        if (parts.length === 2 && parts[1].length > 1) {
+          parts[1] = parts[1].substring(0, 1);
+          lastToken = parts[0] + ',' + parts[1];
+        }
+        
+        tokens[tokens.length - 1] = lastToken;
+        let finalCleaned = tokens.join('');
+        
+        if (finalCleaned !== originalVal) {
+          this.value = finalCleaned;
+        }
+
         updateVisibility();
         calculateZuschnitt();
       });
@@ -95,11 +121,9 @@ window.ZuschnittApp = (() => {
     checkParameters();
   }
 
-  // Hilfsfunktion zur sicheren Auswertung von mathematischen Ausdrücken mit Komma/Punkt-Handling
   function evaluateMathExpression(expr) {
     try {
       if (!expr) return null;
-      // Ersetze alle Kommas global durch Punkte für die JavaScript-Auswertung
       let normalized = expr.toString().replace(/,/g, '.');
       let sanitized = normalized.replace(/[^0-9.\+\-\*\/\(\)\s]/g, '');
       if (!sanitized.trim()) return null;
