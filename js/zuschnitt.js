@@ -204,7 +204,6 @@ window.ZuschnittApp = (() => {
 
     let gesamtlänge = sumSchenkel + totalBogenMaß;
     
-    // Präzise Formatierung auf genau zwei Nachkommastellen (.toFixed(2)) mit deutschem Tausendertrennzeichen (optional)
     if (gesamtValEl) gesamtValEl.textContent = gesamtlänge.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mm';
     if (biegeEl) biegeEl.textContent = rBiege.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mm';
     if (summeEl) summeEl.textContent = sumSchenkel.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mm';
