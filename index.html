@@ -120,6 +120,7 @@
 </head>
 <body class="bg-slate-100 h-full text-slate-800 flex flex-col m-0 p-0 overflow-x-hidden">
 
+  <!-- Header oben -->
   <header id="main_header" class="sticky top-0 bg-white/85 backdrop-blur-md border-b border-slate-200 z-30 px-3 py-1.5 shrink-0 transition-colors">
     <div class="max-w-3xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
@@ -134,11 +135,92 @@
     </div>
   </header>
 
+  <!-- Hauptcontainer -->
   <main class="flex-1 max-w-3xl mx-auto w-full pt-1.5 pb-28 px-3 md:pt-3 md:pb-20 md:px-6 flex flex-col justify-start">
         
     <!-- MODUL 1: ETAGENRECHNER -->
     <div id="view-etagen" class="app-view hidden space-y-5 flex-1">
-      <!-- (Etagenrechner wie gehabt) -->
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 first:mt-0 transition-colors">
+        <div class="space-y-1.5">
+          <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">3D-Isometrie Modell</h2>
+          <div class="w-full h-[260px] sm:h-[340px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center shadow-inner">
+            <svg id="etagen_svg_sketch" viewBox="0 0 1000 580" class="w-full h-full">
+              <g id="etagen_gfx_container"></g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="space-y-4 pt-2">
+          <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Eingabewerte</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Höhenversatz (V)</label>
+              <div class="relative">
+                <input type="text" id="etagen_v" value="100" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-emerald-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Seitenversatz (H)</label>
+              <div class="relative">
+                <input type="text" id="etagen_h" value="100" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-sky-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">mm</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Biegewinkel (a)</label>
+              <div class="relative">
+                <input type="text" id="etagen_a" value="30" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-amber-500 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 font-bold text-slate-500 text-sm">°</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Außendurchmesser Rohr (d)</label>
+              <div class="relative">
+                <input type="text" id="etagen_d" value="30" placeholder="0" inputmode="decimal" class="w-full bg-slate-50 border-l-4 border-l-slate-400 border-slate-300 rounded-lg p-2.5 pr-12 focus:ring-2 focus:ring-slate-500 focus:outline-none">
+                <span class="absolute right-3 top-2.5 text-slate-400 text-sm">mm</span>
+              </div>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Radius Faktor</label>
+              <select id="etagen_r" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white p-5 rounded-2xl shadow-sm space-y-4 transition-colors">
+        <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">Ergebnisse</h2>
+        <div class="space-y-3">
+          <div class="p-4 bg-yellow-50/60 rounded-xl border-[2.5px] border-yellow-300 border-l-[12px] border-l-yellow-500 shadow-sm">
+            <div class="text-xs font-bold text-yellow-800 uppercase tracking-wider">Nachziehlänge (NZ)</div>
+            <div id="etagen_out_t" class="text-xl font-bold text-yellow-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-red-50/50 rounded-xl border-[2.5px] border-red-300 border-l-[12px] border-l-red-500 shadow-sm">
+            <div class="text-xs font-semibold text-red-800 uppercase tracking-wider">Kombinierter Raumversatz (C)</div>
+            <div id="etagen_out_c" class="text-xl font-bold text-red-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-orange-50 rounded-xl border-[2.5px] border-orange-300 border-l-[12px] border-l-orange-500 shadow-sm">
+            <div class="text-xs font-bold text-orange-800 uppercase tracking-wider">Schräglänge (T)</div>
+            <div id="etagen_out_travel" class="text-xl font-bold text-orange-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-sky-50 rounded-xl border-[2.5px] border-sky-300 border-l-[12px] border-l-sky-500 shadow-sm">
+            <div class="text-xs font-bold text-sky-800 uppercase tracking-wider">Axialer Versatz (R)</div>
+            <div id="etagen_out_run" class="text-xl font-bold text-sky-950 mt-0.5">0 mm</div>
+          </div>
+          <div class="p-4 bg-purple-50/50 rounded-xl border-[2.5px] border-purple-300 border-l-[12px] border-l-purple-500 shadow-sm">
+            <div class="text-xs font-semibold text-purple-800 uppercase tracking-wider">Verdrehwinkel für die Biegung</div>
+            <div id="etagen_out_f" class="text-xl font-bold text-purple-950 mt-0.5">0 °</div>
+          </div>
+          <div class="p-4 bg-emerald-50/50 rounded-xl border-[2.5px] border-emerald-300 border-l-[12px] border-l-emerald-500 shadow-sm">
+            <div class="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Anreisumfangmaß</div>
+            <div id="etagen_out_anreisumfang" class="text-xl font-bold text-emerald-950 mt-0.5">0 mm</div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <!-- MODUL 2: ZUSCHNITTSRECHNER (Standard-Startansicht) -->
@@ -247,7 +329,7 @@
         </div>
       </section>
 
-      <!-- NEU: GESCHÜTZTER CUTBACK-TEST BEREICH (NUR FÜR ROOT SICHTBAR) -->
+      <!-- GESCHÜTZTER CUTBACK-TEST BEREICH (NUR FÜR ROOT SICHTBAR) -->
       <section id="zuschnitt_root_cutback_section" class="hidden bg-white p-5 rounded-2xl shadow-sm space-y-3 border-2 border-indigo-600 transition-colors mt-6">
         <div class="flex flex-col border-b border-indigo-200 pb-1.5">
           <span class="text-xs font-mono font-bold text-indigo-600">~/root</span>
@@ -259,8 +341,172 @@
       </section>
     </div>
 
-    <!-- WEITERE MODULE (Etagenrechner, Verdrehwinkel, Tabellen etc. unverändert) -->
+    <!-- MODUL 3: VERDREHWINKEL -->
+    <div id="view-drehwinkel" class="app-view hidden space-y-4 flex-1">
+      <!-- (Verdrehwinkel unverändert) -->
+    </div>
+
+    <!-- MODUL 4: TABELLEN -->
+    <div id="view-eoform" class="app-view hidden flex-col w-full h-[calc(100dvh-172px)] flex-1 relative min-h-0">
+      <!-- (Tabellen unverändert) -->
+    </div>
+
+    <div id="view-foobar2" class="app-view hidden space-y-4 flex-1">
+      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0 transition-colors">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 2 (Mehr-Menü)</h2>
+        <div class="py-4 text-4xl">🚧</div>
+        <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 2</h3>
+      </section>
+    </div>
+    <div id="view-foobar3" class="app-view hidden space-y-4 flex-1">
+      <section class="bg-white p-5 rounded-2xl shadow-sm text-center space-y-3 first:mt-0 transition-colors">
+        <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">Foobar 3 (Mehr-Menü)</h2>
+        <div class="py-4 text-4xl">🚧</div>
+        <h3 class="text-lg font-bold text-slate-700">Platzhalter Foobar 3</h3>
+      </section>
+    </div>
   </main>
-  <!-- Footer-Navigation und Modals wie gewohnt -->
+
+  <!-- Footer Navigation -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-lg z-40 px-2 py-1 shrink-0 transition-colors">
+    <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 text-center">
+      <button onclick="switchApp('etagen', 'Etagenrechner')" id="nav-etagen" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">📐</span><span class="text-[10px] font-semibold truncate w-full">Etage</span>
+      </button>
+      <button onclick="switchApp('zuschnitt', 'Zuschnittsrechner')" id="nav-zuschnitt" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-yellow-400 transition-colors">
+        <span class="text-lg">✂️</span><span class="text-[10px] font-semibold truncate w-full">Zuschnitt</span>
+      </button>
+      <button onclick="switchApp('drehwinkel', 'Verdrehwinkel')" id="nav-drehwinkel" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">🔄</span><span class="text-[10px] font-semibold truncate w-full">Verdrehwinkel</span>
+      </button>
+      <button onclick="switchAppWithTablesCheck('eoform', 'Tabellen | Einstecktiefe')" id="nav-eoform" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">📋</span><span class="text-[10px] font-semibold truncate w-full">Tabellen</span>
+      </button>
+      <button onclick="openMehrModal()" id="nav-mehr" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 transition-colors">
+        <span class="text-lg">⋯</span><span class="text-[10px] font-semibold truncate w-full">Mehr</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Modals wie gehabt -->
+  <div id="mehr_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end justify-center p-0">
+    <!-- ... -->
+  </div>
+
+  <div id="zoom_modal" class="hidden fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-2 sm:p-6" onclick="closeZoomModal()">
+    <!-- ... -->
+  </div>
+
+  <div id="daily_splash_modal" class="hidden fixed inset-0 bg-black z-50 flex items-center justify-center p-0">
+    <!-- ... -->
+  </div>
+
+  <div id="top_menu_modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <!-- ... -->
+  </div>
+
+  <div id="pin_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <!-- ... -->
+  </div>
+
+  <div id="sub_modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <!-- ... -->
+  </div>
+
+  <script>
+    function checkDailySplash() {
+      const today = new Date().toISOString().slice(0, 10);
+      const lastShown = localStorage.getItem('zangenschlosser_splash_date_v1');
+      const splashModal = document.getElementById('daily_splash_modal');
+      if (lastShown !== today) {
+        if (splashModal) splashModal.classList.remove('hidden');
+      } else {
+        if (splashModal) splashModal.classList.add('hidden');
+      }
+    }
+
+    function closeDailySplash() {
+      const today = new Date().toISOString().slice(0, 10);
+      localStorage.setItem('zangenschlosser_splash_date_v1', today);
+      const splashModal = document.getElementById('daily_splash_modal');
+      if (splashModal) splashModal.classList.add('hidden');
+    }
+
+    function openZoomModal(imgSrc, title) {
+      const modal = document.getElementById('zoom_modal');
+      const img = document.getElementById('zoom_modal_img');
+      const titleEl = document.getElementById('zoom_modal_title');
+      if (img) img.src = imgSrc;
+      if (titleEl) titleEl.textContent = title || 'Skizzen-Ansicht';
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeZoomModal() {
+      const modal = document.getElementById('zoom_modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchAppWithTablesCheck(viewId, title) {
+      if (window.switchApp) {
+        window.switchApp(viewId, title);
+      }
+      if (viewId === 'eoform') {
+        if (window.TabellenApp) TabellenApp.init();
+        if (window.DrehmomentApp) DrehmomentApp.init();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const splashVer = document.getElementById('splash_version_text');
+      if (splashVer && window.APP_CONFIG) {
+        splashVer.textContent = `${window.APP_CONFIG.version} | ${window.APP_CONFIG.date}`;
+      }
+      const menuSub = document.getElementById('menu_version_subtitle');
+      if (menuSub && window.APP_CONFIG) {
+        menuSub.textContent = `${window.APP_CONFIG.version} — ${window.APP_CONFIG.date}`;
+      }
+
+      const savedRole = localStorage.getItem('zangenschlosser_role');
+      const headerEl = document.getElementById('main_header');
+      const badgeEl = document.getElementById('role_status_badge');
+      const logoutItem = document.getElementById('logout_menu_item');
+      const cutbackRootSection = document.getElementById('zuschnitt_root_cutback_section');
+      
+      if (savedRole === 'root' && headerEl && badgeEl) {
+        headerEl.classList.add('role-header-root');
+        badgeEl.textContent = '~/root';
+        badgeEl.className = 'badge-root';
+        badgeEl.classList.remove('hidden');
+        if (logoutItem) logoutItem.classList.remove('hidden');
+        if (cutbackRootSection) cutbackRootSection.classList.remove('hidden');
+      } else if (savedRole === 'user' && headerEl && badgeEl) {
+        headerEl.classList.add('role-header-user');
+        badgeEl.textContent = '~/benutzer';
+        badgeEl.className = 'badge-user';
+        badgeEl.classList.remove('hidden');
+        if (logoutItem) logoutItem.classList.remove('hidden');
+        if (cutbackRootSection) cutbackRootSection.classList.add('hidden');
+      }
+
+      if (window.setTheme) {
+        const savedTheme = localStorage.getItem('zangenschlosser_theme_v1') || 'gs';
+        window.setTheme(savedTheme);
+      }
+
+      checkDailySplash();
+
+      AppShell.init();
+      if (window.EtagenApp) EtagenApp.init();
+      if (window.ZuschnittApp) ZuschnittApp.init();
+      if (window.DrehwinkelApp) DrehwinkelApp.init();
+      
+      setTimeout(() => {
+        if (window.TabellenApp) TabellenApp.init();
+        if (window.DrehmomentApp) DrehmomentApp.init();
+      }, 100);
+
+      AppShell.switchApp('zuschnitt', 'Zuschnittsrechner');
+    });
+  </script>
 </body>
 </html>
