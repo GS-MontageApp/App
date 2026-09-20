@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.10.100)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.12.2)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -41,18 +41,12 @@ window.ZuschnittApp = (() => {
         }, 150);
       });
 
-      // Harter Live-Eingabe-Filter während des Tippens (max. 1 Nachkommastelle im aktuellen Token/Zahl)
       input.addEventListener('input', function() {
         if (this.hasAttribute('disabled')) return;
-        
         let originalVal = this.value;
-        // Erlaube Ziffern, Rechenzeichen, Leerzeichen, Punkt und Komma
         let cleaned = originalVal.replace(/[^0-9.,+\-*/\s]/g, '');
-        
-        // Prüfe den letzten Abschnitt nach Rechenzeichen oder den gesamten String auf max. 1 Nachkommastelle
         let tokens = cleaned.split(/([+\-*/])/);
         let lastToken = tokens[tokens.length - 1];
-        
         let parts = lastToken.split(/[.,]/);
         if (parts.length > 2) {
           lastToken = parts[0] + ',' + parts.slice(1).join('');
@@ -62,10 +56,8 @@ window.ZuschnittApp = (() => {
           parts[1] = parts[1].substring(0, 1);
           lastToken = parts[0] + ',' + parts[1];
         }
-        
         tokens[tokens.length - 1] = lastToken;
         let finalCleaned = tokens.join('');
-        
         if (finalCleaned !== originalVal) {
           this.value = finalCleaned;
         }
@@ -74,7 +66,6 @@ window.ZuschnittApp = (() => {
         calculateZuschnitt();
       });
 
-      // Inline-Berechnung beim Verlassen des Feldes (blur / Enter)
       input.addEventListener('blur', function() {
         if (this.hasAttribute('disabled')) return;
         const type = this.getAttribute('data-type');
@@ -86,16 +77,12 @@ window.ZuschnittApp = (() => {
 
         if (evaluatedVal !== null && !isNaN(evaluatedVal)) {
           let rounded = Math.round(evaluatedVal * 10) / 10;
-          
           if (type === 'winkel') {
             rounded = Math.min(Math.max(rounded, 1), 180);
           }
-
           let roundedStr = rounded.toFixed(1).replace('.', ',');
-
           if (/[+\-*/]/.test(cleanExpr)) {
-            let formattedExpr = cleanExpr;
-            this.value = `${formattedExpr} = ${roundedStr} ${type === 'winkel' ? 'Grad' : 'mm'}`;
+            this.value = `${cleanExpr} = ${roundedStr} ${type === 'winkel' ? 'Grad' : 'mm'}`;
           } else {
             this.value = roundedStr + (type === 'winkel' ? ' Grad' : ' mm');
           }
@@ -127,7 +114,6 @@ window.ZuschnittApp = (() => {
       let normalized = expr.toString().replace(/,/g, '.');
       let sanitized = normalized.replace(/[^0-9.\+\-\*\/\(\)\s]/g, '');
       if (!sanitized.trim()) return null;
-      
       let result = Function('"use strict"; return (' + sanitized + ')')();
       return typeof result === 'number' && !isNaN(result) ? result : null;
     } catch (e) {
@@ -220,14 +206,12 @@ window.ZuschnittApp = (() => {
   function getCleanVal(str) {
     if (!str) return '';
     let rawStr = str.toString();
-    
     if (rawStr.includes('=')) {
       let parts = rawStr.split('=');
       let rightSide = parts[1].replace(' mm', '').replace(' Grad', '').trim();
       let num = parseFloat(rightSide.replace(',', '.'));
       return isNaN(num) ? '' : (Math.round(num * 10) / 10);
     }
-
     let cleanExpr = rawStr.replace(' mm', '').replace(' Grad', '').trim();
     let evaluated = evaluateMathExpression(cleanExpr);
     if (evaluated === null || isNaN(evaluated)) return '';
