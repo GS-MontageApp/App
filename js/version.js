@@ -1,9 +1,9 @@
 // ============================================================================
-// SINGLE SOURCE OF TRUTH: VERSION & BUILD (v1.10.122)
+// SINGLE SOURCE OF TRUTH: VERSION & BUILD (v1.12.1)
 // ============================================================================
 const APP_CONFIG = {
-  version: 'v1.10.122',
-  date: '19.09.2026, 13:20 (MEZ)'
+  version: 'v1.12.1',
+  date: '19.09.2026, 18:00 (MEZ)'
 };
 
 // Global export for Window (Browser) and ServiceWorker (self)
