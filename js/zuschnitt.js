@@ -248,7 +248,7 @@ window.ZuschnittApp = (() => {
     const rBiege = parseFloat(dVal) * parseFloat(rVal);
 
     // --- PREPROCESSING / ADAPTER-SCHICHT ---
-    // Berechnet aus den rohen Schenkelmaßen und Winkeln die CAD-konformen Zwischenwerte (Scheitelpunkte)
+    // Übergibt die CAD-konform aufbereiteten Zwischenwerte an den bestehenden Rechenweg
     let processedSchenkelVals = [...rawSchenkelVals];
     let winkelVals = [];
     winkelInputs.forEach((inp) => {
@@ -256,15 +256,14 @@ window.ZuschnittApp = (() => {
       winkelVals.push(typeof alpha === 'number' ? alpha : 0);
     });
 
-    // Beispielhafte automatische Vorverarbeitung für Schenkel 1 (Schenkel 0 im Array):
-    // Wenn Schenkel 1 und Bogen 1 vorhanden sind, wenden wir die Tangenten- und Bogenkorrektur an.
+    // Automatische Vorverarbeitung für Schenkel 1 (Index 0):
+    // Rohmaß abzüglich Tangentenabzug plus halber Bogenanteil
     if (rawSchenkelVals[0] > 0 && winkelVals[0] > 0) {
       let alpha1 = winkelVals[0];
       let angleRad1 = (alpha1 * Math.PI) / 180;
       let tangent1 = rBiege * Math.tan(angleRad1 / 2);
       let bogenMaß1 = angleRad1 * rBiege;
       
-      // Korrektur: Rohmaß abzüglich Tangentenabzug plus halber Bogenanteil
       processedSchenkelVals[0] = rawSchenkelVals[0] - tangent1 + (bogenMaß1 / 2);
     }
     // ----------------------------------------
