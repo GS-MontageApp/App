@@ -239,19 +239,42 @@ window.ZuschnittApp = (() => {
     const schenkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]');
     const winkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]');
 
-    let sumSchenkel = 0, schenkelVals = [];
+    let rawSchenkelVals = [];
     schenkelInputs.forEach((inp) => {
       const v = getCleanVal(inp.value);
-      const numV = typeof v === 'number' ? v : 0;
-      schenkelVals.push(numV);
-      sumSchenkel += numV;
+      rawSchenkelVals.push(typeof v === 'number' ? v : 0);
     });
 
-    let totalCutback = 0, totalBogenMaß = 0;
     const rBiege = parseFloat(dVal) * parseFloat(rVal);
 
+    // --- PREPROCESSING / ADAPTER-SCHICHT ---
+    // Berechnet aus den rohen Schenkelmaßen und Winkeln die CAD-konformen Zwischenwerte (Scheitelpunkte)
+    let processedSchenkelVals = [...rawSchenkelVals];
+    let winkelVals = [];
+    winkelInputs.forEach((inp) => {
+      let alpha = getCleanVal(inp.value);
+      winkelVals.push(typeof alpha === 'number' ? alpha : 0);
+    });
+
+    // Beispielhafte automatische Vorverarbeitung für Schenkel 1 (Schenkel 0 im Array):
+    // Wenn Schenkel 1 und Bogen 1 vorhanden sind, wenden wir die Tangenten- und Bogenkorrektur an.
+    if (rawSchenkelVals[0] > 0 && winkelVals[0] > 0) {
+      let alpha1 = winkelVals[0];
+      let angleRad1 = (alpha1 * Math.PI) / 180;
+      let tangent1 = rBiege * Math.tan(angleRad1 / 2);
+      let bogenMaß1 = angleRad1 * rBiege;
+      
+      // Korrektur: Rohmaß abzüglich Tangentenabzug plus halber Bogenanteil
+      processedSchenkelVals[0] = rawSchenkelVals[0] - tangent1 + (bogenMaß1 / 2);
+    }
+    // ----------------------------------------
+
+    let sumSchenkel = 0;
+    processedSchenkelVals.forEach(v => sumSchenkel += v);
+
+    let totalCutback = 0, totalBogenMaß = 0;
     winkelInputs.forEach((inp, idx) => {
-      if (schenkelVals[idx + 1] === undefined || schenkelVals[idx + 1] === 0) return;
+      if (rawSchenkelVals[idx + 1] === undefined || rawSchenkelVals[idx + 1] === 0) return;
       let alpha = getCleanVal(inp.value);
       if (typeof alpha === 'number' && alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
