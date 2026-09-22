@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.12.2)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.12.4)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
