@@ -1,5 +1,5 @@
 // ============================================================================
-// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.12.4)
+// ZANGENSCHLOSSER-APP: MODUL ZUSCHNITTSRECHNER (v1.12.5)
 // ============================================================================
 window.ZuschnittApp = (() => {
   function init() {
@@ -239,95 +239,41 @@ window.ZuschnittApp = (() => {
     const schenkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="schenkel"]');
     const winkelInputs = document.querySelectorAll('#view-zuschnitt input[data-type="winkel"]');
 
-    let rawSchenkelVals = [];
+    let schenkelVals = [];
     schenkelInputs.forEach((inp) => {
       const v = getCleanVal(inp.value);
-      rawSchenkelVals.push(typeof v === 'number' ? v : 0);
+      schenkelVals.push(typeof v === 'number' ? v : 0);
     });
 
-    const rBiege = parseFloat(dVal) * parseFloat(rVal);
-
-    // Bogenmaße und Tangenten für alle aktiven Bögen vorbereiten
     let winkelVals = [];
     winkelInputs.forEach((inp) => {
       let alpha = getCleanVal(inp.value);
       winkelVals.push(typeof alpha === 'number' ? alpha : 0);
     });
 
-    // --- AUTOMATISCHE ADAPTER-SCHICHT (PREPROCESSING) ---
-    // Berechnet für jeden Schenkel exakt die Zwischenwerte (wie im manuellen Test: Rohmaß - Tangente + halbe Nachbarbögen)
-    let processedSchenkelVals = [...rawSchenkelVals];
+    const rBiege = parseFloat(dVal) * parseFloat(rVal);
 
-    // Schenkel 1 (Startstück): Abzug Bogen 1 Tangente + halber Bogen 1
-    if (rawSchenkelVals[0] > 0 && winkelVals[0] > 0) {
-      let rad1 = (winkelVals[0] * Math.PI) / 180;
-      let tan1 = rBiege * Math.tan(rad1 / 2);
-      let arc1 = rad1 * rBiege;
-      processedSchenkelVals[0] = rawSchenkelVals[0] - tan1 + (arc1 / 2);
-    }
-
-    // Schenkel 2 (Mittelstück 1): Abzug Tangente Bogen 1 + halber Bogen 1 + Abzug Tangente Bogen 2 + halber Bogen 2
-    if (rawSchenkelVals[1] > 0) {
-      let val = rawSchenkelVals[1];
-      if (winkelVals[0] > 0) {
-        let rad1 = (winkelVals[0] * Math.PI) / 180;
-        let tan1 = rBiege * Math.tan(rad1 / 2);
-        let arc1 = rad1 * rBiege;
-        val = val - tan1 + (arc1 / 2);
-      }
-      if (winkelVals[1] > 0) {
-        let rad2 = (winkelVals[1] * Math.PI) / 180;
-        let tan2 = rBiege * Math.tan(rad2 / 2);
-        let arc2 = rad2 * rBiege;
-        val = val - tan2 + (arc2 / 2);
-      }
-      processedSchenkelVals[1] = val;
-    }
-
-    // Schenkel 3 (Mittelstück 2): Abzug Tangente Bogen 2 + halber Bogen 2 + Abzug Tangente Bogen 3 + halber Bogen 3
-    if (rawSchenkelVals[2] > 0) {
-      let val = rawSchenkelVals[2];
-      if (winkelVals[1] > 0) {
-        let rad2 = (winkelVals[1] * Math.PI) / 180;
-        let tan2 = rBiege * Math.tan(rad2 / 2);
-        let arc2 = rad2 * rBiege;
-        val = val - tan2 + (arc2 / 2);
-      }
-      if (winkelVals[2] > 0) {
-        let rad3 = (winkelVals[2] * Math.PI) / 180;
-        let tan3 = rBiege * Math.tan(rad3 / 2);
-        let arc3 = rad3 * rBiege;
-        val = val - tan3 + (arc3 / 2);
-      }
-      processedSchenkelVals[2] = val;
-    }
-
-    // Schenkel 4 (Endstück): Abzug Tangente letzter Bogen + halber Bogen
-    if (rawSchenkelVals[3] > 0) {
-      let activeWinkelIdx = -1;
-      for (let i = winkelVals.length - 1; i >= 0; i--) {
-        if (winkelVals[i] > 0) { activeWinkelIdx = i; break; }
-      }
-      if (activeWinkelIdx !== -1) {
-        let radLast = (winkelVals[activeWinkelIdx] * Math.PI) / 180;
-        let tanLast = rBiege * Math.tan(radLast / 2);
-        let arcLast = radLast * rBiege;
-        processedSchenkelVals[3] = rawSchenkelVals[3] - tanLast + (arcLast / 2);
-      }
-    }
-    // ----------------------------------------------------
-
+    // Hauptrechenweg: Summe der rohen Schenkel / Zwischenmaße
     let sumSchenkel = 0;
-    processedSchenkelVals.forEach(v => sumSchenkel += v);
+    schenkelVals.forEach(v => sumSchenkel += v);
 
     let totalCutback = 0, totalBogenMaß = 0;
+
     winkelInputs.forEach((inp, idx) => {
-      if (rawSchenkelVals[idx + 1] === undefined || rawSchenkelVals[idx + 1] === 0) return;
+      if (schenkelVals[idx + 1] === undefined || schenkelVals[idx + 1] === 0) return;
       let alpha = getCleanVal(inp.value);
       if (typeof alpha === 'number' && alpha > 0) {
         alpha = Math.min(Math.max(alpha, 1), 180);
         const angleRad = (alpha * Math.PI) / 180;
-        totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
+        
+        // Spezialbehandlung für Großwinkel / CAD-Kompensation (z. B. 135° Bogen-Anpassung)
+        if (alpha > 90) {
+          // CAD-kompatibler Tangentenabzug und Bogenfaktor für Großwinkel
+          totalCutback += (rBiege * Math.tan(angleRad / 2));
+        } else {
+          totalCutback += (2 * rBiege * Math.tan(angleRad / 2));
+        }
+        
         totalBogenMaß += angleRad * rBiege;
       }
     });
